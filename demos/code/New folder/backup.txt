@@ -1,0 +1,273 @@
+
+
+Blockly.Blocks['variable_declare'] = {
+	init: function() {
+		
+		this.appendValueInput("NAME")
+			.appendField("Declare: ")
+			.appendField(new Blockly.FieldDropdown([["int","myVarTypeInt"], ["size_t","myVarTypeSize_t"], ["double","myVarTypeDouble"], ["float","myVarTypeFloat"], ["char","myVarTypeChar"], ["string","myVarTypeString"], ["bool","myVarTypeBool"], ["auto","myVarTypeAuto"]]), "myVarType")
+			.appendField(new Blockly.FieldVariable("myVar"), "myVarDec")
+			.setCheck(["Int", "Size_t", "Double", "Float", "Char", "String", "Bool", "Auto", "Variable"]);
+			
+			this.appendDummyInput()
+				.appendField("constant?")
+				.appendField(new Blockly.FieldDropdown([["false","consFalse"], ["true","consTrue"] ]), "consType");
+				
+				
+			this.setInputsInline(false);
+			this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
+		this.setColour(variableHUE);
+		this.setTooltip("A standard variable declaration.");
+		this.setHelpUrl("http://www.cplusplus.com/doc/tutorial/variables/");
+		
+		this.tag = '';
+		
+	},
+	
+	onchange: function(){
+		Blockly.C.valueToCode(block, 'NAME', Blockly.C.ORDER_ATOMIC).setCheck(typeConv(this.getField('myVarType').getText()));
+		
+		//this.tag = (typeConv(this.getField('myVarType').getText()));
+		
+	}
+	
+};
+
+Blockly.C['variable_declare'] = function(block) {
+	var dropdown_myvartype = this.getField('myVarType').getText();
+	
+	var variable_myvardec = Blockly.C.variableDB_.getName(block.getFieldValue('myVarDec'), Blockly.Variables.NAME_TYPE);
+	
+	var value_name = Blockly.C.valueToCode(block, 'NAME', Blockly.C.ORDER_ATOMIC);
+	
+	var dropdown_cons = this.getField('consType').getText();
+	
+	// TODO: Assemble C into code variable.
+	
+	var code = '';
+	var error = '//WRONG TYPE ERROR DECLARATION\n';
+	var errorCheck = false;
+	var initType = '';
+	var initBlock = false;
+	
+	code += block.getSurroundParent().getField('myVarType').getText();
+	
+	if( block.getSurroundParent() && block.getSurroundParent().getField('myVarType').getText() == dropdown_myvartype ){
+		initBlock = true;
+	}
+	
+	//if VN is number false = number
+	if(isNaN(value_name) == false){
+		// If it's a whole number
+		if(value_name % 1 == 0){
+			initType = "int";
+		}
+		// If it's a Double / Float
+		if(value_name % 1 != 0){
+			initType = "double";
+		}
+		// If it's a Char
+		if(value_name.length == 3 && value_name.charAt(0) == "'" && value_name.charAt(2) == "'"){
+			initType = "char";
+		}
+		// If it's a String
+		if(value_name.charAt(0) === '"'){
+			initType = "string";
+		}
+	}
+	//if VN is number false = number
+	if(isNaN(value_name) == true){
+		// If it's a Char
+		if(value_name.length == 3 && value_name.charAt(0) == "'" && value_name.charAt(2) == "'"){
+			initType = "char";
+		}
+		// If it's a String
+		if(value_name.charAt(0) === '"'){
+			initType = "string";
+		}
+	}
+	
+	//if type is bool
+	if(value_name == 'true' || value_name == 'false'){
+		initType = "bool";
+	}
+	
+	
+	//Helper Function for warning
+	function alert_WrongTypeWarning(TT){
+		alert("Wrong type has been selected in variable declaration, possible loss of data:\n " + TT);
+	}
+	//Helper Function for error
+	function alert_WrongType(TT){
+		alert("Wrong type has been selected in variable declaration:\n " + TT);
+	}
+	
+	
+	if(value_name.length > 0 && initBlock == true){
+		
+		//Helper Function for warning
+		function alert_WrongTypeWarning(TT){
+			alert("Wrong type has been selected in variable declaration, possible loss of data:\n " + TT);
+		}
+		//Helper Function for error
+		function alert_WrongType(TT){
+			alert("Wrong type has been selected in variable declaration:\n " + TT);
+		}
+	
+		if(dropdown_myvartype != initType){
+			var temp = (typeConv(dropdown_myvartype) + " declaration with " + initType + " initialization.");
+			alert_WrongType(temp); 
+			errorCheck = true;
+		}
+	}
+	
+	if(dropdown_cons === 'true'){
+		code += 'const ';
+	}
+	
+	
+	if(dropdown_myvartype === 'auto' && value_name.length < 1){
+		code += dropdown_myvartype + ' ' + variable_myvardec + ' = 1';
+	}
+	else if(dropdown_myvartype === 'auto' && value_name.length > 0){
+		code += dropdown_myvartype + ' ' + variable_myvardec + ' = ' + value_name;
+	}
+	else {
+		if(usingSTD === false && dropdown_myvartype === 'string'){
+			code += 'std::' + dropdown_myvartype + ' ' + variable_myvardec;
+		}
+		else {
+			code += dropdown_myvartype + ' ' + variable_myvardec;
+		}
+		
+		if(value_name.length > 0){
+			code += ' = ' + value_name;
+		}
+	}
+	
+	if(dropdown_cons === 'true' && value_name.length < 1){
+		
+		if(dropdown_myvartype === 'int'){
+			code += ' = 1';
+		}
+		if(dropdown_myvartype === 'size_t'){
+			code += ' = 0';
+		}
+		if(dropdown_myvartype === 'double'){
+			code += ' = 0.0';
+		}
+		if(dropdown_myvartype === 'float'){
+			code += ' = 0.0';
+		}
+		if(dropdown_myvartype === 'char'){
+			code += ' = \'a\'';
+		}
+		if(dropdown_myvartype === 'string'){
+			code += ' = "myString"';
+		}
+		if(dropdown_myvartype === 'bool'){
+			code += ' = true';
+		}
+		
+	}
+	
+	if(errorCheck === true){
+		code += error;
+	}
+	
+	code += ';\n'
+	
+	//Update tag type
+	this.tag = (typeConv(this.getField('myVarType').getText()));
+	
+	//code += block.getSurroundParent( Workspace.getBlockById(var_initialization) );
+	
+	return code;
+};
+
+
+
+Blockly.Blocks['string_concatenate'] = {
+  init: function() {
+    this.appendValueInput("valinp1")
+        .setCheck(null)
+        .appendField("concatenate \"")
+        .appendField(new Blockly.FieldTextInput("str"), "inp")
+        .appendField("\"");
+    this.setOutput(true, "String");
+    this.setColour(stringHUE);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.C['string_concatenate'] = function(block) {
+  var text_inp = block.getFieldValue('inp');
+  var value_valinp1 = Blockly.C.valueToCode(block, 'valinp1', Blockly.C.ORDER_ATOMIC);
+	// TODO: Assemble C into code variable.
+	var code = '';
+	
+	code += '"';
+	
+	if(text_inp.length > 0){
+		code += text_inp;
+	}
+	
+	code += '"';
+	
+	if(value_valinp1.length > 0){
+		code += ' + ' + value_valinp1;
+	}
+	
+	
+	
+	// TODO: Change ORDER_NONE to the correct strength.
+	return [code, Blockly.C.ORDER_NONE];
+};
+
+Blockly.Blocks['var_concatenate'] = {
+	init: function() {
+		this.appendValueInput("valinp1")
+			.appendField("concatenate")
+			.setCheck(null)
+			.appendField(new Blockly.FieldVariable("myStrVar"), "varDef");
+		this.setOutput(true, null);
+		this.setColour(stringHUE);
+		this.setTooltip("");
+		this.setHelpUrl("");
+	}
+};
+
+Blockly.C['var_concatenate'] = function(block) {
+	var variable_vardef = Blockly.C.variableDB_.getName(block.getFieldValue('varDef'), Blockly.Variables.NAME_TYPE);
+	var value_valinp1 = Blockly.C.valueToCode(block, 'valinp1', Blockly.C.ORDER_ATOMIC);
+	// TODO: Assemble C into code variable.
+	var code = '';
+	
+	if(variable_vardef.length > 0){
+		code += variable_vardef;
+	}
+	
+	
+	if(value_valinp1.length > 0){
+		code += ' + ' + value_valinp1;
+	}
+	
+	code += ' ' + block.getSurroundParent().getField('myVarDef').getText();
+	
+	
+	// TODO: Change ORDER_NONE to the correct strength.
+	return [code, Blockly.C.ORDER_NONE];
+};
+
+
+
+
+
+
+
+
+
+
+

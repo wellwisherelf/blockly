@@ -1,0 +1,27 @@
+✔chapter 1 init - change type to set
+
+chapter 1 char should be a single character
+
+chapter 1 variable update type check
+
+✔update include
+--
+✔chapter 1 string
+✔
+✔string a = "Hello";
+✔string b = "World!"
+✔ 
+✔string c = a + " " + b;
+✔
+✔like cout block
+✔
+✔if variable is type string, than you can concatenate, very similar to cout
+
+--
+
+✔unary operator to make variables positive or negative
+
+
+
+
+

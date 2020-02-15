@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+
+  <meta charset="utf-8">
+  <meta name="google" value="notranslate">
+  <title>Blockly C++ Generator</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="/storage.js"></script>
+  <script src="../../blockly_compressed.js"></script>
+  <script src="../../blocks_compressed.js"></script>
+  <script src="../../javascript_compressed.js"></script>
+  <script src="../../python_compressed.js"></script>
+  <script src="../../php_compressed.js"></script>
+  <script src="../../lua_compressed.js"></script>
+  <script src="../../dart_compressed.js"></script>
+  <script src="../../c_compressed.js"></script>
+  <script src="code.js"></script>
+  
+  <script src="FileSafer.js" ></script>
+  <script src="Include.js" ></script>
+  <script src="Testing.js" ></script>
+  <script src="Main Function.js" ></script>
+  <script src="Chapter 1 - Strings.js" ></script>
+  <script src="Chapter 1 - Variables.js" ></script>
+  <script src="Chapter 2 - Variables - Assignments.js" ></script>
+  <script src="Chapter 3 - Branches.js" ></script>
+  <script src="Chapter 4 - Loops.js" ></script>
+  <script src="Chapter 5 - Functions.js" ></script>
+  <script src="Chapter 6 - Arrays & Vectors.js" ></script>
+  <script src="Chapter 7 - Classes.js" ></script>
+  <script src="Chapter 8 - Pointers.js" ></script>
+  
+  
+  
+  <script src="Changelog.js" ></script>
+  
+  
+</head>
+<body onload="start()">
+  <table width="150%" height="150%">
+    <tr>
+      <td>
+        <h1>
+          <span id="title"></span>
+        </h1>
+		<h1>
+		 <span id = "version">Beta 1.0</span>
+		</h1>
+		
+		<!--
+		<p align="left">	
+			<button onclick="downloadCode()">Download Code</button>
+		</p>
+		-->
+		<p align="left">	
+			<button onclick="updateLog()">Version Update Log</button>
+		</p>
+		
+		
+      </td>
+      <td class="farSide">
+        <select id="languageMenu"></select>
+      </td>
+    </tr>
+    <tr>
+      <td colspan=2>
+        <table width="100%">
+          <tr id="tabRow" height="1em">
+            <td id="tab_blocks" class="tabon">...</td>
+            <td id="tab_c" class="taboff">C++</td> <!--Added C++ to the tab-->
+            <td class="tabmin">&nbsp;</td>
+            <td id="tab_xml" class="taboff"></td>
+            <td class="tabmin">&nbsp;</td>
+
+
+            <td class="tabmax">
+              <button id="trashButton" class="notext" title="...">
+                <img src='../../media/1x1.gif' class="trash icon21">
+              </button>
+              <button id="linkButton" class="notext" title="...">
+                <img src='../../media/1x1.gif' class="link icon21">
+              </button>
+              <button id="runButton" class="notext primary" title="...">
+                <img src='../../media/1x1.gif' class="run icon21">
+              </button>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td height="99%" colspan=2 id="content_area">
+      </td>
+    </tr>
+  </table>
+  <div id="content_blocks" class="content"></div>
+  <pre id="content_javascript" class="content prettyprint lang-js"></pre>
+  <pre id="content_python" class="content prettyprint lang-py"></pre>
+  <pre id="content_php" class="content prettyprint lang-php"></pre>
+  <pre id="content_lua" class="content prettyprint lang-lua"></pre>
+  <pre id="content_dart" class="content prettyprint lang-dart"></pre>
+  <pre id="content_c" class="content prettyprint lang-c"></pre>
+  <textarea id="content_xml" class="content" wrap="off"></textarea>
+
+  <xml xmlns="" id="toolbox" style="display: none">
+    <category name="%{BKY_CATLOGIC}" colour="%{BKY_LOGIC_HUE}">
+		<block type="controls_if"></block>
+		<block type="logic_compare"></block>
+		<block type="logic_operation"></block>
+		<block type="logic_negate"></block>
+		<block type="logic_boolean"></block>
+		<block type="logic_null"></block>
+		<block type="if_else_conditional"></block>
+    </category>
+    <category name="%{BKY_CATLOOPS}" colour="%{BKY_LOOPS_HUE}">
+	
+	<block type="loop_whiledo"></block>     
+	<block type="loop_dowhile"></block>
+	  
+      <block type="loop_for">
+        <value name="valinp1">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+        <value name="valinp2">
+          <shadow type="math_number">
+            <field name="NUM">10</field>
+          </shadow>
+        </value>
+      </block>
+
+	<block type="loop_range"></block>    
+	<block type="loop_break"></block>
+
+	
+    </category>
+    <category name="%{BKY_CATMATH}" colour="%{BKY_MATH_HUE}">
+      <block type="math_number">
+        <field name="NUM">123</field>
+      </block>
+      <block type="math_arith">
+        <value name="valinp1">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="valinp2">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      
+	  
+
+	<block type = "math_unary" ></block>
+	<block type = "math_sqrt" ></block>
+	<block type = "number_rand" ></block>
+	<block type = "time_time" ></block>
+	<block type = "number_srand" ></block>
+	
+	<block type="math_mod">
+	<value name="valinp1">
+		<shadow type="math_number">
+		<field name="NUM">2</field>
+		</shadow>
+	</value>
+	<value name="valinp2">
+		<shadow type="math_number">
+		<field name="NUM">1</field>
+		</shadow>
+	</value>
+	</block>
+	
+	<block type = "math_fabs" >
+	<value name="valinp1">
+		<shadow type="math_number">
+		<field name="NUM">-5</field>
+		</shadow>
+	</value>
+	</block>
+	
+	<block type = "math_pow" >
+	<value name="valinp1">
+		<shadow type="math_number">
+		<field name="NUM">2</field>
+		</shadow>
+	</value>
+	<value name="valinp2">
+		<shadow type="math_number">
+		<field name="NUM">3</field>
+		</shadow>
+	</value>
+	</block>
+	
+	<block type = "static_cast" >
+	<value name="valinp1">
+		<shadow type="math_number">
+		<field name="NUM">5</field>
+		</shadow>
+	</value>
+	</block>
+	
+	<block type = "math_pi" ></block>
+	  
+	  
+    </category>
+	
+    <category name="%{BKY_CATTEXT}" colour="%{BKY_TEXTS_HUE}">
+      
+			<block type = "output_cout" ></block>
+			<block type = "cout_output" ></block>
+			<block type = "cout_var" ></block>
+			<block type = "cout_endl" ></block>
+			<block type = "cin_input" ></block>
+			<block type = "cin_getline"></block>
+
+			<block type = "printf" ></block>
+			<block type = "to_string" >	
+				<value name="valinp1">
+					<shadow type="math_number">
+						<field name="NUM">0</field>
+					</shadow>
+				</value>
+			</block>
+
+			<block type = "string_concatenate"></block>
+			
+			
+    </category>
+    <category name="Lists" colour="%{BKY_LISTS_HUE}">
+      
+		
+			<block type="array"></block>
+			<block type="array2d"></block>
+	  
+		
+			<block type="vector"></block>
+			<block type="vectorpushback"></block>
+			<block type="vectorsize"></block>
+			<block type="vectorempty"></block>
+			
+			<block type="vectoratposition">
+				<value name="NAME">
+					<shadow type="math_number">
+						<field name="NUM">0</field>
+					</shadow>
+ 				</value>
+			</block>					
+			
+			
+			<block type="vector_resize">
+				<value name="valinp1">
+					<shadow type="math_number">
+						<field name="NUM">1</field>
+					</shadow>
+ 				</value>
+			</block>
+		
+	  
+	  
+    </category>
+	
+	<sep></sep>
+    <category name="%{BKY_CATVARIABLES}" colour="%{BKY_VARIABLES_HUE}" custom="VARIABLE">
+		
+			<block type = "variable_declare"></block>
+			<block type = "var_initialization"></block>
+			
+			<block type = "var_change">
+				<value name="valinp1">
+					<shadow type="math_number">
+						<field name="NUM">1</field>
+					</shadow>
+				</value>
+			</block>
+						
+			<block type = "var_reinit">								
+				<value name="valinp1">
+					<shadow type="math_number">
+						<field name="NUM">0</field>
+					</shadow>
+				</value>
+
+			</block>
+		
+	
+	
+	</category>
+    <category name="Functions" colour="%{BKY_PROCEDURES_HUE}">
+	
+	
+	</category>
+	
+	
+    <sep></sep>
+    <sep></sep>		
+
+	<category name = "Formatting" colour="#134796">
+		<block type = "format_newLine" ></block>
+	</category>
+
+	<category name = "Pointers" colour="#134796">
+		<block type = "pointer_null" ></block>
+		<block type = "pointer_ref" ></block>
+	</category>
+	
+	
+	<category name="Include Directories" colour="#134796">
+	
+		<block type = "include_iostream" ></block>
+		<block type = "include_string" ></block>
+		<block type = "include_math" ></block>
+		<block type = "include_time" ></block>
+		<block type = "include_cstdlib" ></block>
+		<block type = "include_cctype" ></block>
+		<block type = "include_vector" ></block>
+		
+		<block type = "using_namespace_std" ></block>
+	
+	</category>
+	
+    <category name="Main Function" colour="#134796">
+	
+		<block type = "main" ></block>
+		<block type = "comment_single" ></block>
+		<block type = "comment_multiline" ></block>
+
+	</category>
+	
+    <category name="Chapter 1" colour="#134796">
+		<category name="Variables" colour="#134796" >
+		
+			<label text="Variable Declaration" web-class="labelVariable"></label>
+			
+		
+			<block type = "variable_declare"></block>
+		
+			<label text="Variable Initializiation" web-class="labelVariable"></label>
+			
+			<block type = "var_initialization"></block>
+			
+			<label text="Variable Compound Assignment" web-class="labelVariable"></label>
+			
+			<block type = "var_change">
+				<value name="valinp1">
+					<shadow type="math_number">
+						<field name="NUM">1</field>
+					</shadow>
+				</value>
+			</block>
+						
+			<label text="Variable Reinitialization" web-class="labelVariable"></label>
+			
+			<block type = "var_reinit">								
+				<value name="valinp1">
+					<shadow type="math_number">
+						<field name="NUM">0</field>
+					</shadow>
+				</value>
+
+			</block>
+		
+		</category>
+		
+		<category name="Strings" colour="#134796">
+		
+			<label text="Cout Output" web-class="labelCout"></label>
+			
+			<block type = "output_cout" ></block>
+			<block type = "cout_output" ></block>
+			<block type = "cout_var" ></block>
+			<block type = "cout_endl" ></block>
+			
+			<label text="Cin Input" web-class="labelCin"></label>
+			
+			<block type = "cin_input" ></block>
+			<block type = "cin_parse" ></block>
+			<block type = "cin_getline"></block>
+			
+			<label text="Strings" web-class="labelString"></label>
+			
+			<block type = "printf" ></block>
+			<block type = "to_string" >	
+				<value name="valinp1">
+					<shadow type="math_number">
+						<field name="NUM">0</field>
+					</shadow>
+				</value>
+			</block>
+		
+			<block type="string_size"></block>
+
+			<block type = "string_concatenate"></block>
+			<block type = "var_concatenate"></block>
+		</category>
+	
+    </category>
+    <category name="Chapter 2" colour="#134796">
+			
+		<label text="Math" web-class="labelMath"></label>
+
+      <block type="math_arith">
+        <value name="valinp1">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="valinp2">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+	  
+	<block type = "math_unary" ></block>
+	<block type = "math_scinum" ></block>
+	<block type = "math_sqrt" ></block>
+	<block type = "number_rand" ></block>
+	<block type = "time_time" ></block>
+	<block type = "number_srand" ></block>
+	
+	<block type="math_mod">
+	<value name="valinp1">
+		<shadow type="math_number">
+		<field name="NUM">2</field>
+		</shadow>
+	</value>
+	<value name="valinp2">
+		<shadow type="math_number">
+		<field name="NUM">1</field>
+		</shadow>
+	</value>
+	</block>
+	
+	<block type = "math_fabs" >
+	<value name="valinp1">
+		<shadow type="math_number">
+		<field name="NUM">-5</field>
+		</shadow>
+	</value>
+	</block>
+	
+	<block type = "math_pow" >
+	<value name="valinp1">
+		<shadow type="math_number">
+		<field name="NUM">2</field>
+		</shadow>
+	</value>
+	<value name="valinp2">
+		<shadow type="math_number">
+		<field name="NUM">3</field>
+		</shadow>
+	</value>
+	</block>
+	
+	<block type = "static_cast" >
+	<value name="valinp1">
+		<shadow type="math_number">
+		<field name="NUM">5</field>
+		</shadow>
+	</value>
+	</block>
+	
+	<block type = "math_pi" ></block>
+	  
+    </category>
+	
+    <category name="Chapter 3" colour="#134796">
+		
+		<category name = "logic" colour = "#134796">
+		
+			<label text="Logic" web-class="labelLogic"></label>
+			
+			<block type="controls_if"></block>
+			<block type="logic_compare"></block>
+			<block type="logic_operation"></block>
+			<block type="logic_negate"></block>
+			<block type="logic_boolean"></block>
+			<block type="logic_null"></block>
+			<block type="if_else_conditional"></block>
+		</category>
+		
+		
+		
+		
+		<category name = "cctype" colour = "#134796">
+		
+			<label text="cctype" web-class="labelCCType"></label>
+			
+			<block type="cctype_isalpha"></block>
+			<block type="cctype_isdigit"></block>
+			<block type="cctype_isspace"></block>
+			<block type="cctype_toupper"></block>
+			<block type="cctype_tolower"></block>
+		</category>
+		
+		
+		<category name = "switch case" colour = "#134796">
+	
+			<label text="Switch Case Statement" web-class="labelSwitch"></label>
+			
+			<block type="switch_statement"></block>
+			<block type="switch_case"></block>
+			<block type="switch_default"></block>
+			<block type="switch_break"></block>
+		</category>
+	  
+    </category>
+	
+    <category name="Chapter 4" colour="#134796">
+		
+	<label text="Loops" web-class="labelLoops"></label>
+			
+	
+	<block type="loop_whiledo"></block>     
+	<block type="loop_dowhile"></block>
+	  
+      <block type="loop_for">
+        <value name="valinp1">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+        <value name="valinp2">
+          <shadow type="math_number">
+            <field name="NUM">10</field>
+          </shadow>
+        </value>
+      </block>
+
+	<block type="loop_range"></block>    
+	<block type="loop_break"></block>
+
+	
+    </category>
+	
+    <category name="Chapter 5" colour="#134796">
+	
+	<label text="Function Declaration" web-class="labelFunction"></label>
+	
+	<block type="user_function"></block>
+	
+	<label text="Function Declaration Parameter (Initializer)" web-class="labelFunction"></label>
+	
+	<block type="func_parameters"></block>
+	
+	<label text="Function Call" web-class="labelFunction"></label>
+	
+	<block type="func_call"></block>
+	
+	<label text="Function Call (Return)" web-class="labelFunction"></label>
+	
+	<block type="func_call_return"></block>
+	
+	<label text="Function Call Parameter (Initializer)" web-class="labelFunction"></label>
+
+	<block type="func_var_init_literal"></block>
+	
+	<label text="Function Call Parameter (Variables)" web-class="labelFunction"></label>
+	
+	<block type="func_parameters_call"></block>
+	
+	<block type="func_return"></block>
+	
+	
+    </category>
+	
+    <category name="Chapter 6" colour="#134796">
+		
+		<category name = "Arrays" colour = "#134796" >
+		
+			<label text="Array Declaration" web-class="labelArray"></label>
+			
+			<block type="array"></block>
+			<block type="array2d"></block>
+			
+			<label text="Array Initialization" web-class="labelArray"></label>
+			
+			<block type="array_init_literal"></block>
+		
+			<label text="Array Index" web-class="labelArray"></label>
+			
+			<block type="array_index_1d">
+				<value name="valinp1">
+					<shadow type="math_number">
+						<field name="NUM">0</field>
+					</shadow>
+ 				</value>
+			</block>
+			
+			<block type="array_index_2d">
+				<value name="valinp1">
+					<shadow type="math_number">
+						<field name="NUM">0</field>
+					</shadow>
+ 				</value>
+				<value name="valinp2">
+					<shadow type="math_number">
+						<field name="NUM">0</field>
+					</shadow>
+ 				</value>
+			</block>
+		
+			<label text="Array Index Assignment" web-class="labelArray"></label>
+			
+			<block type="array_index_1d_init">
+				<value name="valinp1">
+					<shadow type="math_number">
+						<field name="NUM">0</field>
+					</shadow>
+ 				</value>
+			</block>
+			
+			<block type="array_index_2d_init">
+				<value name="valinp1">
+					<shadow type="math_number">
+						<field name="NUM">0</field>
+					</shadow>
+ 				</value>
+				<value name="valinp2">
+					<shadow type="math_number">
+						<field name="NUM">0</field>
+					</shadow>
+ 				</value>
+			</block>
+		
+		</category>
+		
+		<category name = "Vectors" colour = "#134796" >
+		
+			<label text="Vectors" web-class="labelVector"></label>
+		
+			<block type="vector"></block>
+			<block type="vec_init"></block>
+		
+			<label text="Vector Functions" web-class="labelVector"></label>
+		
+			<block type="vectorpushback"></block>
+			<block type="vectorsize"></block>
+			<block type="vectorempty"></block>
+			
+			<block type="vectoratposition">
+				<value name="NAME">
+					<shadow type="math_number">
+						<field name="NUM">0</field>
+					</shadow>
+ 				</value>
+			</block>					
+			
+			
+			<block type="vector_resize">
+				<value name="valinp1">
+					<shadow type="math_number">
+						<field name="NUM">1</field>
+					</shadow>
+ 				</value>
+			</block>
+		
+		</category>
+		
+    </category>
+	
+	<sep></sep>    
+	<sep></sep>	
+	
+	<!--
+	
+    <category name="Chapter 7" colour="#134796">
+	
+		<block type="ds_struct"></block>
+		<block type="ds_constructor"></block>
+		<block type="ds_copy_constructor"></block>
+		<block type="ds_declare"></block>
+		<block type="ds_object_call"></block>
+		
+		
+		
+	
+	</category>
+	
+    <category name="Testing" colour="#134796">
+	
+		<block type="check_childparent"></block>
+		<block type="check_updown"></block>
+		
+	
+	</category>
+	
+	
+    <category name="Examples" colour="#134796">
+	
+	
+		<category name="Chapter 6" colour="#134796">
+		
+			<block type="array">
+			
+				<value name = "valinp1">
+					
+				<next>
+					<block type = "array_index_1d_init"></block>
+				</next>
+					
+				</value>
+			
+			</block>
+			
+		
+		</category>
+	
+	</category>
+	-->
+	
+  </xml> <!-- toolbox -->
+
+
+</body>
+</html>
+
+
+
+<!-- Label Color Categories -->
+<style>
+.labelVariable>.blocklyFlyoutLabelText {
+	font-style: bold;
+	fill: #A55B80;
+}
+.labelCout>.blocklyFlyoutLabelText {
+	font-style: bold;
+	fill: #A57A5B;
+}
+.labelCin>.blocklyFlyoutLabelText {
+	font-style: bold;
+	fill: #A5995B;
+}
+.labelString>.blocklyFlyoutLabelText {
+	font-style: bold;
+	fill: #5BA58C;
+}
+.labelMath>.blocklyFlyoutLabelText {
+	font-style: bold;
+	fill: #5B67A5;
+}
+.labelLogic>.blocklyFlyoutLabelText {
+	font-style: bold;
+	fill: #5B80A5;
+}
+.labelCCType>.blocklyFlyoutLabelText {
+	font-style: bold;
+	fill: #5BA59F;
+}
+.labelSwitch>.blocklyFlyoutLabelText {
+	font-style: bold;
+	fill: #A5A55B;
+}
+.labelLoops>.blocklyFlyoutLabelText {
+	font-style: bold;
+	fill: #5BA56D;
+}
+.labelFunction>.blocklyFlyoutLabelText {
+	font-style: bold;
+	fill: #80A55B;
+}
+.labelArray>.blocklyFlyoutLabelText {
+	font-style: bold;
+	fill: #5BA5A5;
+}
+.labelVector>.blocklyFlyoutLabelText {
+	font-style: bold;
+	fill: #5B93A5;
+}
+</style>
+
+
+
+
+
+
+
+
+
+
+
