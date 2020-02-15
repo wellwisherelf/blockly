@@ -1,29 +1,13 @@
 
 var variableHUE = 330;
 
+//type check conversion, 
 function typeConv(type){
-	if(type == 'int'){
-		return "Int";
-	}
-	if(type == 'size_t'){
-		return "Size_t";
-	}
-	if(type == 'double'){
-		return "Double";
-	}
-	if(type == 'float'){
-		return "Float";
-	}
-	if(type == 'char'){
-		return "Char";
-	}
-	if(type == 'string'){
-		return "String";
-	}
-	if(type == 'bool'){
-		return "Bool";
-	}
+	//Replaces the first letter to capitalize, used for fielddropdown types
+	return type.charAt(0).toUpperCase() + type.slice(1);
+	
 }
+
 
 
 
@@ -59,9 +43,6 @@ Blockly.Blocks['variable_declare'] = {
 	onchange: function(){
 		Blockly.C.valueToCode(block, 'NAME', Blockly.C.ORDER_ATOMIC).setCheck(typeConv(this.getField('myVarType').getText()));
 		
-		
-		
-		
 		//this.tag = (typeConv(this.getField('myVarType').getText()));
 		
 	}
@@ -88,34 +69,6 @@ Blockly.C['variable_declare'] = function(block) {
 	var initBlock = false;
 	
 	
-	
-	//if( block.getSurroundParent() && block.getSurroundParent().getField('myVarType').getText() == dropdown_myvartype ){
-	//	initBlock = true;
-	//}
-	
-	
-	//if(value_name.length > 0 && initBlock == true){
-	//	
-	//	//Helper Function for warning
-	//	function alert_WrongTypeWarning(TT){
-	//		alert("Wrong type has been selected in variable declaration, possible loss of data:\n " + TT);
-	//	}
-	//	//Helper Function for error
-	//	function alert_WrongType(TT){
-	//		alert("Wrong type has been selected in variable declaration:\n " + TT);
-	//	}
-	//
-	//	if(dropdown_myvartype != initType){
-	//		var temp = (typeConv(dropdown_myvartype) + " declaration with " + initType + " initialization.");
-	//		alert_WrongType(temp); 
-	//		errorCheck = true;
-	//	}
-	//}
-	//
-	//if(errorCheck === true){
-	//	code += error;
-	//}
-	
 	//Numeric Types
 	if(dropdown_myvartype === "int" && dropdown_numType !== "N/A"){
 		code += dropdown_numType + ' ';
@@ -125,34 +78,41 @@ Blockly.C['variable_declare'] = function(block) {
 		code += dropdown_numType + ' ';
 	}
 	else {
+		
 		//this.setWarningText("Variable declaration error:\nnumeric type: " + dropdown_numType + " does not work with data type: " + dropdown_myvartype);
 	}
 	//Numeric Types
 	
-	
+	//If constant is true, generate "const"
 	if(dropdown_cons === 'true'){
 		code += 'const ';
 	}
 	
+	//If variable type is auto but is uninitialized
 	if(dropdown_myvartype === 'auto' && value_name.length < 1){
 		code += dropdown_myvartype + ' ' + variable_myvardec + ' = 1';
 	}
+	//If variable type is auto and is initialized
 	else if(dropdown_myvartype === 'auto' && value_name.length > 0){
 		code += dropdown_myvartype + ' ' + variable_myvardec + ' = ' + value_name;
 	}
 	else {
+		//if using namespace std; is not active, and type is string
 		if(usingSTD === false && dropdown_myvartype === 'string'){
 			code += 'std::' + dropdown_myvartype + ' ' + variable_myvardec;
 		}
 		else {
+			// using namespace std; is active 
 			code += dropdown_myvartype + ' ' + variable_myvardec;
 		}
-		
+		// if initialized, initialize
 		if(value_name.length > 0){
 			code += ' = ' + value_name;
 		}
 	}
 	
+	
+	// Constant checking if no initialization occurs
 	if(dropdown_cons === 'true' && value_name.length < 1){
 		
 		if(dropdown_myvartype === 'int'){
@@ -184,8 +144,6 @@ Blockly.C['variable_declare'] = function(block) {
 	
 	//Update tag type
 	this.tag = (typeConv(this.getField('myVarType').getText()));
-	
-	//code += block.getSurroundParent( Workspace.getBlockById(var_initialization) );
 	
 	return code;
 };
@@ -320,36 +278,6 @@ Blockly.C['var_initialization'] = function(block) {
 };
 
 
-Blockly.Blocks['var_parse'] = {
-  init: function() {
-    this.appendValueInput("valinp1")
-        .setCheck(null)
-        .appendField(new Blockly.FieldVariable("myVar"), "myVarRef");
-    this.setInputsInline(false);
-    this.setOutput(true, "Variable");
-    this.setColour(variableHUE);
- this.setTooltip("");
- this.setHelpUrl("");
-  }
-};
-
-Blockly.C['var_parse'] = function(block) {
-	var variable_myvarref = Blockly.C.variableDB_.getName(block.getFieldValue('myVarRef'), Blockly.Variables.NAME_TYPE);
-	var value_valinp1 = Blockly.C.valueToCode(block, 'valinp1', Blockly.C.ORDER_ATOMIC);
-	// TODO: Assemble C into code variable.
-	var code = '';
-	
-	code += variable_myvarref;
-	
-	if(value_valinp1.length > 0){
-		code += ' ' + value_valinp1;
-	}
-	
-	
-	// TODO: Change ORDER_NONE to the correct strength.
-	return [code, Blockly.C.ORDER_NONE];
-};
-
 Blockly.Blocks['var_change'] = {
   init: function() {
     this.appendValueInput("valinp1")
@@ -371,6 +299,7 @@ Blockly.C['var_change'] = function(block) {
 	// TODO: Assemble C into code variable.
 	var code = '';
 	
+	//Increments variable  my value_name
 	code += variable_myvardef + " = " + variable_myvardef + " + " + value_name + ';\n';
 	
 	
@@ -398,6 +327,7 @@ Blockly.C['var_reinit'] = function(block) {
 	// TODO: Assemble C into code variable.
 	var code = '';
 	
+	//output myVar and initialization.
 	code += variable_myvardef + " = " + value_name + ';\n';
 	
 	return code;

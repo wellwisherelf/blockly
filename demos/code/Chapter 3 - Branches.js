@@ -57,12 +57,13 @@ Blockly.Blocks['cctype_isalpha'] = {
     this.appendValueInput("valinp1")
         .setCheck("Char")
         .appendField("isalpha(");
+		
     this.appendDummyInput()
         .appendField(")");
     this.setInputsInline(true);
     this.setOutput(true, ["Int", "Boolean"]);
     this.setColour(cctypeHUE);
- this.setTooltip("Checks if the inputted character is alphabetic.");
+ this.setTooltip("Checks if the inputted character is alphabetic.\nReturns - Boolean\nRequires - <cctype>\nInput - Char");
  this.setHelpUrl("http://www.cplusplus.com/reference/cctype/isalpha/");
   }
 };
@@ -73,10 +74,10 @@ Blockly.C['cctype_isalpha'] = function(block) {
 	var code = '';
 	
 	if(value_valinp1.length < 1){
-		value_valinp1 = 'a';
+		value_valinp1 = "'a'"
 	}
 	
-	code += "isalpha('" + value_valinp1 + "')";
+	code += "isalpha(" + value_valinp1 + ")";
 	
 	// TODO: Change ORDER_NONE to the correct strength.
 	return [code, Blockly.C.ORDER_NONE];

@@ -7,7 +7,6 @@
   <meta name="google" value="notranslate">
   <title>Blockly C++ Generator</title>
   <link rel="stylesheet" href="style.css">
-  <script src="/storage.js"></script>
   <script src="../../blockly_compressed.js"></script>
   <script src="../../blocks_compressed.js"></script>
   <script src="../../javascript_compressed.js"></script>
@@ -18,7 +17,7 @@
   <script src="../../c_compressed.js"></script>
   <script src="code.js"></script>
   
-  <script src="FileSafer.js" ></script>
+  <script src="FileSaver.js" ></script>
   <script src="Include.js" ></script>
   <script src="Testing.js" ></script>
   <script src="Main Function.js" ></script>
@@ -50,10 +49,13 @@
 		</h1>
 		
 		<!--
+		-->
 		<p align="left">	
 			<button onclick="downloadCode()">Download Code</button>
 		</p>
-		-->
+		<p align="left">	
+			<button onclick="downloadXML()">Save</button>
+		</p>
 		<p align="left">	
 			<button onclick="updateLog()">Version Update Log</button>
 		</p>
@@ -292,6 +294,32 @@
 	</category>
     <category name="Functions" colour="%{BKY_PROCEDURES_HUE}">
 	
+	
+	<label text="Function Declaration" web-class="labelFunction"></label>
+	
+	<block type="user_function"></block>
+	
+	<label text="Function Declaration Parameter (Initializer)" web-class="labelFunction"></label>
+	
+	<block type="func_parameters"></block>
+	
+	<label text="Function Call" web-class="labelFunction"></label>
+	
+	<block type="func_call"></block>
+	
+	<label text="Function Call (Return)" web-class="labelFunction"></label>
+	
+	<block type="func_call_return"></block>
+	
+	<label text="Function Call Parameter (Initializer)" web-class="labelFunction"></label>
+
+	<block type="func_var_init_literal"></block>
+	
+	<label text="Function Call Parameter (Variables)" web-class="labelFunction"></label>
+	
+	<block type="func_parameters_call"></block>
+	
+	<block type="func_return"></block>
 	
 	</category>
 	
@@ -719,6 +747,7 @@
 
 </body>
 </html>
+
 
 
 
