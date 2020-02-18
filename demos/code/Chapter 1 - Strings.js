@@ -15,7 +15,7 @@ Blockly.Blocks['printf'] = {
 		this.setNextStatement(true, null);
 		this.setColour(stringHUE);
 		this.setTooltip("A standard string output.\nRequires - <iostream>\nNote - Printf is used primarily as a simple string output. More complex output requires cout.");
-		this.setHelpUrl("");
+		this.setHelpUrl("http://www.cplusplus.com/reference/cstdio/printf/");
 	}
 };
 
@@ -24,7 +24,7 @@ Blockly.C['printf'] = function(block) {
 	// TODO: Assemble C into code variable.
 	var code = 'printf("';
 	code += text_inp1 + '");\n';
-	
+
 	return code;
 };
 
@@ -38,7 +38,7 @@ Blockly.Blocks['output_cout'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(coutHUE);
- this.setTooltip("");
+ this.setTooltip("Outputs basically anything to the console in a very controlable manner. \nRequires - <iostream>\n");
  this.setHelpUrl("http://www.cplusplus.com/doc/tutorial/basic_io/");
   }
 };
@@ -48,13 +48,13 @@ Blockly.C['output_cout'] = function(block) {
 	// TODO: Assemble C into code variable.
 
 	var code = '';
-	
-	
-	
+
+
+
 	if(usingSTD === true){
 		if(value_name.length < 1){
 			code += 'cout << endl;\n';
-		} 
+		}
 		else {
 			code += 'cout << ' + value_name + ";\n";
 		}
@@ -62,12 +62,12 @@ Blockly.C['output_cout'] = function(block) {
 	else {
 		if(value_name.length < 1){
 			code += 'std::cout << std::endl;\n';
-		} 
+		}
 		else {
 			code += 'std::cout << ' + value_name + ";\n";
 		}
 	}
-	
+
 	return code;
 };
 
@@ -79,7 +79,7 @@ Blockly.Blocks['cout_output'] = {
         .appendField(new Blockly.FieldTextInput("input"), "inp");
     this.setOutput(true, null);
     this.setColour(coutHUE);
- this.setTooltip("");
+ this.setTooltip("Inserts a custom string into the cout stream.\nReturns - Cout\nRequires - <iostream>\nInput - Anything");
  this.setHelpUrl("");
   }
 };
@@ -92,11 +92,11 @@ Blockly.C['cout_output'] = function(block) {
 	var code = '"';
 	code += text_inp;
 	code += '"';
-	
+
 	if(value_name){
-		code += " << " + value_name + ""; 
+		code += " << " + value_name + "";
 	}
-	
+
 	return [code, Blockly.C.ORDER_NONE];
 };
 
@@ -107,8 +107,8 @@ Blockly.Blocks['cout_endl'] = {
         .setCheck(["Number", "String", "Cout"])
     this.setOutput(true, "Cout");
     this.setColour(coutHUE);
- this.setTooltip("Number input for cout.");
- this.setHelpUrl("");
+ this.setTooltip("Moves the output of cout to a new line.");
+ this.setHelpUrl("http://www.cplusplus.com/reference/ostream/endl");
   }
 };
 
@@ -124,12 +124,12 @@ Blockly.C['cout_endl'] = function(block) {
 	else {
 		var code = 'endl';
 	}
-	
+
 	if(value_valinp1.length > 0){
 		code += " << " + value_valinp1;
 	}
 
-  
+
 	// TODO: Change ORDER_NONE to the correct strength.
 	return [code, Blockly.C.ORDER_NONE];
 };
@@ -142,7 +142,7 @@ Blockly.Blocks['cout_var'] = {
 			.appendField(new Blockly.FieldVariable("myVar"), "varDef");
 		this.setOutput(true, null);
 		this.setColour(coutHUE);
-		this.setTooltip("");
+		this.setTooltip("Inserts a variable into a cout stream.");
 		this.setHelpUrl("");
 	}
 };
@@ -152,19 +152,19 @@ Blockly.C['cout_var'] = function(block) {
 	var value_valinp1 = Blockly.C.valueToCode(block, 'valinp1', Blockly.C.ORDER_ATOMIC);
 	// TODO: Assemble C into code variable.
 	var code = '';
-	
+
 	if(variable_vardef.length > 0){
 		code += variable_vardef;
 	}
-	
-	
+
+
 	if(value_valinp1.length > 0){
 		code += ' << ' + value_valinp1;
 	}
-	
-	
-	
-	
+
+
+
+
 	// TODO: Change ORDER_NONE to the correct strength.
 	return [code, Blockly.C.ORDER_NONE];
 };
@@ -179,7 +179,7 @@ Blockly.Blocks['to_string'] = {
     this.setOutput(true, "String");
     this.setColour(stringHUE);
  this.setTooltip("");
- this.setHelpUrl("");
+ this.setHelpUrl("http://www.cplusplus.com/reference/string/to_string/");
   }
 };
 
@@ -188,13 +188,13 @@ Blockly.C['to_string'] = function(block) {
 	// TODO: Assemble C into code variable.
 	var code = '';
 	var std = '';
-	
+
 	if(usingSTD === false){
 		std += 'std::';
 	}
-	
+
 	code += std + 'to_string(' + value_name + ')';
-	
+
 	return [code, Blockly.C.ORDER_NONE];
 };
 
@@ -215,11 +215,11 @@ Blockly.C['string_size'] = function(block) {
 	var value_valinp1 = Blockly.C.valueToCode(block, 'valinp1', Blockly.C.ORDER_ATOMIC);
 	// TODO: Assemble C into code variable.
 	var code = '';
-	
+
 	if(value_valinp1.length > 0){
 		code += value_valinp1 + '.size()';
 	}
-	
+
 	return [code, Blockly.C.ORDER_NONE];
 };
 
@@ -244,19 +244,19 @@ Blockly.C['cin_input'] = function(block) {
 	// TODO: Assemble C into code variable.
 	var code = '';
 	var std = '';
-	
+
 	if(usingSTD === false){
 		std = 'std::';
 	}
-	
+
 	code += std + 'cin >> ' + variable_myvardef + '';
-	
+
 	if(value_valinp1.length > 0){
 		code += " >> " + value_valinp1;
 	}
-	
+
 	code += ';\n';
-	
+
 	return code;
 };
 
@@ -279,16 +279,16 @@ Blockly.C['cin_parse'] = function(block) {
 	var value_valinp1 = Blockly.C.valueToCode(block, 'valinp1', Blockly.C.ORDER_ATOMIC);
 	// TODO: Assemble C into code variable.
 	var code = '';
-	
+
 	code += variable_name;
-	
+
 	if(value_valinp1.length > 0){
 		code += " >> " + value_valinp1;
 	}
 	else {
-		
+
 	}
-	
+
 	// TODO: Change ORDER_NONE to the correct strength.
 	return [code, Blockly.C.ORDER_NONE];
 };
@@ -312,14 +312,14 @@ Blockly.C['cin_getline'] = function(block) {
 	// TODO: Assemble C into code variable.
 	var code = '';
 	var std = '';
-	
+
 	if(usingSTD === false){
 		std = 'std::';
 	}
-	
+
 	code += std + 'getline(' + std + 'cin, ' + variable_myvardef + ');\n';
-	
-	
+
+
 	return code;
 };
 
@@ -345,33 +345,33 @@ Blockly.C['string_concatenate'] = function(block) {
 	var code = '';
 	//true is <<, false is +
 	var type = false;
-	
+
 	if( this.getChildren().indexOf("(cout)") !== -1 ){
 		type = true;
 	}
-	
-	
+
+
 	code += '"';
-	
+
 	if(text_inp.length > 0){
 		code += text_inp;
 	}
-	
+
 	code += '"';
-	
+
 	if(value_valinp1.length > 0){
-		
+
 		if(type === false){
 			code += ' + ';
 		}
-		
+
 		if(type === true){
 			code += ' << ';
 		}
-		
+
 		code += value_valinp1;
 	}
-	
+
 	// TODO: Change ORDER_NONE to the correct strength.
 	return [code, Blockly.C.ORDER_NONE];
 };
@@ -388,13 +388,13 @@ Blockly.Blocks['var_concatenate'] = {
 		this.setHelpUrl("");
 		this.tag = '';
 	},
-	
+
 	onchange:function(){
-		
-		
-		
+
+
+
 	}
-	
+
 };
 
 Blockly.C['var_concatenate'] = function(block) {
@@ -404,29 +404,28 @@ Blockly.C['var_concatenate'] = function(block) {
 	var code = '';
 	//true is <<, false is +
 	var type = false;
-	
+
 	if( this.getChildren().indexOf('(cout)') !== -1 || this.getChildren().indexOf('endl') !== -1 ){
 		type = true;
 	}
 	if(variable_vardef.length > 0){
 		code += variable_vardef;
 	}
-	
+
 	if(value_valinp1.length > 0){
-		
+
 		if(type === false){
 			code += ' + ';
 		}
-		
+
 		if(type === true){
 			code += ' << ';
 		}
-		
+
 		code += value_valinp1;
 	}
-	
-	
+
+
 	// TODO: Change ORDER_NONE to the correct strength.
 	return [code, Blockly.C.ORDER_NONE];
 };
-
