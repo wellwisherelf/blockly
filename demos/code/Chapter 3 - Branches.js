@@ -32,22 +32,22 @@ Blockly.C['if_else_conditional'] = function(block) {
 	var value_valinp3 = Blockly.C.valueToCode(block, 'valinp3', Blockly.C.ORDER_ATOMIC);
 	// TODO: Assemble C into code variable.
 	var code = '';
-	
+
 	if(value_valinp1.length < 1){
 		value_valinp1 = 'true';
 	}
-	
+
 	if(value_valinp2.length < 1){
 		value_valinp2 = '2';
 	}
 	if(value_valinp3.length < 1){
 		value_valinp3 = '1';
 	}
-	
+
 	code += '(' + value_valinp1 + ')' + ' ? ' + value_valinp2 + ' : ' + value_valinp3;
-	
-	
-	
+
+
+
 	// TODO: Change ORDER_NONE to the correct strength.
 	return [code, Blockly.C.ORDER_NONE];
 };
@@ -57,7 +57,7 @@ Blockly.Blocks['cctype_isalpha'] = {
     this.appendValueInput("valinp1")
         .setCheck("Char")
         .appendField("isalpha(");
-		
+
     this.appendDummyInput()
         .appendField(")");
     this.setInputsInline(true);
@@ -72,13 +72,13 @@ Blockly.C['cctype_isalpha'] = function(block) {
 	var value_valinp1 = Blockly.C.valueToCode(block, 'valinp1', Blockly.C.ORDER_ATOMIC);
 	// TODO: Assemble C into code variable.
 	var code = '';
-	
+
 	if(value_valinp1.length < 1){
 		value_valinp1 = "'a'"
 	}
-	
+
 	code += "isalpha(" + value_valinp1 + ")";
-	
+
 	// TODO: Change ORDER_NONE to the correct strength.
 	return [code, Blockly.C.ORDER_NONE];
 };
@@ -102,13 +102,13 @@ Blockly.C['cctype_isdigit'] = function(block) {
 	var value_valinp1 = Blockly.C.valueToCode(block, 'valinp1', Blockly.C.ORDER_ATOMIC);
 	// TODO: Assemble C into code variable.
 	var code = '';
-	
+
 	if(value_valinp1.length < 1){
 		value_valinp1 = "'0'";
 	}
-	
+
 	code += "isdigit(" + value_valinp1 + ")";
-	
+
 	// TODO: Change ORDER_NONE to the correct strength.
 	return [code, Blockly.C.ORDER_NONE];
 };
@@ -123,7 +123,7 @@ Blockly.Blocks['cctype_isspace'] = {
     this.setInputsInline(true);
     this.setOutput(true, ["Int", "Boolean"]);
     this.setColour(cctypeHUE);
- this.setTooltip("Checks if the inputted character is a whitespace.");
+ this.setTooltip("Checks if the inputted character is whitespace.");
  this.setHelpUrl("http://www.cplusplus.com/reference/cctype/isspace/");
   }
 };
@@ -132,13 +132,13 @@ Blockly.C['cctype_isspace'] = function(block) {
 	var value_valinp1 = Blockly.C.valueToCode(block, 'valinp1', Blockly.C.ORDER_ATOMIC);
 	// TODO: Assemble C into code variable.
 	var code = '';
-	
+
 	if(value_valinp1.length < 1){
 		value_valinp1 = "' '";
 	}
-	
+
 	code += "isspace(" + value_valinp1 + ")";
-	
+
 	// TODO: Change ORDER_NONE to the correct strength.
 	return [code, Blockly.C.ORDER_NONE];
 };
@@ -162,13 +162,13 @@ Blockly.C['cctype_toupper'] = function(block) {
 	var value_valinp1 = Blockly.C.valueToCode(block, 'valinp1', Blockly.C.ORDER_ATOMIC);
 	// TODO: Assemble C into code variable.
 	var code = '';
-	
+
 	if(value_valinp1.length < 1){
 		value_valinp1 = "'a'";
 	}
-	
+
 	code += "toupper(" + value_valinp1 + ")";
-	
+
 	// TODO: Change ORDER_NONE to the correct strength.
 	return [code, Blockly.C.ORDER_NONE];
 };
@@ -192,13 +192,13 @@ Blockly.C['cctype_tolower'] = function(block) {
 	var value_valinp1 = Blockly.C.valueToCode(block, 'valinp1', Blockly.C.ORDER_ATOMIC);
 	// TODO: Assemble C into code variable.
 	var code = '';
-	
+
 	if(value_valinp1.length < 1){
 		value_valinp1 = "'A'";
 	}
-	
+
 	code += "tolower(" + value_valinp1 + ")";
-	
+
 	// TODO: Change ORDER_NONE to the correct strength.
 	return [code, Blockly.C.ORDER_NONE];
 };
@@ -224,12 +224,12 @@ Blockly.C['switch_statement'] = function(block) {
 	var statements_state1 = Blockly.C.statementToCode(block, 'state1');
 	// TODO: Assemble C into code variable.
 	var code = '';
-	
+
 	code += 'switch(' + value_valinp1 + '){\n';
 	code += statements_state1;
 	code += '}\n';
-	
-	
+
+
 	return code;
 };
 
@@ -254,15 +254,15 @@ Blockly.C['switch_case'] = function(block) {
 	var statements_state1 = Blockly.C.statementToCode(block, 'state1');
 	// TODO: Assemble C into code variable.
 	var code = '';
-	
+
 	if(value_valinp1.length < 1){
 		value_valinp1 = '1';
 	}
-	
+
 	code += 'case ' + value_valinp1 + ':\n';
-	
+
 	code += statements_state1;
-	
+
 	return code;
 };
 
@@ -276,7 +276,7 @@ Blockly.Blocks['switch_default'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(switchHUE);
- this.setTooltip("The default case for the switch case statement. If none of the cases are valid, this will trigger.");
+ this.setTooltip("The default case for the switch case statement. If none of the cases are valid, this will occur instead.");
  this.setHelpUrl("https://www.tutorialspoint.com/cplusplus/cpp_switch_statement.htm");
   }
 };
@@ -285,11 +285,11 @@ Blockly.C['switch_default'] = function(block) {
 	var statements_state1 = Blockly.C.statementToCode(block, 'state1');
 	// TODO: Assemble C into code variable.
 	var code = '';
-	
+
 	code += 'default: \n';
-	
+
 	code += statements_state1;
-	
+
 	return code;
 };
 
@@ -300,7 +300,7 @@ Blockly.Blocks['switch_break'] = {
         .appendField("break");
     this.setPreviousStatement(true, null);
     this.setColour(switchHUE);
- this.setTooltip("A break has two uses:\n1. A break is a statement that is encounted in a loop. Whenever the condition of an if statement is true, it will end the loop, whether or not the loop condition itself has been met or not.\n2.A break is a statement that ends a case in a switch statement.");
+ this.setTooltip("A break has two uses:\n1. A break is a statement that forcefully ends a control loop. It will end the loop, regardless of whether or not the loop condition itself has been met.\n2.A break is a statement that ends a case in a switch statement.");
  this.setHelpUrl("https://www.tutorialspoint.com/cplusplus/cpp_break_statement.htm");
   }
 };
@@ -310,35 +310,3 @@ Blockly.C['switch_break'] = function(block) {
 	var code = 'break;\n';
 	return code;
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

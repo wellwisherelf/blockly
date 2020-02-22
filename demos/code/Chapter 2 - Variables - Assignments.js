@@ -25,26 +25,26 @@ Blockly.C['math_arith'] = function(block) {
 	var dropdown_math_parenth = this.getField('math_parenth').getText();
 	// TODO: Assemble C into code variable.
 	var code = '';
-	
+
 	if(dropdown_math_parenth == 'yes'){
 		code += '( ';
 	}
-	
+
 	if(value_valinp1.length < 1){
 		value_valinp1 = 0;
 	}
-	
+
 	if(value_valinp2.length < 1){
 		value_valinp2 = 0;
 	}
-	
+
 	code += value_valinp1 + ' ' + dropdown_arith_op + ' ' + value_valinp2;
-	
+
 	if(dropdown_math_parenth == 'yes'){
 		code += ' )';
 	}
-	
-	
+
+
 	return [code, Blockly.C.ORDER_NONE];
 };
 
@@ -65,14 +65,14 @@ Blockly.C['math_unary'] = function(block) {
 	var value_valinp1 = Blockly.C.valueToCode(block, 'valinp1', Blockly.C.ORDER_ATOMIC);
 	// TODO: Assemble C into code variable.
 	var code = '-';
-	
+
 	if(value_valinp1.length > 0){
 		code += value_valinp1;
 	}
 	else {
 		code += '1';
 	}
-	
+
 	// TODO: Change ORDER_NONE to the correct strength.
 	return [code, Blockly.C.ORDER_NONE];
 };
@@ -96,17 +96,17 @@ Blockly.Blocks['math_sqrt'] = {
 Blockly.C['math_sqrt'] = function(block) {
 	var value_name = Blockly.C.valueToCode(block, 'NAME', Blockly.C.ORDER_ATOMIC);
 	// TODO: Assemble C into code variable.
-	
+
 	var code = '';
-	
+
 	if(value_name.length > 0){
 		code = 'sqrt(' + value_name + ')';
 	}
 	else {
 		code = 'sqrt(' + '4)';
 	}
-	
-	
+
+
 	// TODO: Change ORDER_NONE to the correct strength.
 	return [code, Blockly.C.ORDER_NONE];
 };
@@ -132,17 +132,17 @@ Blockly.C['number_rand'] = function(block) {
 	var value_name1 = Blockly.C.valueToCode(block, 'NAME1', Blockly.C.ORDER_ATOMIC);
 	var value_name2 = Blockly.C.valueToCode(block, 'NAME2', Blockly.C.ORDER_ATOMIC);
 	// TODO: Assemble C into code variable.
-	
+
 	var binInp1 = '';
 	var binInp2 = '';
-	
+
 	if(value_name1.length < 1){ binInp1 = 10; }
 	else {binInp1 = value_name1; }
-	if(value_name2.length < 1){ binInp2 = 1; }	
+	if(value_name2.length < 1){ binInp2 = 1; }
 	else {binInp2 = value_name2; }
-	
+
   	var code = 'rand() % ' + binInp1 + ' + ' + binInp2;
-	
+
 	// TODO: Change ORDER_NONE to the correct strength.
 	return [code, Blockly.C.ORDER_NONE];
 };
@@ -167,16 +167,16 @@ Blockly.C['number_srand'] = function(block) {
 	var value_name = Blockly.C.valueToCode(block, 'NAME', Blockly.C.ORDER_ATOMIC);
 	// TODO: Assemble C into code variable.
 	var code = '';
-	
+
 	if(value_name.length > 0){
 		code += 'srand(' + value_name + ')';
-	} 
+	}
 	else {
 		code += 'srand(1)';
 	}
-	
+
 	code += ';\n';
-	
+
 	return code;
 };
 
@@ -199,14 +199,14 @@ Blockly.C['time_time'] = function(block) {
 	var value_name = Blockly.C.valueToCode(block, 'NAME', Blockly.C.ORDER_ATOMIC);
 	// TODO: Assemble C into code variable.
 	var code = '';
-	
+
 	if(value_name.length > 0){
 		code = 'time(' + value_length + ')';
 	}
 	else {
 		code = 'time(NULL)';
 	}
-	
+
 	return [code, Blockly.C.ORDER_ATOMIC];
 };
 
@@ -230,9 +230,9 @@ Blockly.C['math_mod'] = function(block) {
 	var value_name2 = Blockly.C.valueToCode(block, 'valinp2', Blockly.C.ORDER_ATOMIC);
 	// TODO: Assemble C into code variable.
 	var code = '';
-	
+
 	code += value_name1 + ' % ' + value_name2;
-	
+
 	// TODO: Change ORDER_NONE to the correct strength.
 	return [code, Blockly.C.ORDER_NONE];
 };
@@ -256,10 +256,10 @@ Blockly.C['math_fabs'] = function(block) {
 	var value_valinp1 = Blockly.C.valueToCode(block, 'valinp1', Blockly.C.ORDER_ATOMIC);
 	// TODO: Assemble C into code variable.
 	var code = '';
-	
+
 	code += 'fabs(' + value_valinp1 + ')';
-	
-	
+
+
 	return [code, Blockly.C.ORDER_NONE];
 };
 
@@ -286,9 +286,9 @@ Blockly.C['math_pow'] = function(block) {
 	var value_valinp2 = Blockly.C.valueToCode(block, 'valinp2', Blockly.C.ORDER_ATOMIC);
 	// TODO: Assemble C into code variable.
 	var code = '';
-	
+
 	code += 'pow(' + value_valinp1 + ', ' + value_valinp2 + ')';
-	
+
 	// TODO: Change ORDER_NONE to the correct strength.
 	return [code, Blockly.C.ORDER_NONE];
 };
@@ -314,10 +314,10 @@ Blockly.C['static_cast'] = function(block) {
 	var value_valinp1 = Blockly.C.valueToCode(block, 'valinp1', Blockly.C.ORDER_ATOMIC);
 	// TODO: Assemble C into code variable.
 	var code = '';
-	
+
 	code += 'static_cast<' + dropdown_mytype + '>(' + value_valinp1 + ')';
-	
-	
+
+
 	// TODO: Change ORDER_NONE to the correct strength.
 	return [code, Blockly.C.ORDER_NONE];
 };
@@ -339,9 +339,9 @@ Blockly.C['math_pi'] = function(block) {
 	var variable_valinp1 = Blockly.C.variableDB_.getName(block.getFieldValue('valinp1'), Blockly.Variables.NAME_TYPE);
 	// TODO: Assemble C into code variable.
 	var code = '';
-	
+
 	code += 'const double ' + variable_valinp1 + '  = 3.14159265;\n';
-	
+
 	return code;
 };
 
@@ -363,13 +363,9 @@ Blockly.C['math_scinum'] = function(block) {
 	var number_num2 = block.getFieldValue('num2');
 	// TODO: Assemble C into code variable.
 	var code = '';
-	
+
 	code += number_num1 + 'e' + number_num2;
-	
+
 	// TODO: Change ORDER_NONE to the correct strength.
 	return [code, Blockly.C.ORDER_NONE];
 };
-
-
-
-

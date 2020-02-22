@@ -38,7 +38,7 @@ Blockly.Blocks['output_cout'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(coutHUE);
- this.setTooltip("Outputs basically anything to the console in a very controlable manner. \nRequires - <iostream>\n");
+ this.setTooltip("Outputs basically anything to the console in a very controlable manner. \nRequires - <iostream>");
  this.setHelpUrl("http://www.cplusplus.com/doc/tutorial/basic_io/");
   }
 };
@@ -178,7 +178,7 @@ Blockly.Blocks['to_string'] = {
         .appendField("to_string");
     this.setOutput(true, "String");
     this.setColour(stringHUE);
- this.setTooltip("");
+ this.setTooltip("Turns any number type into a string. \nAccepted number types: int, long, float, double, unsigned\nRequires - <string>\nNote - to_string can accept characters, but it is not an intendend input.\n(more to come) ");
  this.setHelpUrl("http://www.cplusplus.com/reference/string/to_string/");
   }
 };
@@ -233,7 +233,7 @@ Blockly.Blocks['cin_input'] = {
 		this.setPreviousStatement(true, null);
 		this.setNextStatement(true, null);
 		this.setColour(cinHUE);
-		this.setTooltip("");
+		this.setTooltip("Grabs input from the console.");
 		this.setHelpUrl("http://www.cplusplus.com/reference/iostream/cin/");
 	}
 };
@@ -302,7 +302,7 @@ Blockly.Blocks['cin_getline'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(cinHUE);
- this.setTooltip("");
+ this.setTooltip("Grabs an entire line as a string.");
  this.setHelpUrl("http://www.cplusplus.com/reference/string/string/getline/");
   }
 };

@@ -10,7 +10,7 @@ Blockly.Blocks['loop_whiledo'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(135);
- this.setTooltip("A while loop will run the code as long as the condition is true.");
+ this.setTooltip("A while loop will run code as long as the set condition is true.");
  this.setHelpUrl("https://www.tutorialspoint.com/cplusplus/cpp_while_loop.htm");
   }
 };
@@ -21,33 +21,33 @@ Blockly.C['loop_whiledo'] = function(block) {
 	var statements_statement_input = Blockly.C.statementToCode(block, 'statement_input');
 	// TODO: Assemble C into code variable.
 	var code = '';
-	
+
 	code += 'while(';
-	
-	if(dropdown_myloopvar == 'until'){ 
+
+	if(dropdown_myloopvar == 'until'){
 		code += '!';
 	}
-	
-	
+
+
 	if(value_valinp.length > 0){
 		code += value_valinp;
 	}
 	else {
 		code += 'true';
 	}
-	
+
 	code += '){\n';
-	
+
 	if(statements_statement_input.length > 0){
 		code += statements_statement_input;
 	}
 	else {
-		
+
 	}
-	
-	
+
+
 	code += '}\n';
-	
+
 	return code;
 };
 
@@ -78,40 +78,40 @@ Blockly.Blocks['loop_for'] = {
 		this.setTooltip("A for loop is a loop that allows you to loop through a code a specific number of times.");
 		this.setHelpUrl("https://www.tutorialspoint.com/cplusplus/cpp_for_loop.htm");
 	},
-	
+
 	onchange: function(){
 		var value_valinp1 = Blockly.C.valueToCode(block, 'valinp1', Blockly.C.ORDER_ATOMIC);
 		var value_valinp2 = Blockly.C.valueToCode(block, 'valinp2', Blockly.C.ORDER_ATOMIC);
 		var dropdown_myloopch = this.getField('myLoopCh').getText();
-		
+
 		var TT = '';
 		TT = 'This loop will loop from ' + value_valinp1 + ' to ' + value_valinp2 + ' and will ';
-		
+
 		if(dropdown_myloopch === '++'){
 			TT += ' increase by 1 each iteration.';
 		}
 		if(dropdown_myloopch === '--'){
 			TT += ' decrease by 1 each iteration.';
 		}
-		
+
 		TT += '\n';
-		
+
 		this.setTooltip(TT);
-		
+
 	}
-	
+
 };
 
 Blockly.C['loop_for'] = function(block) {
 	var dropdown_myloopvartype = this.getField('myLoopVarType').getText();
 	var value_valinp1 = Blockly.C.valueToCode(block, 'valinp1', Blockly.C.ORDER_ATOMIC);
-	
+
 	var variable_myloopvar1 = Blockly.C.variableDB_.getName(block.getFieldValue('myLoopVar1'), Blockly.Variables.NAME_TYPE);
-	
+
 	var variable_myloopvar2 = Blockly.C.variableDB_.getName(block.getFieldValue('myLoopVar2'), Blockly.Variables.NAME_TYPE);
-	
+
 	var variable_myloopvar3 = Blockly.C.variableDB_.getName(block.getFieldValue('myLoopVar3'), Blockly.Variables.NAME_TYPE);
-	
+
 	var dropdown_myloopvarcomp = this.getField('myLoopVarComp').getText();
 	var value_valinp2 = Blockly.C.valueToCode(block, 'valinp2', Blockly.C.ORDER_ATOMIC);
 	var dropdown_myloopch = this.getField('myLoopCh').getText();
@@ -119,15 +119,15 @@ Blockly.C['loop_for'] = function(block) {
  	var statements_stateinp1 = Blockly.C.statementToCode(block, 'stateinp1');
 	// TODO: Assemble C into code variable.
 	var code = '';
-	
+
 	code += "for(" + dropdown_myloopvartype + " " + variable_myloopvar1 + " = " + value_valinp1 + '; '
 	+ variable_myloopvar2 + " " + dropdown_myloopvarcomp + " " + value_valinp2 + '; '
 	+ variable_myloopvar3 + dropdown_myloopch;
 
 	code += '){\n';
-	
+
 	code += statements_stateinp1;
-	
+
 	code += '}\n';
 
 
@@ -159,15 +159,15 @@ Blockly.C['loop_range'] = function(block) {
 	var statements_name = Blockly.C.statementToCode(block, 'NAME');
 	// TODO: Assemble C into code variable.
 	var code = '';
-	
+
 	code += "for(auto " + variable_myvar + " : " + variable_myarrvar + ")";
- 	
+
 	code += "{\n";
-	
+
 	code += statements_name;
 
 	code += "}\n";
-	
+
 	return code;
 };
 
@@ -194,26 +194,26 @@ Blockly.C['loop_dowhile'] = function(block) {
 	var value_valinp1 = Blockly.C.valueToCode(block, 'valinp1', Blockly.C.ORDER_ATOMIC);
 	// TODO: Assemble C into code variable.
 	var code = '';
-	
+
 	code += "do {\n";
 
 	code += statements_stateinp1;
-	
+
 	code += "\n} while(";
-	
+
 	if(dropdown_myloopvar === "until"){
 		code += "!";
 	}
-	
+
 	if(value_valinp1.length < 1){
 		code += "true";
 	}
 	else {
 		code += value_valinp1;
 	}
-	
+
 	code += ");\n";
-	
+
 	return code;
 };
 
@@ -223,7 +223,7 @@ Blockly.Blocks['loop_break'] = {
         .appendField("break");
     this.setPreviousStatement(true, null);
     this.setColour(135);
- this.setTooltip("A break has two uses:\n1. A break is a statement that is encounted in a loop. Whenever the condition of an if statement is true, it will end the loop, whether or not the loop condition itself has been met or not.\n2.A break is a statement that ends a case in a switch statement.");
+ this.setTooltip("A break has two uses:\n1. A break is a statement that forcefully ends a control loop. It will end the loop, regardless of whether or not the loop condition itself has been met.\n2.A break is a statement that ends a case in a switch statement.");
  this.setHelpUrl("https://www.tutorialspoint.com/cplusplus/cpp_break_statement.htm");
   }
 };
@@ -233,17 +233,3 @@ Blockly.C['loop_break'] = function(block) {
 	var code = 'break;\n';
 	return code;
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
