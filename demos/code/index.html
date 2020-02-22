@@ -18,6 +18,9 @@
   <script src="code.js"></script>
   
   <script src="FileSaver.js" ></script>
+  <script src="filereader.js" ></script>
+  <script src="Changelog.js" ></script>
+  
   <script src="Include.js" ></script>
   <script src="Testing.js" ></script>
   <script src="Main Function.js" ></script>
@@ -33,7 +36,6 @@
   
   
   
-  <script src="Changelog.js" ></script>
   
   
 </head>
@@ -45,19 +47,21 @@
           <span id="title"></span>
         </h1>
 		<h1>
-		 <span id = "version">Beta 1.0</span>
+		 <span id = "version">Beta 1.1</span>
 		</h1>
 		
-		<!--
-		-->
-		<p align="left">	
-			<button onclick="downloadCode()">Download Code</button>
-		</p>
-		<p align="left">	
-			<button onclick="downloadXML()">Save</button>
-		</p>
 		<p align="left">	
 			<button onclick="updateLog()">Version Update Log</button>
+		</p>
+		
+		<p align="left">	
+			<button onclick="downloadCode()">Download C++ Code</button>
+		</p>
+		
+		<p align="left">	
+			<button onclick = "downloadXML()" title = "Save your work.">Save</button>
+			
+			<input type = "file" onchange = "readFile(this)" title = "Load a blockly save into the program."></input>
 		</p>
 		
 		
