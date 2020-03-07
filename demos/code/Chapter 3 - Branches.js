@@ -236,7 +236,7 @@ Blockly.C['switch_statement'] = function(block) {
 Blockly.Blocks['switch_case'] = {
   init: function() {
     this.appendValueInput("valinp1")
-        .setCheck(["Int", "Size_t", "Char", "Number"])
+        .setCheck(["Int", "Size_t", "Char", "Number", "Boolean"])
         .appendField("switch case:");
     this.appendStatementInput("state1")
         .setCheck(null);

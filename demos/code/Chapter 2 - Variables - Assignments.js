@@ -115,10 +115,10 @@ Blockly.C['math_sqrt'] = function(block) {
 Blockly.Blocks['number_rand'] = {
   init: function() {
     this.appendValueInput("NAME1")
-        .setCheck("Number",)
+        .setCheck(["Int", "Size_t", "Number"])
         .appendField("rand() %");
     this.appendValueInput("NAME2")
-        .setCheck("Number")
+        .setCheck(["Int", "Size_t", "Number"])
         .appendField("+");
     this.appendDummyInput();
     this.setOutput(true, ["Number", "Int"]);
@@ -207,20 +207,20 @@ Blockly.C['time_time'] = function(block) {
 		code = 'time(NULL)';
 	}
 
-	return [code, Blockly.C.ORDER_ATOMIC];
+	return [code, Blockly.C.ORDER_NONE];
 };
 
 Blockly.Blocks['math_mod'] = {
   init: function() {
     this.appendValueInput("valinp1")
-        .setCheck("Number");
+        .setCheck(["Int", "Size_t", "Number"]);
     this.appendValueInput("valinp2")
-        .setCheck("Number")
+        .setCheck(["Int", "Size_t", "Number"])
         .appendField("%");
     this.setInputsInline(true);
-    this.setOutput(true, null);
+    this.setOutput(true, "Int");
     this.setColour(mathHUE);
- this.setTooltip("Returns the remainder of the first number by the second number.\nReturns - Number\nRequires - <cmath>\nInput(s) - Number");
+ this.setTooltip("Returns the remainder of the first number by the second number.\nReturns - Int\nRequires - <cmath>\nInput(s) - Int");
  this.setHelpUrl("https://www.cprogramming.com/tutorial/modulus.html");
   }
 };
@@ -266,15 +266,15 @@ Blockly.C['math_fabs'] = function(block) {
 Blockly.Blocks['math_pow'] = {
   init: function() {
     this.appendValueInput("valinp1")
-        .setCheck("Number")
+        .setCheck(["Int", "Size_t", "Double", "Number"])
         .appendField("pow(");
     this.appendValueInput("valinp2")
-        .setCheck("Number")
+        .setCheck(["Int", "Size_t", "Double", "Number"])
         .appendField(",");
     this.appendDummyInput()
         .appendField(")");
     this.setInputsInline(true);
-    this.setOutput(true, "Number");
+    this.setOutput(true, ["Int", "Size_t", "Double", "Number"]);
     this.setColour(mathHUE);
  this.setTooltip("Raise the first number to the power of the second number.\nReturns - Number\nRequires - <cmath>\nInput(s) - Number");
  this.setHelpUrl("http://www.cplusplus.com/reference/cmath/pow/");
@@ -294,19 +294,25 @@ Blockly.C['math_pow'] = function(block) {
 };
 
 Blockly.Blocks['static_cast'] = {
-  init: function() {
-    this.appendValueInput("valinp1")
-        .setCheck("Number")
-        .appendField("static_cast<")
-        .appendField(new Blockly.FieldDropdown([["int","myTypeInt"], ["double","myTypeDouble"], ["float","myTypeFloat"], ["size_t","myTypeSize_t"]]), "myType")
-        .appendField(">(");
-    this.appendDummyInput()
-        .appendField(")");
-    this.setOutput(true, "Number");
-    this.setColour(mathHUE);
- this.setTooltip("Changes the type of the inputted number.\nReturns - static_cast type\nInput - Number");
- this.setHelpUrl("http://www.cplusplus.com/doc/tutorial/typecasting/");
-  }
+	init: function() {
+	this.appendValueInput("valinp1")
+		.appendField("static_cast<")
+		.appendField(new Blockly.FieldDropdown([["int","myTypeInt"], ["double","myTypeDouble"], ["float","myTypeFloat"], ["size_t","myTypeSize_t"]]), "myType")
+		.appendField(">(")
+		.setCheck(["Int", "Size_t", "Double", "Float", "Number", "Variable"]);
+	this.appendDummyInput()
+		.appendField(")");
+	this.setOutput(true, null);
+	this.setColour(mathHUE);
+	this.setTooltip("Changes the type of the inputted number.\nReturns - static_cast type\nInput - Number");
+	this.setHelpUrl("http://www.cplusplus.com/doc/tutorial/typecasting/");
+	},
+	
+	onchange: function(){
+		
+		this.setOutput(true, typeConv(this.getField('myType').getText()));
+		
+	}
 };
 
 Blockly.C['static_cast'] = function(block) {
@@ -369,3 +375,42 @@ Blockly.C['math_scinum'] = function(block) {
 	// TODO: Change ORDER_NONE to the correct strength.
 	return [code, Blockly.C.ORDER_NONE];
 };
+
+Blockly.Blocks['math_setprecision'] = {
+  init: function() {
+    this.appendValueInput("valinp1")
+        .setCheck("Number")
+        .appendField("fixed, setprecision(")
+        .appendField(new Blockly.FieldNumber(1, 0, Infinity, 1), "numinp1")
+        .appendField(")");
+    this.setColour(mathHUE);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.C['math_setprecision'] = function(block) {
+	var number_numinp1 = block.getFieldValue('numinp1');
+	var value_valinp1 = Blockly.C.valueToCode(block, 'valinp1', Blockly.C.ORDER_ATOMIC);
+	// TODO: Assemble C into code variable.
+	var code = '';
+	var std = 'std::';
+	
+	if(usingSTD === true){
+		
+	}
+	
+	
+	
+	return code;
+};
+
+
+
+
+
+
+
+

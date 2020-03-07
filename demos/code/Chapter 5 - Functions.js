@@ -19,7 +19,7 @@ Blockly.Blocks['user_function'] = {
 	var name = 'function';
 
 
-}
+	}
 
 };
 

@@ -13,7 +13,7 @@ Blockly.C['pointer_null'] = function(block) {
   // TODO: Assemble C into code variable.
   var code = 'NULL';
   
-  return [code,Blockly.C.ORDER_ATOMIC];
+  return [code, Blockly.C.ORDER_NONE];
 };
 
 Blockly.Blocks['pointer_ref'] = {

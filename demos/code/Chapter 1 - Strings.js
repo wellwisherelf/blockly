@@ -14,7 +14,7 @@ Blockly.Blocks['printf'] = {
 		this.setPreviousStatement(true, null);
 		this.setNextStatement(true, null);
 		this.setColour(stringHUE);
-		this.setTooltip("A standard string output.\nRequires - <iostream>\nNote - Printf is used primarily as a simple string output. More complex output requires cout.");
+		this.setTooltip("A standard string output.\nRequires - <iostream> or <string>\nNote - Printf is used primarily as a simple string output. More complex output requires cout.");
 		this.setHelpUrl("http://www.cplusplus.com/reference/cstdio/printf/");
 	}
 };
@@ -33,7 +33,7 @@ Blockly.C['printf'] = function(block) {
 Blockly.Blocks['output_cout'] = {
   init: function() {
     this.appendValueInput("NAME")
-        .setCheck(["Number", "String", "Cout"])
+        .setCheck(null)
         .appendField("cout <<");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -74,7 +74,7 @@ Blockly.C['output_cout'] = function(block) {
 Blockly.Blocks['cout_output'] = {
   init: function() {
     this.appendValueInput("NAME")
-        .setCheck(["Number", "String", "Cout"])
+        .setCheck(null)
 		.appendField("(cout)")
         .appendField(new Blockly.FieldTextInput("input"), "inp");
     this.setOutput(true, null);
@@ -104,7 +104,7 @@ Blockly.Blocks['cout_endl'] = {
   init: function() {
     this.appendValueInput("valinp1")
         .appendField("(cout) endl")
-        .setCheck(["Number", "String", "Cout"])
+        .setCheck(null)
     this.setOutput(true, "Cout");
     this.setColour(coutHUE);
  this.setTooltip("Moves the output of cout to a new line.");
@@ -178,7 +178,7 @@ Blockly.Blocks['to_string'] = {
         .appendField("to_string");
     this.setOutput(true, "String");
     this.setColour(stringHUE);
- this.setTooltip("Turns any number type into a string. \nAccepted number types: int, long, float, double, unsigned\nRequires - <string>\nNote - to_string can accept characters, but it is not an intendend input.\n(more to come) ");
+ this.setTooltip("Turns any number type into a string. \nAccepted number types: int, long, float, double, unsigned\nRequires - <string>\nNote - to_string can accept characters, but it is not an intended input.\n(more to come) ");
  this.setHelpUrl("http://www.cplusplus.com/reference/string/to_string/");
   }
 };
@@ -265,7 +265,7 @@ Blockly.Blocks['cin_parse'] = {
 	init: function() {
 		this.appendValueInput("valinp1")
 			.setCheck("Cin")
-			.appendField("(cin parse)")
+			.appendField("(cin stream)")
 			.appendField(new Blockly.FieldVariable("myVar"), "myVarDef");
 		this.setOutput(true, "Cin");
 		this.setColour(cinHUE);

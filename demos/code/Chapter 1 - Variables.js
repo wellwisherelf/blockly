@@ -5,7 +5,6 @@ var variableHUE = 330;
 function typeConv(type){
 	//Replaces the first letter to capitalize, used for fielddropdown types
 	return type.charAt(0).toUpperCase() + type.slice(1);
-	
 }
 
 
@@ -16,24 +15,18 @@ Blockly.Blocks['variable_declare'] = {
 		
 		this.appendValueInput("NAME")
 			.appendField("Declare: ")
-			.appendField(new Blockly.FieldDropdown([["int","myVarTypeInt"], ["size_t","myVarTypeSize_t"], ["double","myVarTypeDouble"], ["float","myVarTypeFloat"], ["char","myVarTypeChar"], ["string","myVarTypeString"], ["bool","myVarTypeBool"], ["auto","myVarTypeAuto"]]), "myVarType")
+			.appendField(new Blockly.FieldDropdown([["int","myVarTypeInt"], ["size_t","myVarTypeSize_t"], ["double","myVarTypeDouble"], ["float","myVarTypeFloat"], ["char","myVarTypeChar"], ["string","myVarTypeString"], ["bool","myVarTypeBool"], ["auto","myVarTypeAuto"], ["short","myVarTypeShort"], ["long", "myVarTypeLong"], ["long long", "myVarTypeLongLong"]]), "myVarType")
 			.appendField(new Blockly.FieldVariable("myVar"), "myVarDec")
 			.setCheck(["Int", "Size_t", "Double", "Float", "Char", "String", "Bool", "Auto", "Variable"]);
 			
-			this.appendDummyInput()
-				.appendField("constant?")
-				.appendField(new Blockly.FieldDropdown([["false","consFalse"], ["true","consTrue"] ]), "consType");
 				
-			this.appendDummyInput()
-				.appendField("numeric range?")
-				.appendField(new Blockly.FieldDropdown([["N/A", "numNone"], ["short","numShort"], ["long","numLong"], ["long long", "numLongLong"] ]), "numType");
 				
 				
 			this.setInputsInline(false);
 			this.setPreviousStatement(true, null);
 		this.setNextStatement(true, null);
 		this.setColour(variableHUE);
-		this.setTooltip("A standard variable declaration.\n\nConstant - Determines whether the variable is mutable (non constant), or if it cannot be changed after it has been declared (constant).\n\nNumeric Range - Determines the minimum and maximum values for type numbers. Size of numeric types:\nsize_t - 0 to 65535\nshort int - -32,768 to 32,767\nlong int- -2,147,483,648 to 2,147,483,647\nlong long int - -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807\nfloat - ±3.4x10^38\nlong float - ±1.7x10^308\ndouble - ±1.7x10^308\nlong double - ±1.7x10^308");
+		this.setTooltip("A standard variable declaration.\n\nConstant - Determines whether the variable is mutable (non constant), or if it cannot be changed after it has been declared (constant).");
 		this.setHelpUrl("http://www.cplusplus.com/doc/tutorial/variables/");
 		
 		this.tag = '';
@@ -56,37 +49,12 @@ Blockly.C['variable_declare'] = function(block) {
 	
 	var value_name = Blockly.C.valueToCode(block, 'NAME', Blockly.C.ORDER_ATOMIC);
 	
-	var dropdown_cons = this.getField('consType').getText();
-	
-	var dropdown_numType = this.getField('numType').getText();
-	
 	// TODO: Assemble C into code variable.
 	
 	var code = '';
-	var error = '//WRONG TYPE ERROR DECLARATION\n';
-	var errorCheck = false;
-	var initType = '';
-	var initBlock = false;
-	
 	
 	//Numeric Types
-	if(dropdown_myvartype === "int" && dropdown_numType !== "N/A"){
-		code += dropdown_numType + ' ';
-	} 
-	else 
-	if((dropdown_myvartype === "double" || dropdown_myvartype === "float") && dropdown_numType === "long"){
-		code += dropdown_numType + ' ';
-	}
-	else {
-		
-		//this.setWarningText("Variable declaration error:\nnumeric type: " + dropdown_numType + " does not work with data type: " + dropdown_myvartype);
-	}
-	//Numeric Types
 	
-	//If constant is true, generate "const"
-	if(dropdown_cons === 'true'){
-		code += 'const ';
-	}
 	
 	//If variable type is auto but is uninitialized
 	if(dropdown_myvartype === 'auto' && value_name.length < 1){
@@ -111,33 +79,6 @@ Blockly.C['variable_declare'] = function(block) {
 		}
 	}
 	
-	
-	// Constant checking if no initialization occurs
-	if(dropdown_cons === 'true' && value_name.length < 1){
-		
-		if(dropdown_myvartype === 'int'){
-			code += ' = 1';
-		}
-		if(dropdown_myvartype === 'size_t'){
-			code += ' = 0';
-		}
-		if(dropdown_myvartype === 'double'){
-			code += ' = 0.0';
-		}
-		if(dropdown_myvartype === 'float'){
-			code += ' = 0.0';
-		}
-		if(dropdown_myvartype === 'char'){
-			code += ' = \'a\'';
-		}
-		if(dropdown_myvartype === 'string'){
-			code += ' = "myString"';
-		}
-		if(dropdown_myvartype === 'bool'){
-			code += ' = true';
-		}
-		
-	}
 	
 	
 	code += ';\n'
@@ -267,8 +208,15 @@ Blockly.C['var_initialization'] = function(block) {
 		
 		code += text_text1;
 		
+		//If data type is Double or Float, and is a whole number
 		if( ( dropdown_drop1 == 'Double' || dropdown_drop1 == 'Float') && text_text1 % 1 === 0){
-			code += ".0";
+			
+			//If user only inputs a 2, it will become a 2.0
+			//If a user inputs a 2.0, it will only output a 2.0
+			if(text_text1.indexOf(".0") === -1){
+				code += ".0";
+			}
+			
 		}
 	}
 		
