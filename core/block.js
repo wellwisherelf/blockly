@@ -134,6 +134,36 @@ Blockly.Block = function(workspace, prototypeName, opt_id) {
   this.comment = null;
 
   /**
+   * A string representing the name of the block.
+   * @type {string|Blockly.blockName}
+   * @current March 2020
+   */
+  this.blockName = opt_id;
+
+  /**
+   * Boolean checks to see if this is a
+   * variable, array, function, or class
+   * it is assumed each block will be a
+   * variable, but can be changed
+   * @type {boolean|Blockly.dataStructure}
+   * @current March 2020
+   */
+   this.dataStructure = {
+	   isVar: true,
+	   isArr: false,
+	   isFunc: false,
+	   isClass: false
+   };
+   
+
+  /**
+   * The type of the block
+   * @type {boolean|Blockly.typeName}
+   * @current March 2020
+   */
+   this.typeName = '';
+
+  /**
    * A model of the comment attached to this block.
    * @type {!Blockly.Block.CommentModel}
    * @package
