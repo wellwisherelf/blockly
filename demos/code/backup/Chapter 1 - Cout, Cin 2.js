@@ -42,7 +42,7 @@ Blockly.Blocks['output_cout'] = {
 		var containerBlock = workspace.newBlock('cout_stream_mutator');
 		containerBlock.initSvg();
 
-		var connection = containerBlock.getInputTargetBlock('STACK');
+		var connection = containerBlock.getInput('STACK').connection;
 		for(var i = 1; i <= this.coutStreamCount_; ++i){
 			var add = workspace.newBlock('cout_stream_add');
 			add.initSvg();
@@ -75,7 +75,8 @@ Blockly.Blocks['output_cout'] = {
 				default:
 					throw 'Unknown block type.';
 			}
-			clauseBlock = clauseBlock.nextConnection && clauseBlock.nextConnection.targetBlock();
+			clauseBlock = clauseBlock.nextConnection 
+			&& clauseBlock.nextConnection.targetBlock();
 		}
 
 
@@ -88,13 +89,14 @@ Blockly.Blocks['output_cout'] = {
 			switch(clauseBlock.type){
 				case 'cout_stream_add':
 					var inputPrint = this.getInput('valinp' + i);
-					clauseBlock.valueCOnnection_ = inputPrint && inputPrint.connection.targetConnection;
+					clauseBlock.valueConnection_ = inputPrint && inputPrint.connection.targetConnection;
 					clauseBlock.statementConnection_ = i++;
 					break;
 				default:
 					throw 'Unknown block type.';
 			}
-			clauseBlock.clauseBlock.nextConnection && clauseBlock.nextConnection.targetBlock();
+			clauseBlock = clauseBlock.nextConnection && 
+			clauseBlock.nextConnection.targetBlock();
 		}
 	},
 

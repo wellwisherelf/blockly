@@ -1,7 +1,6 @@
 
 var stringHUE = 160;
 
-var cinHUE = 50;
 
 Blockly.Blocks['printf'] = {
 	init: function() {
@@ -76,106 +75,6 @@ Blockly.C['string_size'] = function(block) {
 	}
 
 	return [code, Blockly.C.ORDER_NONE];
-};
-
-
-Blockly.Blocks['cin_input'] = {
-	init: function() {
-		this.appendValueInput("valinp1")
-			.setCheck("Cin")
-			.appendField("cin >>")
-			.appendField(new Blockly.FieldVariable("myVar"), "myVarDef");
-		this.setPreviousStatement(true, null);
-		this.setNextStatement(true, null);
-		this.setColour(cinHUE);
-		this.setTooltip("Grabs input from the console.");
-		this.setHelpUrl("http://www.cplusplus.com/reference/iostream/cin/");
-	}
-};
-
-Blockly.C['cin_input'] = function(block) {
-	var variable_myvardef = Blockly.C.variableDB_.getName(block.getFieldValue('myVarDef'), Blockly.Variables.NAME_TYPE);
-	var value_valinp1 = Blockly.C.valueToCode(block, 'valinp1', Blockly.C.ORDER_ATOMIC);
-	// TODO: Assemble C into code variable.
-	var code = '';
-	var std = '';
-
-	if(usingSTD === false){
-		std = 'std::';
-	}
-
-	code += std + 'cin >> ' + variable_myvardef + '';
-
-	if(value_valinp1.length > 0){
-		code += " >> " + value_valinp1;
-	}
-
-	code += ';\n';
-
-	return code;
-};
-
-
-Blockly.Blocks['cin_parse'] = {
-	init: function() {
-		this.appendValueInput("valinp1")
-			.setCheck("Cin")
-			.appendField("(cin stream)")
-			.appendField(new Blockly.FieldVariable("myVar"), "myVarDef");
-		this.setOutput(true, "Cin");
-		this.setColour(cinHUE);
-		this.setTooltip("");
-		this.setHelpUrl("");
-	}
-};
-
-Blockly.C['cin_parse'] = function(block) {
-	var variable_name = Blockly.C.variableDB_.getName(block.getFieldValue('myVarDef'), Blockly.Variables.NAME_TYPE);
-	var value_valinp1 = Blockly.C.valueToCode(block, 'valinp1', Blockly.C.ORDER_ATOMIC);
-	// TODO: Assemble C into code variable.
-	var code = '';
-
-	code += variable_name;
-
-	if(value_valinp1.length > 0){
-		code += " >> " + value_valinp1;
-	}
-	else {
-
-	}
-
-	// TODO: Change ORDER_NONE to the correct strength.
-	return [code, Blockly.C.ORDER_NONE];
-};
-
-Blockly.Blocks['cin_getline'] = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField("getline(cin, ")
-        .appendField(new Blockly.FieldVariable("myVar"), "myVarDef")
-        .appendField(")");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(cinHUE);
- this.setTooltip("Grabs an entire line as a string.");
- this.setHelpUrl("http://www.cplusplus.com/reference/string/string/getline/");
-  }
-};
-
-Blockly.C['cin_getline'] = function(block) {
-	var variable_myvardef = Blockly.C.variableDB_.getName(block.getFieldValue('myVarDef'), Blockly.Variables.NAME_TYPE);
-	// TODO: Assemble C into code variable.
-	var code = '';
-	var std = '';
-
-	if(usingSTD === false){
-		std = 'std::';
-	}
-
-	code += std + 'getline(' + std + 'cin, ' + variable_myvardef + ');\n';
-
-
-	return code;
 };
 
 

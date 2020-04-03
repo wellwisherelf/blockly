@@ -19,29 +19,107 @@ Blockly.Blocks['user_function'] = {
 		this.typeName;
 		this.setMutator(new Blockly.Mutator(['func_parameters']));
 
+		this.setDataStr('isFunc', true);
+
+
+
 		//Counter to count the
 		//default parameter names
-		this.paramCount = 0;
+		this.paramCount_ = 0;
 	},
 
 	mutationToDom: function(){
+
+		if(!this.paramCount_){
+			return null;
+		}
+
 		var container = document.createElement('mutation');
+
+		if(this.paramCount_){
+			container.setAttribute('paramadd', this.paramCount_);
+		}
+
 		return container;
 	},
 
 	domToMutation: function(xmlElement){
-
+		this.paramCount_ = parseInt(xmlElement.getAttribute('paramadd'), 10);
+		for(var i = 1; i <= this.paramCount_; ++i){
+			this.appendValueInput('paraminp' + i).setCheck(null).appendField('');
+		}
 	},
 
 	decompose: function(workspace){
 		var containerBlock = workspace.newBlock('function_mutator');
 		containerBlock.initSvg();
+
+		var connection = containerBlock.getInput('STACK').connection;
+		for(var i = 1; i <= this.paramCount_; ++i){
+			var add = workspace.newBlock('func_parameters').connection;
+			add.initSvg();
+			connection.connect(add.previousConnection);
+			connection = add.nextConnection;
+		}
 		return containerBlock;
 	},
 
 	compose: function(containerBlock){
-		
+		for(var i = this.paramCount_; i > 0; i--){
+			this.removeInput('paraminp' + i);
+		}
+
+		this.paramCount_ = 0;
+
+		var clauseBlock = containerBlock.getInputTargetBlock('STACK');
+
+		while(clauseBlock){
+			switch(clauseBlock.blockName){
+				case 'func_parameters':
+					
+					this.paramCount_++;
+					alert(this.paramCount_);
+					var paramInput = this.appendValueInput('paraminp' + this.paramCount_)
+						.setCheck(null).appendField('');
+
+					if(clauseBlock.valueConnection_){
+						paramInput.connection.connect(clauseBlock.valueConnection_);
+					}
+
+				break;
+
+				default:
+					throw 'Unknown block type.';
+				
+
+			}
+		}
+
+	},
+
+	saveConnections: function(containerBlock){
+		var clauseBlock = containerBlock.getInputTargetBlock('STACK');
+		var i = 1;
+
+		while(clauseBlock){
+			switch(clauseBlock.blockName){
+				case 'func_parameters':
+					var paramInput = this.getInput('paraminp' + i);
+					clauseBlock.valueConnection_ = paramInput && paramInput.connection.targetConnection;
+					clauseBlock.statementConnection_ = i++;
+
+				break;
+
+				default:
+					throw 'Unknown block type.';
+
+			}
+		}
 	}
+
+
+
+
 
 };
 
@@ -53,7 +131,6 @@ Blockly.C['user_function'] = function(block) {
 	// TODO: Assemble C into code variable.
 	var code = '';
 	var std = '';
-
 
 	if(dropdown_myfuncreturn === 'string' && usingSTD === false){
 		std += 'std::';
@@ -79,14 +156,15 @@ Blockly.C['user_function'] = function(block) {
 Blockly.Blocks['func_parameters'] = {
 	init: function() {
 
-		this.paramCount = 0;
 
     	this.appendDummyInput()
     	    .appendField("type: ")
     	    .appendField(new Blockly.FieldDropdown([["int","myParamInt"], ["size_t","myParamSize_t"], ["double","myParamDouble"], ["float","myParamFloat"], ["char","myParamChar"], ["string","myParamString"], ["bool","myParamBool"]]), "myParamType")
 			.appendField(new Blockly.FieldDropdown([["","myPtrNone"], ["&","myPtrAdd"], ["*&","myPtrAddPtr"], ["*","myPtrAdd1"], ["**","myPtrAdd2"], ["***","myPtrAdd3"]]), "myPtr")
     	    .appendField("Name:")
-    	    .appendField(new Blockly.FieldVariable("p" + this.paramCount), "myPName" + this.paramCount);
+			.appendField(new Blockly.FieldVariable("p"), "myPName");
+			
+		this.appendValueInput('STACK').setCheck(null).appendField('');
 		
     	this.setInputsInline(false);
 
@@ -98,9 +176,6 @@ Blockly.Blocks['func_parameters'] = {
 		this.setTooltip("");
 		this.setHelpUrl("");
 
-		this.setOnChange(function(changeEvent){
-			this.paramCount++;
-		});
 	},
 	
 	onchange: function(){
@@ -108,32 +183,6 @@ Blockly.Blocks['func_parameters'] = {
 	}
 
 };
-
-Blockly.C['func_parameters'] = function(block) {
-	var dropdown_type = this.getField('myParamType').getText();
-	var variable_myparamname = Blockly.C.variableDB_.getName(block.getFieldValue('myParamName'), Blockly.Variables.NAME_TYPE);
-	var value_valinp1 = Blockly.C.valueToCode(block, 'valinp1', Blockly.C.ORDER_ATOMIC);
-	var dropdown_myptr = this.getField('myPtr').getText();
-
-	// TODO: Assemble C into code variable.
-	var code = '';
-	var std = '';
-
-
-	if(dropdown_type === 'string' && usingSTD === false){
-		std += 'std::';
-	}
-
-	code += std + dropdown_type + '' + dropdown_myptr + ' ' + variable_myparamname;
-
-	if(value_valinp1.length > 0){
-		code += ', ' + value_valinp1;
-	}
-
-	// TODO: Change ORDER_NONE to the correct strength.
-	return [code, Blockly.C.ORDER_NONE];
-};
-
 
 
 
@@ -466,7 +515,7 @@ Blockly.Blocks['function_mutator'] = {
 		//.appendField('return?')
 		//.appendField(new Blockly.FieldCheckbox("FALSE"), "check1");
 
-		this.appendStatementInput('state1').appendField('').setCheck(null);
+		this.appendStatementInput('STACK').appendField('').setCheck(null);
 
 		this.setPreviousStatement(false);
 		this.setNextStatement(false);

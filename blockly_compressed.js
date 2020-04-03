@@ -8463,12 +8463,75 @@ Blockly.Block = function(a, b, c) {
 
 	this.typeName = '';
 
-	this.dataStructure = {
-		isVar: true,
+	this.dataStr = {
+		isVar: false,
 		isArr: false,
+		isVec: false,
 		isFunc: false,
+		isStruct: false,
 		isClass: false
-	}
+	};
+
+	this.setFalse = function(){
+		this.dataStr.isVar = false;
+		this.dataStr.isArr = false;
+		this.dataStr.isVec = false;
+		this.dataStr.isFunc = false;
+		this.dataStr.isStruct = false;
+		this.dataStr.isClass = false;
+	};
+
+	this.setDataStr = function(obj, bool){
+		
+		if(obj == undefined || bool == undefined){
+			throw 'Invalid call to this.setDataStr';
+		}
+    
+		if(typeof obj != "string" || typeof bool != "boolean"){
+			throw 'Invalid call to setDataStr: Desired input - @param String, Boolean.\nReceived input - @param '
+			+ typeof(obj) + ', ' + typeof(bool);
+		}
+	  
+		switch(obj){
+		  case 'isVar':
+		    this.setFalse();
+		    if(bool == true){
+		      this.dataStr.isVar = true;
+		    }
+		  break;
+		  case 'isArr':
+		    this.setFalse();
+		    if(bool == true){
+		      this.dataStr.isArr = true;
+		    }
+		  break;
+		  case 'isVec':
+		    this.setFalse();
+		    if(bool == true){
+		      this.dataStr.isVec = true;
+		    }
+		  break;
+		  case 'isFunc':
+		    this.setFalse();
+		    if(bool == true){
+		      this.dataStr.isFunc = true;
+		    }
+		  break;
+		  case 'isStruct':
+		    this.setFalse();
+		    if(bool == true){
+		      this.dataStr.isStruct = true;
+		    }
+		  break;
+		  case 'isClass':
+		    this.setFalse();
+		    if(bool == true){
+		      this.dataStr.isClass = true;
+		    }
+		  break;
+		}
+	};
+   
 
 	a.blockDB_[this.id] = this;
 
@@ -8561,6 +8624,7 @@ Blockly.Block = function(a, b, c) {
 	"function" == typeof this.onchange && this.setOnChange(this.onchange)
 
 };
+
 
 Blockly.Block.prototype.data = null;
 

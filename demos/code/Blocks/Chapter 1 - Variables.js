@@ -47,10 +47,12 @@ Blockly.Blocks['variable_declare'] = {
 		this.typeName = (typeConv(this.getField('myVarType').getText()));
 		
 		//Block mutator, const, default as false
-		this.con = true;
+		this.con = false;
 
 		//Activates the mutation box
 		this.setMutator(new Blockly.Mutator(['']));
+
+		this.setDataStr("isVar", true);
 		
 	},
 	
@@ -58,50 +60,41 @@ Blockly.Blocks['variable_declare'] = {
 		var container = document.createElement('mutation');
 		var hasConst = (this.getFieldValue('check1') == 'TRUE');
 		container.setAttribute('isConst', hasConst);
+
+		console.log(this.getFieldValue('check1'));
+
+		container.setAttribute('isConst', hasConst);
 		return container;
 	},
 
 	domToMutation: function(xmlElement){
 		var hasConst = (xmlElement.getAttribute('isConst') == 'TRUE');
-		this.updateShape_(hasConst);
+		
 	},
 
 	//save the mutator information
 	decompose: function(workspace){
 		var containerBlock = workspace.newBlock('var_const');
 		containerBlock.initSvg();
-
 		
 		return containerBlock;
 	},
 
 	//modify the original block
 	compose: function(containerBlock){
-		var clauseBlock = containerBlock.getInputTargetBlock('STACK');
+		
 	},
 
-	updateShape_: function(hasConst){
-		if(hasConst){
-			this.appendValueInput("con").setCheck('con');
-		}
-		else {
-			if(this.childBlocks_.length > 0){
-				for(var i = 0; i < childBlocks_.length; i++){
-					if(this.childBlocks_[i].type == 'con'){
-						this.childBlocks_[i].unplug();
-						break;
-					}
-				}
-				this.removeInput('con');
-			}
-		}
+	saveConnections: function(containerBlock){
+		
 	},
 
 	onchange: function(){
 		//Blockly.C.valueToCode(block, 'NAME', Blockly.C.ORDER_ATOMIC).setCheck(typeConv(this.getField('myVarType').getText()));
 		
-		
 	},
+
+
 
 	
 };
@@ -115,6 +108,7 @@ Blockly.C['variable_declare'] = function(block) {
 	
 	var code = '';
 
+	
 	if(this.con){
 		code += 'const ';
 	}
@@ -194,7 +188,7 @@ Blockly.C['var_initialization'] = function(block) {
 	
 	//Helper Function for error
 	function alert_WrongType(TT){
-		//block.setWarningText("Wrong type has been selected in variable initialization:\n" + TT + " is not of type " + dropdown_drop1);
+		block.setWarningText("Wrong type has been selected in variable initialization:\n" + TT + " is not of type " + dropdown_drop1);
 	}
 	
 
@@ -282,6 +276,9 @@ Blockly.C['var_initialization'] = function(block) {
 			
 		}
 	}
+
+	//Update the type
+	this.typeName = typeConv(this.getField('myVarType').getText());
 
 	// TODO: Change ORDER_NONE to the correct strength.
 	return [code, Blockly.C.ORDER_NONE];

@@ -142,19 +142,79 @@ Blockly.Block = function(workspace, prototypeName, opt_id) {
 
   /**
    * Boolean checks to see if this is a
-   * variable, array, function, or class
-   * it is assumed each block will be a
-   * variable, but can be changed
-   * @type {boolean|Blockly.dataStructure}
+   * variable, array, vector, 
+   * function, struct, or class
+   * @type {boolean|Blockly.dataStr}
    * @current March 2020
    */
-   this.dataStructure = {
-	   isVar: true,
-	   isArr: false,
-	   isFunc: false,
-	   isClass: false
-   };
-   
+	this.dataStr = {
+		isVar: false,
+		isArr: false,
+		isVec: false,
+		isFunc: false,
+		isStruct: false,
+		isClass: false
+	};
+
+	this.setFalse = function(){
+		this.dataStr.isVar = false;
+		this.dataStr.isArr = false;
+		this.dataStr.isVec = false;
+		this.dataStr.isFunc = false;
+		this.dataStr.isStruct = false;
+		this.dataStr.isClass = false;
+	};
+
+	this.setDataStr = function(obj, bool){
+		
+		if(obj == undefined || bool == undefined){
+			throw 'Invalid call to setDataStr: Parameters were not properly called.';
+    }
+    
+		if(typeof obj != "string" || typeof bool != "boolean"){
+			throw 'Invalid call to setDataStr: Desired input - @param String, Boolean.\nReceived input - @param '
+			+ typeof(obj) + ', ' + typeof(bool);
+		}
+
+		switch(obj){
+		  case 'isVar':
+		    this.setFalse();
+		    if(bool == true){
+		      this.dataStr.isVar = true;
+		    }
+		  break;
+		  case 'isArr':
+		    this.setFalse();
+		    if(bool == true){
+		      this.dataStr.isArr = true;
+		    }
+		  break;
+		  case 'isVec':
+		    this.setFalse();
+		    if(bool == true){
+		      this.dataStr.isVec = true;
+		    }
+		  break;
+		  case 'isFunc':
+		    this.setFalse();
+		    if(bool == true){
+		      this.dataStr.isFunc = true;
+		    }
+		  break;
+		  case 'isStruct':
+		    this.setFalse();
+		    if(bool == true){
+		      this.dataStr.isStruct = true;
+		    }
+		  break;
+		  case 'isClass':
+		    this.setFalse();
+		    if(bool == true){
+		      this.dataStr.isClass = true;
+		    }
+		  break;
+		}
+	};
 
   /**
    * The type of the block
@@ -247,6 +307,9 @@ Blockly.Block = function(workspace, prototypeName, opt_id) {
     this.setOnChange(this.onchange);
   }
 };
+
+
+
 
 /**
  * @typedef {{

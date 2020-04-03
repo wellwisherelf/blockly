@@ -17,6 +17,8 @@
   <script src="../../c_compressed.js"></script>
   
   <script src="code.js"></script>
+
+  <script src="Localization/en.js" ></script>
   
   <script src="Blocks/FileSaver.js" ></script>
   <script src="Blocks/filereader.js" ></script>
@@ -49,7 +51,6 @@
       <td>
         <h1>
           <span id="title"></span>
-			<button onclick="downloadCode()">Download C++ Code</button>
         </h1>
 		<h1>
 		 <span id = "version">Beta 1.4</span>
@@ -380,9 +381,8 @@
 		
 			<label text="Variable Declaration" web-class="labelVariable"></label>
 			
-		
 			<block type = "variable_declare"></block>
-		
+
 			<label text="Variable Initializiation" web-class="labelVariable"></label>
 			
 			<block type = "var_initialization"></block>
@@ -407,6 +407,10 @@
 				</value>
 
 			</block>
+
+			<label text="Variable" web-class="labelVariable"></label>
+			
+			<block type = "get_var"></block>
 		
 		</category>
 		
@@ -422,7 +426,6 @@
 			<label text="Cin Input" web-class="labelCin"></label>
 			
 			<block type = "cin_input" ></block>
-			<block type = "cin_parse" ></block>
 			<block type = "cin_getline"></block>
 			
 			<label text="Strings" web-class="labelString"></label>
