@@ -1,14 +1,76 @@
 
 var classHue = 35;
 
+Blockly.Blocks['ds_class'] = {
+	init: function() {
+		this.appendDummyInput()
+			.appendField('class')
+			.appendField(new Blockly.FieldVariable("myClass"), "myClassDec");
+		
+		this.appendDummyInput().appendField("public");
+		this.appendStatementInput("state1")
+			.setCheck(null);
+		
+		this.appendDummyInput().appendField("private");
+		this.appendStatementInput("state2").setCheck(null).appendField("");
+			
+			
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
+		this.setColour(classHue);
+		this.setTooltip("");
+		this.setHelpUrl("");
+
+		this.setMutator(new Blockly.Mutator(['class_mutator_public', 'class_mutator_protected', 'class_mutator_private', 'ds_constructor', 'ds_copy_constructor']));
+
+		//Default this to a struct
+		this.setDataStr("isStruct", true);
+		
+
+	}
+};
+
+Blockly.Blocks['ds_class_inheritance'] = {
+	init: function() {
+		this.appendDummyInput()
+			.appendField('class')
+			.appendField(new Blockly.FieldVariable("myClass"), "myClassDec");
+		this.appendDummyInput().appendField("public");
+		this.appendStatementInput("state1")
+			.setCheck(null);
+		
+		this.appendDummyInput().appendField("protected");
+		this.appendStatementInput("state2").setCheck(null).appendField("");
+		
+		this.appendDummyInput().appendField("private");
+		this.appendStatementInput("state3").setCheck(null).appendField("");
+			
+			
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
+		this.setColour(classHue);
+		this.setTooltip("");
+		this.setHelpUrl("");
+
+		this.setMutator(new Blockly.Mutator(['class_mutator_public', 'class_mutator_protected', 'class_mutator_private', 'ds_constructor', 'ds_copy_constructor']));
+
+		//Default this to a struct
+		this.setDataStr("isStruct", true);
+		
+
+	}
+};
 
 Blockly.Blocks['ds_struct'] = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField(new Blockly.FieldDropdown([["struct","myClassStruct"], ["class","myClassClass"]]), "myClassType")
+			.appendField('struct')
 			.appendField(new Blockly.FieldVariable("myStruct"), "myStructDec");
 		this.appendStatementInput("state1")
 			.setCheck(null);
+		
+			
+			
 		this.setPreviousStatement(true, null);
 		this.setNextStatement(true, null);
 		this.setColour(classHue);

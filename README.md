@@ -1,3 +1,65 @@
+
+# Weekly Progress (Does not represent every update, especially very minor ones)
+
+**1/18/20 - 1/25/20**
+- Added numeric ranges (short, long, etc) in variable declaration. (Chris, Jon)
+- endl block can now receive input values. (Chris)
+- Added type check warning for initialization Block. (Chris)
+
+**1/25/20 - 2/01/20**
+- Added switch case statements. (Chris, Jon)
+- Added exponential block (Chris, Jon)
+
+**2/01/20 - 2/08/20**
+- Started changed alerts to block warnings. (Chris, Jon)
+
+**2/08/20 - 2/15/20**
+- Finished tooltips for chapter 1. (Jon)
+- Partially finished switch form alerts to block warnings, (Chris, Christopher)
+- Added a download code feature (Chris)
+
+**2/15/20 - 2/22/20**
+- Added a save feature. (Chris)
+- Added type checking to switch case statements (Christopher)
+
+**2/22/20 - 2/29/20**
+- Added a load feature. (Chris)
+- partially redid vectors and arrays, including type checking (Chris, Christopher, Jon)
+- Added type checking to logic blocks (Christopher)
+- Added type checking to chapter 4 (Christopher)
+- Fixed a variable bug with the for loop (Christopher)
+
+**2/29/20 - 3/07/20**
+- Started working on examples for every chapter. (Chris)
+- Removed vector size on vector block (Chris, Christopher, Jon)
+- Removed const option on variable declaration (Jon)
+- Added type checking to cctype blocks (Christopher)
+
+**3/07/20 - 3/14/20**
+- Finished examples for every chapter. (Chris)
+- Removed a bug with float/double on variable initialization relating to user inputted decimals (Jon)
+- Removed short, long, etc from the variable declaration block, and implemented it into the type options. (Chris, Jon)
+- Added Labels for every Chapter (Christopher, Jon)
+
+**3/14/20 - 3/21/20**
+- Researched mutators (Chris, Jon)
+
+**3/21/20 - 3/28/20**
+- Started implementing mutators for cout, and cin mutator blocks. (Chris, Jon)
+- Started implementing mutators for switch cases, and functions. (Chris)
+- Added blockName (get block name), dataStr (block type), setFalse (sets all block types to be false for a single block). ()
+
+**3/28/20 - 4/04/20**
+- Finished cout, and cin mutators. (Chris, Jon)
+- Fixed type check warnings that appear on blocks, so they are no longer permanent. (Chris, Jon)
+- Started to work on custom contex menus for blocks. (Chris)
+
+
+
+
+
+
+
 # Blockly [![Build Status]( https://travis-ci.org/google/blockly.svg?branch=master)](https://travis-ci.org/google/blockly)
 
 

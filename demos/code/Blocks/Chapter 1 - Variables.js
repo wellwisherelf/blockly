@@ -48,28 +48,24 @@ Blockly.Blocks['variable_declare'] = {
 		
 		//Block mutator, const, default as false
 		this.con = false;
-
+		
 		//Activates the mutation box
 		this.setMutator(new Blockly.Mutator(['']));
-
 		this.setDataStr("isVar", true);
 		
 	},
-	
+	//Save Mutation Data
 	mutationToDom: function(){
 		var container = document.createElement('mutation');
 		var hasConst = (this.getFieldValue('check1') == 'TRUE');
 		container.setAttribute('isConst', hasConst);
 
-		console.log(this.getFieldValue('check1'));
-
-		container.setAttribute('isConst', hasConst);
 		return container;
 	},
 
+	//block is being restored from XML
 	domToMutation: function(xmlElement){
-		var hasConst = (xmlElement.getAttribute('isConst') == 'TRUE');
-		
+		var test = (xmlElement.getAttribute('isConst') == 'TRUE');
 	},
 
 	//save the mutator information

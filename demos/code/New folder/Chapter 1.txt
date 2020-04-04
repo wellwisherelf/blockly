@@ -1,6 +1,0 @@
-Chapter 1 includes:
-
-variable declaration
-math operators
-cin, cout
-comments
