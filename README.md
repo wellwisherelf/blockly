@@ -47,7 +47,7 @@
 **3/21/20 - 3/28/20**
 - Started implementing mutators for cout, and cin mutator blocks. (Chris, Jon)
 - Started implementing mutators for switch cases, and functions. (Chris)
-- Added blockName (get block name), dataStr (block type), setFalse (sets all block types to be false for a single block). ()
+- Added blockName (get block name), dataStr (block type), setFalse (sets all block types to be false for a single block). (Chris)
 
 **3/28/20 - 4/04/20**
 - Finished cout, and cin mutators. (Chris, Jon)
