@@ -80,8 +80,8 @@ Blockly.Blocks['loop_for'] = {
 	},
 
 	onchange: function(){
-		var value_valinp1 = Blockly.C.valueToCode(block, 'valinp1', Blockly.C.ORDER_ATOMIC);
-		var value_valinp2 = Blockly.C.valueToCode(block, 'valinp2', Blockly.C.ORDER_ATOMIC);
+		var value_valinp1 = Blockly.C.valueToCode(this, 'valinp1', Blockly.C.ORDER_ATOMIC);
+		var value_valinp2 = Blockly.C.valueToCode(this, 'valinp2', Blockly.C.ORDER_ATOMIC);
 		var dropdown_myloopch = this.getField('myLoopCh').getText();
 
 		var TT = '';

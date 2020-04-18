@@ -7,12 +7,12 @@
 Blockly.Msg["TYPE_INT"] = "int";
 
 
+Blockly.Msg['var_const_TT'] = "Checking this option with turn your variable into a constant declaration.";
+Blockly.Msg['var_const_URL'] = "https://www.w3schools.in/cplusplus-tutorial/constants/#What_are_Constants";
 
 
-
-
-
-
+"How's he doing";
+'he said "hello!"';
 
 //
 

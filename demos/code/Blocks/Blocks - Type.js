@@ -2,13 +2,22 @@
 Blockly.Blocks['get_var'] = {
 	init: function() {
 	this.appendDummyInput()
-		.appendField(new Blockly.FieldVariable("myVar"), "VAR");
+		.appendField(new Blockly.FieldVariable("myVar", null, ['isVar'], 'isVar'), "VAR");
 	this.setOutput(true, null);
 	this.setColour(variableHUE);
 	this.setTooltip("");
 	this.setHelpUrl("");
 	this.contextMenu_ = 'Create "set %1"';
 	},
+	
+	onchange: function(){
+		if(this.parentBlock_ == null){
+			this.setWarningText('Block warning, this block has a return and must be connected.');
+		}
+		else {
+			this.setWarningText(null);
+		}
+	}
 
 
 	/*

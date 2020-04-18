@@ -16,6 +16,7 @@ Blockly.Blocks['vector'] = {
     this.setColour(vectorHUE);
  this.setTooltip("A vector is like an array; it can store and access data. Unlike an array, its size can change.");
  this.setHelpUrl("http://www.cplusplus.com/reference/vector/vector/");
+ 
   }
 };
 

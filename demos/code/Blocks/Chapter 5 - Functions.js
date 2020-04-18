@@ -3,10 +3,9 @@ var funcHUE = 90;
 
 Blockly.Blocks['user_function'] = {
 	init: function() {
-		this.appendValueInput("NAME")
-			.setCheck(null)
+		this.appendDummyInput("NAME")
 			.appendField(new Blockly.FieldDropdown([["void","myFuncVoid"], ["int","myFuncInt"], ["size_t","myFuncSize_t"], ["double","myFuncDouble"], ["float","myFuncFloat"], ["char","myFuncChar"], ["string","myFuncString"], ["bool","myFuncBool"], ["auto","myFuncAuto"]]), "myFuncReturn")
-			.appendField(new Blockly.FieldVariable("myFunction"), "myFuncVar")
+			.appendField(new Blockly.FieldVariable("myFunction", null, ['isFunc'], 'isFunc'), "myFuncVar")
 			.appendField("(");
 		this.appendStatementInput("statement_inp1")
 			.setCheck(null);
@@ -15,14 +14,18 @@ Blockly.Blocks['user_function'] = {
 		this.setColour(funcHUE);
 		this.setTooltip("Creates a new function.");
 		this.setHelpUrl("");
-
-		this.typeName;
+		
 		this.setMutator(new Blockly.Mutator(['func_parameters']));
 
 		this.setDataStr('isFunc', true);
 
-
-
+		this.setInputsInline(true);
+		
+		//Var to determine whether
+		//the function has been
+		//checkmarked or not
+		//this.dataTypeOption = false;
+		
 		//Counter to count the
 		//default parameter names
 		this.paramCount_ = 0;
@@ -49,22 +52,43 @@ Blockly.Blocks['user_function'] = {
 			this.appendValueInput('paraminp' + i).setCheck(null).appendField('');
 		}
 	},
-
+	
+	//mutator box opens
 	decompose: function(workspace){
 		var containerBlock = workspace.newBlock('function_mutator');
 		containerBlock.initSvg();
-
+		
+		//loading the checkmark to its correct state
+		//if(this.dataTypeOption == true){
+		//	containerBlock.setFieldValue('TRUE','check1');
+		//}
+		//else {
+		//	containerBlock.setFieldValue('FALSE','check1');
+		//}
+		
 		var connection = containerBlock.getInput('STACK').connection;
 		for(var i = 1; i <= this.paramCount_; ++i){
-			var add = workspace.newBlock('func_parameters').connection;
+			var add = workspace.newBlock('func_parameters');
 			add.initSvg();
 			connection.connect(add.previousConnection);
 			connection = add.nextConnection;
 		}
 		return containerBlock;
 	},
-
+	
+	//mutator box closes
 	compose: function(containerBlock){
+		
+		//saving the checkmark to its correct state
+		//if(containerBlock.getFieldValue('check1') == 'TRUE'){
+		//	this.dataTypeOption = true;
+		//}
+		//else {
+		//	this.dataTypeOption = false;
+		//}
+		
+		
+		
 		for(var i = this.paramCount_; i > 0; i--){
 			this.removeInput('paraminp' + i);
 		}
@@ -78,7 +102,6 @@ Blockly.Blocks['user_function'] = {
 				case 'func_parameters':
 					
 					this.paramCount_++;
-					alert(this.paramCount_);
 					var paramInput = this.appendValueInput('paraminp' + this.paramCount_)
 						.setCheck(null).appendField('');
 
@@ -86,13 +109,15 @@ Blockly.Blocks['user_function'] = {
 						paramInput.connection.connect(clauseBlock.valueConnection_);
 					}
 
+
 				break;
 
 				default:
 					throw 'Unknown block type.';
 				
-
 			}
+			clauseBlock = clauseBlock.nextConnection 
+			&& clauseBlock.nextConnection.targetBlock();
 		}
 
 	},
@@ -108,14 +133,19 @@ Blockly.Blocks['user_function'] = {
 					clauseBlock.valueConnection_ = paramInput && paramInput.connection.targetConnection;
 					clauseBlock.statementConnection_ = i++;
 
+
 				break;
 
 				default:
 					throw 'Unknown block type.';
 
 			}
+			clauseBlock = clauseBlock.nextConnection 
+			&& clauseBlock.nextConnection.targetBlock();
 		}
-	}
+	},
+
+	onchange: Blockly.Blocks.requireInFunction
 
 
 
@@ -156,15 +186,12 @@ Blockly.C['user_function'] = function(block) {
 Blockly.Blocks['func_parameters'] = {
 	init: function() {
 
-
     	this.appendDummyInput()
     	    .appendField("type: ")
     	    .appendField(new Blockly.FieldDropdown([["int","myParamInt"], ["size_t","myParamSize_t"], ["double","myParamDouble"], ["float","myParamFloat"], ["char","myParamChar"], ["string","myParamString"], ["bool","myParamBool"]]), "myParamType")
 			.appendField(new Blockly.FieldDropdown([["","myPtrNone"], ["&","myPtrAdd"], ["*&","myPtrAddPtr"], ["*","myPtrAdd1"], ["**","myPtrAdd2"], ["***","myPtrAdd3"]]), "myPtr")
     	    .appendField("Name:")
-			.appendField(new Blockly.FieldVariable("p"), "myPName");
-			
-		this.appendValueInput('STACK').setCheck(null).appendField('');
+			.appendField(new Blockly.FieldVariable("param"), "myPName");
 		
     	this.setInputsInline(false);
 
@@ -508,9 +535,10 @@ Blockly.C['func_var_init_literal'] = function(block) {
 
 Blockly.Blocks['function_mutator'] = {
 	init: function(){
-
+		
 		this.appendDummyInput().appendField('function');
-
+		//this.appendDummyInput().appendField('switch types?').appendField(new Blockly.FieldCheckbox("FALSE"), "check1");
+		
 		//this.appendDummyInput()
 		//.appendField('return?')
 		//.appendField(new Blockly.FieldCheckbox("FALSE"), "check1");
@@ -523,7 +551,10 @@ Blockly.Blocks['function_mutator'] = {
 
 		this.setTooltip("Selecting the return option will give this function a return statement.");
 		
-		//this.returnType = this.getFieldValue('check1') == 'TRUE';
+	},
+	
+	onchange: function(){
+		
 	}
 };
 
@@ -538,3 +569,212 @@ Blockly.Blocks['function_mutator_return'] = {
 
 	}
 };
+
+Blockly.Blocks['user_function_class'] = {
+	init: function() {
+		
+		this.paramField = '';
+		
+		
+		
+		
+		this.appendDummyInput("NAME")
+			.appendField(new Blockly.FieldVariable("myClass", null, ['isClass'], 'isClass'), "myClassVar")
+			.appendField(new Blockly.FieldDropdown([["","myPtrNone"], ["*","myPtrAdd1"], ["&","myPtrAdd"], ["*&","myPtrAddPtr"], ["**","myPtrAdd2"], ["***","myPtrAdd3"]]), "myPtr")
+			.appendField(new Blockly.FieldVariable("myFunction", null, ['isFunc'], 'isFunc'), "myFuncVar")
+			.appendField("(" + this.paramField + ")")
+		this.appendStatementInput("statement_inp1")
+			.setCheck(null);
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
+		this.setColour(funcHUE);
+		this.setTooltip("Creates a new function.");
+		this.setHelpUrl("");
+		
+		this.setMutator(new Blockly.Mutator(['func_parameters']));
+
+		this.setDataStr('isFunc', true);
+
+		this.setInputsInline(true);
+		
+		this.paramCount_ = 0;
+		
+		this.paramType = new Array();
+		this.paramName = new Array();
+		
+		
+	},
+
+	mutationToDom: function(){
+
+		if(!this.paramCount_){
+			return null;
+		}
+
+		var container = document.createElement('mutation');
+
+		if(this.paramCount_){
+			container.setAttribute('paramadd', this.paramCount_);
+		}
+
+		return container;
+	},
+
+	domToMutation: function(xmlElement){
+		
+	},
+	
+	//mutator box opens
+	decompose: function(workspace){
+		var containerBlock = workspace.newBlock('function_mutator');
+		containerBlock.initSvg();
+		
+		var connection = containerBlock.getInput('STACK').connection;
+		
+		for(var i = 1; i <= this.paramCount_; ++i){
+			var add = workspace.newBlock('func_parameters');
+			add.initSvg();
+			
+			this.paramType[i - 1] = add.getField('myParamType').getText();
+			this.paramName[i - 1] = add.getField('myPName').getText();
+			
+			connection.connect(add.previousConnection);
+			connection = add.nextConnection;
+		}
+		
+		return containerBlock;
+		
+	},
+	
+	//mutator box closes
+	compose: function(containerBlock){
+		
+
+		this.paramCount_ = 0;
+
+		var clauseBlock = containerBlock.getInputTargetBlock('STACK');
+
+		this.paramField = '';
+		while(clauseBlock){
+			switch(clauseBlock.blockName){
+				case 'func_parameters':
+					
+					
+					this.paramCount_++;
+					
+					
+				break;
+
+				default:
+					throw 'Unknown block type.';
+				
+			}
+			clauseBlock = clauseBlock.nextConnection 
+			&& clauseBlock.nextConnection.targetBlock();
+		}
+
+	},
+
+	saveConnections: function(containerBlock){
+		var clauseBlock = containerBlock.getInputTargetBlock('STACK');
+		var i = 1;
+
+		while(clauseBlock){
+			switch(clauseBlock.blockName){
+				case 'func_parameters':
+					var paramInput = this.getInput('paraminp' + i);
+					clauseBlock.valueConnection_ = paramInput && paramInput.connection.targetConnection;
+					clauseBlock.statementConnection_ = i++;
+
+
+				break;
+
+				default:
+					throw 'Unknown block type.';
+
+			}
+			clauseBlock = clauseBlock.nextConnection 
+			&& clauseBlock.nextConnection.targetBlock();
+		}
+	},
+
+	onchange: Blockly.Blocks.requireInFunction,
+	
+	onchange: function(){
+		
+		for(var i = 0; i < this.paramType.length; ++i){
+			
+			this.paramField += this.paramType[i] + ' ' + this.paramName[i];
+			
+			if(i < (this.paramType.length - 1)){
+				this.paramField += ', ';
+			}
+			
+		}
+		
+		//console.log(this.paramField);
+		
+	}
+
+
+
+
+
+};
+
+Blockly.C['user_function_class'] = function(block) {
+	var variable_myclassvar = Blockly.C.variableDB_.getName(block.getFieldValue('myClassVar'), Blockly.Variables.NAME_TYPE);
+	
+	var variable_myfuncvar = Blockly.C.variableDB_.getName(block.getFieldValue('myFuncVar'), Blockly.Variables.NAME_TYPE);
+	
+	var dropdown_myptr = this.getField('myPtr').getText();
+	
+	var value_name = Blockly.C.valueToCode(block, 'NAME', Blockly.C.ORDER_ATOMIC);
+	var statements_statement_inp1 = Blockly.C.statementToCode(block, 'statement_inp1');
+	// TODO: Assemble C into code variable.
+	var code = '';
+	var std = '';
+
+	
+	code += variable_myclassvar + dropdown_myptr + ' ' + variable_myfuncvar + '(';
+
+
+	code += this.paramField;
+
+	code += '){\n';
+
+	code += statements_statement_inp1;
+	
+
+	code += '}\n';
+
+	code += name;
+
+	return code;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

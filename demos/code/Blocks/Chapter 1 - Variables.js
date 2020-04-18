@@ -20,10 +20,15 @@ Blockly.Blocks['var_const'] = {
 			  .appendField("const?")
 			  .appendField(new Blockly.FieldCheckbox("FALSE"), "check1");
 		this.setColour(variableHUE);
-		this.setTooltip("Checking this option with turn your variable into a constant declaration.");
-		this.setHelpUrl("https://www.w3schools.in/cplusplus-tutorial/constants/#What_are_Constants");
+		this.setTooltip(Blockly.Msg['var_const_TT']);
+		this.setHelpUrl(Blockly.Msg['var_const_URL']);
+		
+	},
+	
+	onchange: function(){
+		
 	}
-
+	
 };
 
 
@@ -33,7 +38,8 @@ Blockly.Blocks['variable_declare'] = {
 		this.appendValueInput("NAME")
 			.appendField("Declare: ")
 			.appendField(new Blockly.FieldDropdown([["int","myVarTypeInt"], ["size_t","myVarTypeSize_t"], ["double","myVarTypeDouble"], ["float","myVarTypeFloat"], ["char","myVarTypeChar"], ["string","myVarTypeString"], ["bool","myVarTypeBool"], ["auto","myVarTypeAuto"], ["short","myVarTypeShort"], ["long", "myVarTypeLong"], ["long long", "myVarTypeLongLong"]]), "myVarType")
-			.appendField(new Blockly.FieldVariable("myVar"), "myVarDec")
+			.appendField(new Blockly.FieldVariable("myVar", null, ['isVar'], 'isVar'), "myVarDec")
+			//.appendField(new Blockly.FieldVariable('X', null, ['Number', 'String'], 'Number' )
 			.setCheck(["Int", "Size_t", "Double", "Float", "Char", "String", "Bool", "Auto", "Variable"]);
 			
 			this.setInputsInline(false);
@@ -46,7 +52,6 @@ Blockly.Blocks['variable_declare'] = {
 		//Sets the block type (default)
 		this.typeName = (typeConv(this.getField('myVarType').getText()));
 		
-		//Block mutator, const, default as false
 		this.con = false;
 		
 		//Activates the mutation box
@@ -68,27 +73,54 @@ Blockly.Blocks['variable_declare'] = {
 		var test = (xmlElement.getAttribute('isConst') == 'TRUE');
 	},
 
-	//save the mutator information
+	//mutator box opens
 	decompose: function(workspace){
 		var containerBlock = workspace.newBlock('var_const');
 		containerBlock.initSvg();
 		
+		if(this.con == true){
+			containerBlock.setFieldValue('TRUE','check1');
+		}
+		else {
+			containerBlock.setFieldValue('FALSE', 'check1');
+		}
+
 		return containerBlock;
 	},
 
-	//modify the original block
+	//mutator box closes
 	compose: function(containerBlock){
 		
-	},
-
-	saveConnections: function(containerBlock){
+        if(containerBlock.getFieldValue('check1') == 'TRUE'){
+        	this.con = true;
+        }
+        else {
+        	this.con = false;
+        }
 		
 	},
 
 	onchange: function(){
-		//Blockly.C.valueToCode(block, 'NAME', Blockly.C.ORDER_ATOMIC).setCheck(typeConv(this.getField('myVarType').getText()));
+		var value_name = Blockly.C.valueToCode(this, 'NAME', Blockly.C.ORDER_ATOMIC);
 		
-	},
+		//Declare a string that will aggregate all warnings
+		var TT = "";
+		
+		
+		if(!value_name && this.con){
+			TT += 'Warning, const variable requires an initializer';
+		}
+		
+		
+		if(TT.length > 0){
+			this.setWarningText(TT);
+		}
+		else {
+			this.setWarningText(null);
+		}
+		
+		
+	}
 
 
 
@@ -107,10 +139,6 @@ Blockly.C['variable_declare'] = function(block) {
 	
 	if(this.con){
 		code += 'const ';
-	}
-
-	if(this.con && !value_name){
-		block.setWarningText('Warning, const variable "' + variable_myvardec + '" requires an initializer');
 	}
 
 	//Numeric Types
@@ -170,6 +198,13 @@ Blockly.Blocks['var_initialization'] = {
 	onchange: function(){
 		//Set the output type of the block
 		this.setOutput(this.typeName);
+		
+		if(this.parentBlock_ == null){
+			this.setWarningText('Block warning, this block has a return and must be connected.');
+		}
+		else {
+			this.setWarningText(null);
+		}
 		
 	}
 };
@@ -286,7 +321,7 @@ Blockly.Blocks['var_change'] = {
     this.appendValueInput("valinp1")
         .setCheck(["Number", "String", "Variable"])
         .appendField("Increment ")
-        .appendField(new Blockly.FieldVariable("myVar"), "myVarDef")
+        .appendField(new Blockly.FieldVariable("myVar", null, ['isVar', 'isVarPtr'], 'isVar'), "myVarDef")
 		.appendField("by");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -314,7 +349,7 @@ Blockly.Blocks['var_reinit'] = {
     this.appendValueInput("valinp1")
         .setCheck()
         .appendField("Set ")
-        .appendField(new Blockly.FieldVariable("myVar"), "myVarDef")
+        .appendField(new Blockly.FieldVariable("myVar", null, ['isVar','isPtr'], 'isPtr'), "myVarDef")
 		.appendField("to");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);

@@ -30,77 +30,146 @@ Blockly.C['main'] = function(block) {
 
 
 //Comment
-Blockly.Blocks['comment_single'] = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField("Comment: //")
-        .appendField(new Blockly.FieldTextInput("myComment"), "input");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(230);
- this.setTooltip("");
- this.setHelpUrl("");
-  }
+Blockly.Blocks['main_comment'] = {
+	init: function() {
+		this.appendValueInput("valinp")
+			.setCheck(null)
+		    .appendField("//")
+		    .appendField(new Blockly.FieldTextInput("myComment"), "input");
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
+		this.setColour(230);
+		this.setTooltip("");
+		this.setHelpUrl("");
+
+		this.setMutator(new Blockly.Mutator(['main_comment_add']));
+		this.commentCount_ = 0;
+	},
+
+	mutationToDom: function(){
+		if(!this.commentCount_){
+		  return null;
+		}
+		var container = document.createElement('mutation');
+  
+		if(this.commentCount_){
+		  container.setAttribute('commentadd', this.commentCount_);
+		}
+		console.log('test');
+		return container;
+	},
+
+	domToMutation: function(xmlElement){
+		this.commentCount_ = parseInt(xmlElement.getAttribute('commentadd'), 10);
+		for(var i = 1; i <= this.commentCount_; i++){
+			this.appendValueInput('valinp' + i).setCheck(null).appendField('').setAlign(Blockly.ALIGN_RIGHT);
+		}
+	},
+
+	decompose: function(workspace){
+		var containerBlock = workspace.newBlock('main_comment_mutator');
+		containerBlock.initSvg();
+
+		var connection = containerBlock.getInput('state1').connection;
+
+		for(var i = 1; i <= this.commentCount_; ++i){
+			var add = workspace.newBlock('main_comment_add');
+			add.initSvg();
+			connection.connect(add.previousConnection);
+			connection = add.nextConnection;
+		}
+		
+		return containerBlock;
+	},
+
+	compose: function(containerBlock){
+		for(var i = this.commentCount_; i > 0; i--){
+			this.removeInput('valinp' + i);
+		}
+		this.commentCount_ = 0;
+		
+		var clauseBlock = containerBlock.getInputTargetBlock('state1');
+		while(clauseBlock){
+			switch(clauseBlock.blockName){
+				case 'main_comment_add':
+					this.commentCount_++;
+					var comment = this.appendValueInput('valinp' + this.commentCount_)
+						.setCheck(null).appendField('//').setAlign(Blockly.ALIGN_RIGHT);
+
+					if(clauseBlock.valueConnection_){
+						comment.connection.connect(clauseBlock.valueConnection_);
+					}
+				break;
+
+				default:
+					throw 'Unknown block type.';
+			}
+			clauseBlock = clauseBlock.nextConnection 
+			&& clauseBlock.nextConnection.targetBlock();
+		}
+
+
+	},
+
+	saveConnections: function(containerBlock){
+		var clauseBlock = containerBlock.getInputTargetBlock('state1');
+		var i = 1;
+		
+		while(clauseBlock){
+			switch(clauseBlock.blockName){
+				case 'main_comment_add':
+					var comment = this.getInput('valinp' + i);
+					console.log(comment);
+					clauseBlock.valueConnection_ = comment && comment.connection.targetConnection;
+					clauseBlock.statementConnection_ = i++;
+					break;
+				default:
+					throw 'Unknown block type.';
+			}
+			clauseBlock = clauseBlock.nextConnection 
+			&& clauseBlock.nextConnection.targetBlock();
+		}
+	},
+
+	onchange: Blockly.Blocks.requireInFunction
+
+
 };
 
-
-Blockly.C['comment_single'] = function(block) {
+Blockly.C['main_comment'] = function(block) {
 	var text_input = block.getFieldValue('input');
 	// TODO: Assemble C into code variable.
 	var code = '//' + text_input + '\n';
 	return code;
 };
 
+//Comment mutator main
+Blockly.Blocks['main_comment_mutator'] = {
+	init: function(){
+		this.appendStatementInput('state1')
+		    .setCheck(null);
+		this.setPreviousStatement(false);
+		this.setNextStatement(false);
+		this.setColour(230);
+		this.setTooltip("");
+		this.setHelpUrl("");
+	}
+};
 
-//Comment
-Blockly.Blocks['comment_multiline'] = {
-	init: function() {
+//Comment mutator main
+Blockly.Blocks['main_comment_add'] = {
+	init: function(){
 		this.appendDummyInput()
-			.appendField("Multi-Line Comment Lines:")
-			.appendField(new Blockly.FieldNumber(0, 0, Infinity, 1), "numinp1");
-		this.appendDummyInput()
-			.appendField("")
-			.appendField(new Blockly.FieldTextInput("myComment"), "duminp1");
+		    .appendField('');
 		this.setPreviousStatement(true, null);
 		this.setNextStatement(true, null);
 		this.setColour(230);
 		this.setTooltip("");
 		this.setHelpUrl("");
-	},
-	onchange : function(){
-		if (!this.workspace) {
-			// Block has been deleted.
-			return;
-		}
 	}
 };
 
 
-Blockly.C['comment_multiline'] = function(block) {
-	var number_numinp1 = block.getFieldValue('numinp1');
-	var text_duminp1 = block.getFieldValue('duminp1');
-	// TODO: Assemble C into code variable.
-	var code = '';
-	
-	if(number_numinp1 == 0){
-		code += "/* " + text_duminp1 + " */";
-	}
-	
-	else {
-		code += "/* \n";
-		for(var i = 0; i < number_numinp1; ++i){
-			
-			code += "  " + text_duminp1 + "\n";
-			
-		}
-		code += "*/ ";
-	}
-	
-	code += '\n';
-	
-	
-	return code;
-};
 
 
 

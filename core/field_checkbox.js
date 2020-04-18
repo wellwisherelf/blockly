@@ -247,3 +247,20 @@ Blockly.FieldCheckbox.prototype.convertValueToBool_ = function(value) {
 };
 
 Blockly.fieldRegistry.register('field_checkbox', Blockly.FieldCheckbox);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -183,3 +183,52 @@ Blockly.C['var_concatenate'] = function(block) {
 	// TODO: Change ORDER_NONE to the correct strength.
 	return [code, Blockly.C.ORDER_NONE];
 };
+
+
+Blockly.Blocks['var_concatenate_mutator'] = {
+	init: function() {
+		this.appendStatementInput("state1")
+			.appendField("concatenate:")
+			.setCheck(null);
+			
+		this.setOutput(true, null);
+		this.setColour(stringHUE);
+		this.setTooltip("");
+		this.setHelpUrl("");
+	}
+
+};
+
+
+Blockly.Blocks['var_concatenate_add_var'] = {
+	init: function() {
+		this.appendDummyInput()
+			.appendField("concatenate:")
+			.appendField(new Blockly.FieldVariable("myStrVar"), "varDef");
+			
+		this.setOutput(true, null);
+		this.setColour(stringHUE);
+		this.setTooltip("");
+		this.setHelpUrl("");
+	}
+
+};
+
+Blockly.Blocks['var_concatenate_add_str'] = {
+	init: function() {
+		this.appendDummyInput()
+			.appendField("concatenate:")
+			.appendField(new Blockly.FieldTextInput("my string"), "strDef");
+			
+		this.setOutput(true, null);
+		this.setColour(stringHUE);
+		this.setTooltip("");
+		this.setHelpUrl("");
+	}
+
+};
+
+
+
+
+

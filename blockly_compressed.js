@@ -20906,6 +20906,7 @@ Blockly.FieldCheckbox.prototype.convertValueToBool_ = function(a) {
 
 };
 
+
 Blockly.fieldRegistry.register("field_checkbox", Blockly.FieldCheckbox);
 
 Blockly.FieldColour = function(a, b, c) {
@@ -22271,11 +22272,9 @@ Blockly.FieldVariable.dropdownCreate = function() {
 	if (this.sourceBlock_ && this.sourceBlock_.workspace)
 
 		for (var c = this.getVariableTypes_(), d = 0; d < c.length; d++) {
-
 			var e = this.sourceBlock_.workspace.getVariablesOfType(c[d]);
 
 			b = b.concat(e)
-
 		}
 
 	b.sort(Blockly.VariableModel.compareByName);
@@ -28807,3 +28806,15 @@ Blockly.Themes.Modern.categoryStyles = {
 Blockly.Themes.Modern = new Blockly.Theme(Blockly.Themes.Modern.defaultBlockStyles, Blockly.Themes.Modern.categoryStyles);
 
 Blockly.requires = {};
+
+
+
+
+
+
+
+
+
+
+
+

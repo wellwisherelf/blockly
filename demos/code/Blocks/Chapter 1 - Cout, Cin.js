@@ -276,6 +276,7 @@ Blockly.Blocks['cin_input'] = {
 			var add = workspace.newBlock('cin_stream_add');
 			add.initSvg();
 
+			console.log(this.cinStreamCount_);
 			connection.connect(add.previousConnection);
 			connection = add.nextConnection;
 		}

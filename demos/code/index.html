@@ -371,8 +371,7 @@
     <category name="Main Function" colour="#134796">
 	
 		<block type = "main" ></block>
-		<block type = "comment_single" ></block>
-		<block type = "comment_multiline" ></block>
+		<block type = "main_comment" ></block>
 
 	</category>
 	
@@ -589,6 +588,7 @@
 	<label text="Function Declaration" web-class="labelFunction"></label>
 	
 	<block type="user_function"></block>
+	<block type="user_function_class"></block>
 	
 	<label text="Function Declaration Parameter (Initializer)" web-class="labelFunction"></label>
 	
@@ -738,20 +738,25 @@
 	
 		<block type="ds_struct"></block>
 		<block type="ds_class"></block>
-		<block type="ds_class_inheritance"></block>
+		<block type="ds_constructor"></block>
+		<block type="ds_copy_constructor"></block>
 		<block type="ds_declare"></block>
 		<block type="ds_object_call"></block>
 		
-		
-		
-	
+	</category>
+
+    <category name="Chapter 8" colour="#134796">
+		<block type="variable_declare_ptr"></block>
+		<block type="variable_declare_ptr_class"></block>
+		<block type="get_var_ptr"></block>
+		<block type="pointer_null"></block>
+		<block type="pointer_nullptr"></block>
 	</category>
 	
     <category name="Testing" colour="#134796">
 	
 		<block type="check_childparent"></block>
 		<block type="check_updown"></block>
-		
 	
 	</category>
 
