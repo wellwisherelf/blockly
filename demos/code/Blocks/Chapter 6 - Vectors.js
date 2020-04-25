@@ -8,16 +8,36 @@ Blockly.Blocks['vector'] = {
     this.appendValueInput("valinp1")
         .setCheck("VecInit")
         .appendField("vector<")
-			.appendField(new Blockly.FieldDropdown([["int","myVecTypeInt"], ["size_t","myVecTypeSize_t"], ["double","myVecTypeDouble"], ["float","myVecTypeFloat"], ["char","myVecTypeChar"], ["string","myVecTypeString"], ["bool","myVecTypeBool"]]), "myVecType")
+		.appendField(new Blockly.FieldDropdown([["int","myVecTypeInt"], ["size_t","myVecTypeSize_t"], ["double","myVecTypeDouble"], ["float","myVecTypeFloat"], ["char","myVecTypeChar"], ["string","myVecTypeString"], ["bool","myVecTypeBool"]]), "myVecType")
         .appendField(">")
-        .appendField(new Blockly.FieldVariable("myVec"), "myVecDef");
+        .appendField(new Blockly.FieldVariable("myVec", null, ['isVec'], 'isVec'), "myVecDef");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(vectorHUE);
- this.setTooltip("A vector is like an array; it can store and access data. Unlike an array, its size can change.");
- this.setHelpUrl("http://www.cplusplus.com/reference/vector/vector/");
+	this.setTooltip("A vector is like an array; it can store and access data. Unlike an array, its size can change.");
+	this.setHelpUrl("http://www.cplusplus.com/reference/vector/vector/");
  
-  }
+	},
+
+	onchange: function(event){
+
+		var myVec = this.getField('myVecDef').getText();
+
+		//if the block is in the workspace
+		if(this.workspace){
+			C_Logic.vector.create_var(myVec);
+		}
+
+		//if the block has been deleted
+		if(Blockly.Events.VAR_RENAME === event.type){
+			C_Logic.vector.delete_var(myVec);
+		}
+
+		//console.log(Blockly.Variables.getAllVariableNames());
+
+
+	}
+	
 };
 
 
@@ -29,7 +49,7 @@ Blockly.C['vector'] = function(block) {
 	var code = '';
 	var std = 'std::';
 	
-	if(usingSTD === true){
+	if(C_Logic.namespace.using_namespace_std === true){
 		code += 'vector<';
 	}
 	else {
@@ -82,7 +102,6 @@ Blockly.Blocks['vec_init'] = {
 		//this.setOutput(true, typeConv(this.getField('myVarType').getText()) );
 		
 		dropdown_drop1 = typeConv(this.getField('myVarType').getText());
-		
 		
 	}
 };
@@ -193,8 +212,8 @@ Blockly.C['vec_init'] = function(block) {
 Blockly.Blocks['vectorsize'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldVariable("myVec"), "NAME")
-        .appendField(".size()");
+	.appendField(new Blockly.FieldVariable("myVec", null, ['isVec'], 'isVec'), "myVecDef")
+	.appendField(".size()");
     this.setOutput(true, "Number");
     this.setColour(vectorHUE);
  this.setTooltip("");
@@ -204,9 +223,9 @@ Blockly.Blocks['vectorsize'] = {
 
 
 Blockly.C['vectorsize'] = function(block) {
-	var variable_name = Blockly.C.variableDB_.getName(block.getFieldValue('NAME'), Blockly.Variables.NAME_TYPE);
+	var variable_name = Blockly.C.variableDB_.getName(block.getFieldValue('myVecDef'), Blockly.Variables.NAME_TYPE);
 	// TODO: Assemble C into code variable.
-	var code = this.getField('NAME').getText() + '.size()';
+	var code = this.getField('myVecDef').getText() + '.size()';
 	return [code, Blockly.C.ORDER_ATOMIC];
 };
 
@@ -216,7 +235,7 @@ Blockly.C['vectorsize'] = function(block) {
 Blockly.Blocks['vectorempty'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldVariable("myVec"), "NAME")
+	.appendField(new Blockly.FieldVariable("myVec", null, ['isVec'], 'isVec'), "myVecDef")
         .appendField(".empty()");
     this.setOutput(true, "Boolean");
     this.setColour(vectorHUE);
@@ -227,31 +246,31 @@ Blockly.Blocks['vectorempty'] = {
 
 
 Blockly.C['vectorempty'] = function(block) {
-	var variable_name = Blockly.C.variableDB_.getName(block.getFieldValue('NAME'), Blockly.Variables.NAME_TYPE);
+	var variable_name = Blockly.C.variableDB_.getName(block.getFieldValue('myVecDef'), Blockly.Variables.NAME_TYPE);
 	// TODO: Assemble C into code variable.
-	var code = this.getField('NAME').getText() + '.empty()';
+	var code = this.getField('myVecDef').getText() + '.empty()';
 	return [code, Blockly.C.ORDER_ATOMIC];
 };
 
 // Vector At Position
 
 Blockly.Blocks['vectoratposition'] = {
-  init: function() {
-    this.appendValueInput("NAME")
-        .setCheck(["Int", "Number"])
-        .appendField(new Blockly.FieldVariable("myVec"), "myVecVar")
-        .appendField(".at(");
-    this.appendDummyInput()
-        .appendField(")");
-    this.setOutput(true, null);
-    this.setColour(vectorHUE);
- this.setTooltip("");
- this.setHelpUrl("");
-  }
+	init: function() {
+		this.appendValueInput("NAME")
+			.setCheck(["Int", "Number"])
+			.appendField(new Blockly.FieldVariable("myVec", null, ['isVec'], 'isVec'), "myVecDef")
+			.appendField(".at(");
+		this.appendDummyInput()
+			.appendField(")");
+		this.setOutput(true, null);
+		this.setColour(vectorHUE);
+		this.setTooltip("");
+		this.setHelpUrl("");
+	}
 };
 
 Blockly.C['vectoratposition'] = function(block) {
-	var text_inp = this.getField('myVecVar').getText();
+	var text_inp = this.getField('myVecDef').getText();
 	var text_ind = Blockly.C.valueToCode(block, 'NAME', Blockly.C.ORDER_ATOMIC);
 	
 	var code = '';
@@ -263,22 +282,22 @@ Blockly.C['vectoratposition'] = function(block) {
 	return [code, Blockly.C.ORDER_ATOMIC];
 };
 
-Blockly.Blocks['vectorpushback'] = {
+Blockly.Blocks['vector_pushback'] = {
   init: function() {
     this.appendValueInput("NAME")
         .setCheck(null)
-        .appendField(new Blockly.FieldVariable("myVec"), "myVecVar")
+		.appendField(new Blockly.FieldVariable("myVec", null, ['isVec'], 'isVec'), "myVecDef")
         .appendField(".push_back");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(vectorHUE);
- this.setTooltip("Add");
- this.setHelpUrl("");
-  }
+	this.setTooltip("Add");
+	this.setHelpUrl("");
+	}
 };
 
-Blockly.C['vectorpushback'] = function(block) {
-	var variable_myvecvar = Blockly.C.variableDB_.getName(block.getFieldValue('myVecVar'), Blockly.Variables.NAME_TYPE);
+Blockly.C['vector_pushback'] = function(block) {
+	var variable_myvecvar = Blockly.C.variableDB_.getName(block.getFieldValue('myVecDef'), Blockly.Variables.NAME_TYPE);
 	var value_name = Blockly.C.valueToCode(block, 'NAME', Blockly.C.ORDER_ATOMIC);
 	// TODO: Assemble C into code variable.
 	var code = '';
@@ -292,16 +311,16 @@ Blockly.Blocks['vector_resize'] = {
   init: function() {
     this.appendValueInput("valinp1")
         .setCheck(["Number", "Int"])
-        .appendField(new Blockly.FieldVariable("myVec"), "myVecDef")
+		.appendField(new Blockly.FieldVariable("myVec", null, ['isVec'], 'isVec'), "myVecDef")
         .appendField(".resize(");
     this.appendDummyInput()
         .appendField(")");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(vectorHUE);
- this.setTooltip("Resizes the size of a vector.");
- this.setHelpUrl("");
-  }
+	this.setTooltip("Resizes the size of a vector.");
+	this.setHelpUrl("");
+	}
 };
 
 Blockly.C['vector_resize'] = function(block) {
@@ -313,6 +332,30 @@ Blockly.C['vector_resize'] = function(block) {
 	var temp = Math.abs(Math.floor(value_valinp1));
 	
 	code += variable_myvecdef + '.resize(' + temp + ');\n';
+	
+	return code;
+};
+
+Blockly.Blocks['vector_popback'] = {
+	init: function() {
+	  this.appendDummyInput()
+	  .appendField(new Blockly.FieldVariable("myVec", null, ['isVec'], 'isVec'), "myVecDef")
+	  .appendField(".pop_back()");
+
+	  this.setPreviousStatement(true, null);
+	  this.setNextStatement(true, null);
+	  this.setColour(vectorHUE);
+	  this.setTooltip("Resizes the size of a vector.");
+	  this.setHelpUrl("");
+	}
+};
+
+Blockly.C['vector_popback'] = function(block) {
+	var variable_myvecdef = Blockly.C.variableDB_.getName(block.getFieldValue('myVecDef'), Blockly.Variables.NAME_TYPE);
+	// TODO: Assemble C into code variable.
+	var code = '';
+	
+	code += variable_myvecdef + '.pop_back();\n';
 	
 	return code;
 };

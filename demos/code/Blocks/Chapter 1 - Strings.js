@@ -6,22 +6,88 @@ Blockly.Blocks['printf'] = {
 	init: function() {
 		this.appendDummyInput()
 			.appendField("printf(")
-			.appendField(new Blockly.FieldTextInput(""), "inp1")
+			.appendField(new Blockly.FieldDropdown(
+			[["","printf_"], 
+			["i","printf_i"], //signed decimal integer
+			["u","printf_u"], //unsigned decimal integer
+			["x","printf_x"], //unsigned hexadecimal integer
+			["X","printf_X"], //unsigned hexadecimal integer (uppercase)
+			["f","printf_f"], //decimal floating point, lowercase
+			["F","printf_F"], //decimal floating point, uppercase
+			["e","printf_e"], //scientific notation (mantissa/exponent), lowercase
+			["E","printf_E"], //scientific notation (mantissa/exponent), uppercase
+			["g","printf_g"], //use the shortest representation: %e or %f
+			["G","printf_G"], //use the shortest representation: %E or %F
+			["a","printf_a"], //hexadecimal floating point, lowercase
+			["A","printf_A"], //hexadecimal floating point, uppercase
+			["c","printf_c"], //character
+			["s","printf_s"], //string of characters
+			["p","printf_p"]]), //pointer address
+			"printf_type")
+			.appendField(', ')
+			.appendField(new Blockly.FieldTextInput(''), 'textinp1')
 			.appendField(")");
+			
+
 		this.setPreviousStatement(true, null);
 		this.setNextStatement(true, null);
 		this.setColour(stringHUE);
 		this.setTooltip("A standard string output.\nRequires - <iostream> or <string>\nNote - Printf is used primarily as a simple string output. More complex output requires cout.");
 		this.setHelpUrl("http://www.cplusplus.com/reference/cstdio/printf/");
+		this.setInputsInline(true);
+	
+	},
+	
+	onchange: function(){
+		
 	}
 };
 
 Blockly.C['printf'] = function(block) {
-	var text_inp1 = block.getFieldValue('inp1');
+	
+	var dropdown_printf = this.getField('printf_type').getText();
+	var dropdown_printf_val = this.getFieldValue('printf_type');
+	
+	var text_inp1 = block.getFieldValue('textinp1');
 	// TODO: Assemble C into code variable.
-	var code = 'printf("';
-	code += text_inp1 + '");\n';
-
+	var code = 'printf(';
+	var quote = false;
+	
+	switch(dropdown_printf_val){
+		case 'printf_':
+			quote = true;
+		break;
+		
+		case 'printf_c':
+			quote = true;
+		break;
+		
+		case 'printf_s':
+			quote = true;
+		break;
+		
+		default:
+			quote = false;
+		break;
+	}
+	
+	
+	if(dropdown_printf.length === 1){
+		code += '"%' + dropdown_printf + '", ';
+	}
+	
+	if(quote){
+		code += '"';
+	}
+	
+	code += text_inp1;
+	
+	if(quote){
+		code += '"';
+	}
+	
+	code += ');\n';
+	
 	return code;
 };
 
@@ -43,7 +109,7 @@ Blockly.C['to_string'] = function(block) {
 	var code = '';
 	var std = '';
 
-	if(usingSTD === false){
+	if(C_Logic.namespace.using_namespace_std === false){
 		std += 'std::';
 	}
 

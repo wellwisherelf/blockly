@@ -51,3 +51,52 @@ Blockly.C['get_var'] = function(block) {
 	// TODO: Change ORDER_NONE to the correct strength.
 	return [code, Blockly.C.ORDER_NONE];
 };
+
+//A block that can be used for any type
+Blockly.Blocks['block_type_all'] = {
+	init: function() {
+		this.appendDummyInput()
+			.appendField(new Blockly.FieldTextInput(""), "input");
+		
+		
+		
+		this.setOutput(true, "string");
+		this.setColour(variableHUE);
+		this.setTooltip("");
+		this.setHelpUrl("");
+	},
+	
+	onchange: function(){
+		if(this.parentBlock_ == null){
+			this.setWarningText('Block warning, this block has a return and must be connected.');
+		}
+		else {
+			this.setWarningText(null);
+		}
+	}
+}
+
+
+Blockly.C['block_type_all'] = function(block) {
+	var variable_var = Blockly.C.variableDB_.getName(block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
+	// TODO: Assemble JavaScript into code variable.
+	var code = '';
+	code += variable_var;
+	// TODO: Change ORDER_NONE to the correct strength.
+	return [code, Blockly.C.ORDER_NONE];
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -133,12 +133,6 @@ Blockly.Block = function(workspace, prototypeName, opt_id) {
    */
   this.comment = null;
 
-  /**
-   * A string representing the name of the block.
-   * @type {string|Blockly.blockName}
-   * @current March 2020
-   */
-  this.blockName = opt_id;
 
   /**
    * Boolean checks to see if this is a

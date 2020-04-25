@@ -98,7 +98,7 @@ Blockly.Blocks['user_function'] = {
 		var clauseBlock = containerBlock.getInputTargetBlock('STACK');
 
 		while(clauseBlock){
-			switch(clauseBlock.blockName){
+			switch(clauseBlock.type){
 				case 'func_parameters':
 					
 					this.paramCount_++;
@@ -127,7 +127,7 @@ Blockly.Blocks['user_function'] = {
 		var i = 1;
 
 		while(clauseBlock){
-			switch(clauseBlock.blockName){
+			switch(clauseBlock.type){
 				case 'func_parameters':
 					var paramInput = this.getInput('paraminp' + i);
 					clauseBlock.valueConnection_ = paramInput && paramInput.connection.targetConnection;
@@ -145,7 +145,11 @@ Blockly.Blocks['user_function'] = {
 		}
 	},
 
-	onchange: Blockly.Blocks.requireInFunction
+	onchange: Blockly.Blocks.requireInFunction,
+
+	onchange: function(){
+		
+	}
 
 
 
@@ -162,7 +166,7 @@ Blockly.C['user_function'] = function(block) {
 	var code = '';
 	var std = '';
 
-	if(dropdown_myfuncreturn === 'string' && usingSTD === false){
+	if(dropdown_myfuncreturn === 'string' && C_Logic.namespace.using_namespace_std === false){
 		std += 'std::';
 	}
 
@@ -191,7 +195,7 @@ Blockly.Blocks['func_parameters'] = {
     	    .appendField(new Blockly.FieldDropdown([["int","myParamInt"], ["size_t","myParamSize_t"], ["double","myParamDouble"], ["float","myParamFloat"], ["char","myParamChar"], ["string","myParamString"], ["bool","myParamBool"]]), "myParamType")
 			.appendField(new Blockly.FieldDropdown([["","myPtrNone"], ["&","myPtrAdd"], ["*&","myPtrAddPtr"], ["*","myPtrAdd1"], ["**","myPtrAdd2"], ["***","myPtrAdd3"]]), "myPtr")
     	    .appendField("Name:")
-			.appendField(new Blockly.FieldVariable("param"), "myPName");
+			.appendField(new Blockly.FieldVariable(null), "myPName");
 		
     	this.setInputsInline(false);
 
@@ -573,16 +577,12 @@ Blockly.Blocks['function_mutator_return'] = {
 Blockly.Blocks['user_function_class'] = {
 	init: function() {
 		
-		this.paramField = '';
-		
-		
-		
-		
 		this.appendDummyInput("NAME")
 			.appendField(new Blockly.FieldVariable("myClass", null, ['isClass'], 'isClass'), "myClassVar")
 			.appendField(new Blockly.FieldDropdown([["","myPtrNone"], ["*","myPtrAdd1"], ["&","myPtrAdd"], ["*&","myPtrAddPtr"], ["**","myPtrAdd2"], ["***","myPtrAdd3"]]), "myPtr")
 			.appendField(new Blockly.FieldVariable("myFunction", null, ['isFunc'], 'isFunc'), "myFuncVar")
-			.appendField("(" + this.paramField + ")")
+			.appendField("()");
+			
 		this.appendStatementInput("statement_inp1")
 			.setCheck(null);
 		this.setPreviousStatement(true, null);
@@ -656,7 +656,7 @@ Blockly.Blocks['user_function_class'] = {
 
 		this.paramField = '';
 		while(clauseBlock){
-			switch(clauseBlock.blockName){
+			switch(clauseBlock.type){
 				case 'func_parameters':
 					
 					
@@ -680,7 +680,7 @@ Blockly.Blocks['user_function_class'] = {
 		var i = 1;
 
 		while(clauseBlock){
-			switch(clauseBlock.blockName){
+			switch(clauseBlock.type){
 				case 'func_parameters':
 					var paramInput = this.getInput('paraminp' + i);
 					clauseBlock.valueConnection_ = paramInput && paramInput.connection.targetConnection;
@@ -712,7 +712,7 @@ Blockly.Blocks['user_function_class'] = {
 			
 		}
 		
-		//console.log(this.paramField);
+		console.log(this.paramField);
 		
 	}
 

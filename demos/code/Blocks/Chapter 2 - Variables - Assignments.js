@@ -398,7 +398,7 @@ Blockly.C['math_setprecision'] = function(block) {
 	var code = '';
 	var std = 'std::';
 	
-	if(usingSTD === true){
+	if(C_Logic.namespace.using_namespace_std === true){
 		
 	}
 	

@@ -134,7 +134,6 @@ Blockly.C['include_vector'] = function(block) {
 };
 
 
-var usingSTD = false; // Variable to convert changes in std
 Blockly.Blocks['using_namespace_std'] = {
 	init: function() {
 		this.appendDummyInput()
@@ -144,17 +143,17 @@ Blockly.Blocks['using_namespace_std'] = {
 		this.setColour(230);
 		this.setTooltip("Automatically includes the std library when calling the standard namespace. \nFor instance:\nstd::cout -> cout\nstd::endl -> endl\n std::getline(std::cin, myVar) -> getline(cin, myVar)\nstd::vector<std::string> myVar -> vector<string> myVar"); 
 		this.setHelpUrl("https://en.wikipedia.org/wiki/C%2B%2B_Standard_Library");
-		this.setDeletable(true);
+    this.setDeletable(true);
+    
+    C_Logic.namespace.using_namespace_std = true;
+    
+
 	}
-	
-	
-	
+  
 };
 
 Blockly.C['using_namespace_std'] = function(block) {
   // TODO: Assemble C into code variable.
-  
-  usingSTD = true;
   
   var code = "using namespace std;\n";
   return code;

@@ -1,5 +1,11 @@
 
+
+
 var variableHUE = 330;
+
+function popupFunction(){
+	console.log('create function clicked');
+}
 
 //type check conversion, 
 function typeConv(type){
@@ -37,9 +43,8 @@ Blockly.Blocks['variable_declare'] = {
 		
 		this.appendValueInput("NAME")
 			.appendField("Declare: ")
-			.appendField(new Blockly.FieldDropdown([["int","myVarTypeInt"], ["size_t","myVarTypeSize_t"], ["double","myVarTypeDouble"], ["float","myVarTypeFloat"], ["char","myVarTypeChar"], ["string","myVarTypeString"], ["bool","myVarTypeBool"], ["auto","myVarTypeAuto"], ["short","myVarTypeShort"], ["long", "myVarTypeLong"], ["long long", "myVarTypeLongLong"]]), "myVarType")
+			.appendField(new Blockly.FieldDropdown([["int","myVarTypeInt"], ["size_t","myVarTypeSize_t"], ["float","myVarTypeFloat"], ["char","myVarTypeChar"], ["string","myVarTypeString"], ["bool","myVarTypeBool"], ["auto","myVarTypeAuto"], ["short","myVarTypeShort"], ["long", "myVarTypeLong"], ["long long", "myVarTypeLongLong"]]), "myVarType")
 			.appendField(new Blockly.FieldVariable("myVar", null, ['isVar'], 'isVar'), "myVarDec")
-			//.appendField(new Blockly.FieldVariable('X', null, ['Number', 'String'], 'Number' )
 			.setCheck(["Int", "Size_t", "Double", "Float", "Char", "String", "Bool", "Auto", "Variable"]);
 			
 			this.setInputsInline(false);
@@ -58,7 +63,29 @@ Blockly.Blocks['variable_declare'] = {
 		this.setMutator(new Blockly.Mutator(['']));
 		this.setDataStr("isVar", true);
 		
+
 	},
+
+	//TODO: make custom menu to create a
+	//new get_var block
+	/*
+	customContextMenu: function(options){
+		var option = this;
+
+		option.enabled = {enabled : true};
+
+		option.text = 'create var block';
+		
+		option.callback();
+		
+		var name = this.getFieldValue('myVarDec');
+
+		console.log(name);
+
+		options.push(option);
+	},
+	*/
+
 	//Save Mutation Data
 	mutationToDom: function(){
 		var container = document.createElement('mutation');
@@ -101,24 +128,51 @@ Blockly.Blocks['variable_declare'] = {
 	},
 
 	onchange: function(){
+		//Value Input
 		var value_name = Blockly.C.valueToCode(this, 'NAME', Blockly.C.ORDER_ATOMIC);
+
+		//Data types
+		var dropdown_myvartype = this.getField('myVarType').getText();
 		
+		dropdown_myvartype = typeConv(dropdown_myvartype);
+
 		//Declare a string that will aggregate all warnings
 		var TT = "";
 		
 		
 		if(!value_name && this.con){
-			TT += 'Warning, const variable requires an initializer';
+			TT += 'Warning, const variable requires an initializer.\n';
 		}
 		
+		if(dropdown_myvartype == 'Auto' && value_name.length < 1){
+			if(TT.length > 0){
+				TT += '\n';
+			}
+
+			TT += 'Warning, auto variable requires an initializer.\n';
+
+		}
 		
+		//this.childBlocks_[0] refers to the next connected block to the right
+		//If there is a connected block, and that connected block is the initialization block
+		if(this.childBlocks_[0] && (this.childBlocks_[0].type == 'var_initialization')){
+			
+			//If the type is not auto, and the var declaration type is not the same as var initialization type
+			if(dropdown_myvartype != 'Auto' && dropdown_myvartype != this.childBlocks_[0].typeName){
+
+
+				TT += 'Warning, var declaration is "' + dropdown_myvartype + '", var initialization is "' + this.childBlocks_[0].typeName + '".\n';
+
+			}
+			
+		}
+
 		if(TT.length > 0){
 			this.setWarningText(TT);
 		}
 		else {
 			this.setWarningText(null);
 		}
-		
 		
 	}
 
@@ -143,27 +197,17 @@ Blockly.C['variable_declare'] = function(block) {
 
 	//Numeric Types
 	
-	//If variable type is auto but is uninitialized
-	if(dropdown_myvartype === 'auto' && value_name.length < 1){
-		code += dropdown_myvartype + ' ' + variable_myvardec + ' = 1';
-	}
-	//If variable type is auto and is initialized
-	else if(dropdown_myvartype === 'auto' && value_name.length > 0){
-		code += dropdown_myvartype + ' ' + variable_myvardec + ' = ' + value_name;
+	//if using namespace std; is not active, and type is string
+	if(C_Logic.namespace.using_namespace_std === false && dropdown_myvartype === 'string'){
+		code += 'std::' + dropdown_myvartype + ' ' + variable_myvardec;
 	}
 	else {
-		//if using namespace std; is not active, and type is string
-		if(usingSTD === false && dropdown_myvartype === 'string'){
-			code += 'std::' + dropdown_myvartype + ' ' + variable_myvardec;
-		}
-		else {
-			// using namespace std; is active 
-			code += dropdown_myvartype + ' ' + variable_myvardec;
-		}
-		// if initialized, initialize
-		if(value_name.length > 0){
-			code += ' = ' + value_name;
-		}
+		// using namespace std; is active 
+		code += dropdown_myvartype + ' ' + variable_myvardec;
+	}
+	// if initialized, initialize
+	if(value_name.length > 0){
+		code += ' = ' + value_name;
 	}
 	
 	
@@ -180,7 +224,7 @@ Blockly.Blocks['var_initialization'] = {
 	init: function() {
 		this.appendDummyInput()
 			.appendField("type: ")
-			.appendField(new Blockly.FieldDropdown([["int","myVarTypeInt"], ["size_t","myVarTypeSize_t"], ["double","myVarTypeDouble"], ["float","myVarTypeFloat"], ["char","myVarTypeChar"], ["string","myVarTypeString"], ["bool","myVarTypeBool"]]), "myVarType");
+			.appendField(new Blockly.FieldDropdown([["int","myVarTypeInt"], ["size_t","myVarTypeSize_t"], ["double","myVarTypeDouble"], ["char","myVarTypeChar"], ["string","myVarTypeString"], ["bool","myVarTypeBool"], ["short","myVarTypeShort"], ["long", "myVarTypeLong"], ["long long", "myVarTypeLongLong"]]), "myVarType")
 		this.appendDummyInput()
 			.appendField("input:")
 			.appendField(new Blockly.FieldTextInput(""), "text1");
@@ -199,8 +243,119 @@ Blockly.Blocks['var_initialization'] = {
 		//Set the output type of the block
 		this.setOutput(this.typeName);
 		
+		var inp = this.getFieldValue('text1');
+
+		//Tooltip for warnings
+		var TT = '';
+
+
+		
+		if(isNaN(inp) == true && inp.length > 0 && (this.typeName == 'Int' || this.typeName == 'Size_t' || this.typeName == 'Short' || this.typeName == 'Long' || this.typeName == 'Long long')){
+			TT += 'Warning, "' + inp + '" is not a number.\n';
+		}
+		else {
+			var x = +inp;
+
+			if(this.typeName == 'Int' || this.typeName == 'Size_t'){
+				if(inp.indexOf('.') > -1){
+					TT += 'Warning, "' + this.typeName + '" cannot have decimal places.\n';
+				}
+	
+			}
+			if(this.typeName == 'Size_t'){
+				if(inp.indexOf('-') > -1){
+					TT += 'Warning, "' + this.typeName + '" is unsigned and cannot be negative.\n';
+				}
+			}
+			
+			if(this.typeName == 'Double'){
+				
+			}
+
+			if(this.typeName == 'Short'){
+				if(x > 32767){
+					TT += 'Warning, "' + inp + '" is above the range of "' + this.typeName + '" (32767). An overflow will result.\n';
+				}
+				if(x < -32768){
+					TT += 'Warning, "' + inp + '" is below the range of "' + this.typeName + '" (-32768).  An underflow will result.\n';
+				}
+			}
+
+			if(this.typeName == 'Long'){
+				if(x > 4294967295){
+					TT += 'Warning, "' + inp + '" is above the range of "' + this.typeName + '" (4294967295 or 2^32). An overflow will result.\n';
+				}
+				if(x < -4294967296){
+					TT += 'Warning, "' + inp + '" is below the range of "' + this.typeName + '" (-4294967296 or -2^32 - 1).  An underflow will result.\n';
+				}
+			}
+
+			if(this.typeName == 'Long long'){
+				if(inp.length >= 20){
+					TT += 'Warning, "' + inp + '" is approximately out of the range of "' + this.typeName + '" (2^64).\n';
+				}
+			}
+		}
+		
+		//Non number types
+		switch(this.typeName){
+			case 'Char':
+				if(inp.length > 1 && !inp.includes('\\')){
+					TT += 'Warning, type "' + this.typeName + '" cannot have more than one character.\n';
+				}
+				else if(inp.includes('\\') && inp.length === 1){
+					TT += 'Warning, "\\" cannot be used alone in a char, try "\\\\".';
+				}
+				else if(inp.length === 0){
+					TT += 'Warning, type "' + this.typeName + '" must require at least one character in initialization.\n';
+				}
+
+			break;
+
+			case 'String':
+				// temp var to see if \" exists instead of just "
+				var proper_quote = true;
+
+
+				if(inp.includes('"') && !inp.includes('\\')){
+					proper_quote = false;
+				}
+				
+				//TODO \" is regulated, but "\ isn't
+				for(var i = 0; i < inp.length; ++i){
+					//If a backslash precedes a quote
+					if(inp.charAt(i) != '\\' && inp.charAt(i + 1) == '"'){
+						proper_quote = false;
+
+						//If there exists at least one instance of an inproper quote,
+						//there is no reason to keep checking
+						break;
+					}
+
+				}
+
+				if(!proper_quote){
+					TT += 'Warning, a string literal cannot have a quote.\n';
+				}
+
+
+				//String protects: \"
+			break;
+
+			case 'Bool':
+				if(inp != 'true' && inp != 'false' && inp != '0' && inp != '1'){
+					TT += 'Warning, "' + inp + '" is not of type ' + this.typeName + '.\n';
+				}
+			break;
+		}
+
+
 		if(this.parentBlock_ == null){
-			this.setWarningText('Block warning, this block has a return and must be connected.');
+			TT += 'Block warning, this block has a return and must be connected.\n';
+		}
+
+		if(TT.length > 0){
+			this.setWarningText(TT);
 		}
 		else {
 			this.setWarningText(null);
@@ -214,98 +369,19 @@ Blockly.C['var_initialization'] = function(block) {
 	var text_text1 = block.getFieldValue('text1');
 	// TODO: Assemble C into code variable.
 	var code = '';
-	var error = "//WRONG TYPE ERROR INITIALIZATION\n";
-	var errorCheck = false;
-	
-	//Helper Function for error
-	function alert_WrongType(TT){
-		block.setWarningText("Wrong type has been selected in variable initialization:\n" + TT + " is not of type " + dropdown_drop1);
-	}
-	
 
 	if(text_text1.length > 0){
 		
-		//Check type
-		if(dropdown_drop1 == 'Int' || dropdown_drop1 == 'Size_t'){
-			
-			//If text_text1 is not a number
-			if(isNaN(text_text1) == true){
-				alert_WrongType(text_text1); 
-				text_text1 = 0.0;
-				errorCheck = true;
-			}
-			
-			//Since it is Int/Size_t, round the down
-			text_text1 = Math.floor(text_text1);
-			
-			//If type is Size_t, get the absolute value
-			if(dropdown_drop1 == 'Size_t'){
-				text_text1 = Math.abs(text_text1);
-			}
-			
-		}
-		
-		//Check type
-		if(dropdown_drop1 == 'Double' || dropdown_drop1 == 'Float'){
-			if(isNaN(text_text1) == true){
-				alert_WrongType(text_text1); 
-				text_text1 = 0.0;
-				errorCheck = true;
-			}
-		}
-		
-		//Check type
 		if(dropdown_drop1 == 'Char'){
-			if(typeof text_text1 === 'string'){
-				text_text1 = "'" + text_text1.substring(0, 1) + "'";
-			}
-			else {
-				alert_WrongType(text_text1); 
-				text_text1 = "'a'";
-				errorCheck = true;
-			}
-			
-			
+			code += "'" + text_text1 + "'";
 		}
-		
-		//Check type
-		if(dropdown_drop1 == 'String'){
-			if(typeof text_text1 === 'string'){
-				text_text1 = '"' + text_text1 + '"';
-			}
-			else {
-				alert_WrongType(text_text1); 
-				text_text1 = "str";
-				errorCheck = true;
-			}
+		else if(dropdown_drop1 == 'String'){
+			code += '"' + text_text1 + '"';
 		}
-		
-		//Check type
-		if(dropdown_drop1 == 'Bool'){
-			if(text_text1 == 'true' || text_text1 == 'false'){
-				
-			}
-			else {
-				alert_WrongType(text_text1); 
-				text_text1 = "true";
-				errorCheck = true;
-			}
+		else {
+			code += text_text1;
 		}
-		
-		
-		
-		code += text_text1;
-		
-		//If data type is Double or Float, and is a whole number
-		if( ( dropdown_drop1 == 'Double' || dropdown_drop1 == 'Float') && text_text1 % 1 === 0){
-			
-			//If user only inputs a 2, it will become a 2.0
-			//If a user inputs a 2.0, it will only output a 2.0
-			if(text_text1.indexOf(".0") === -1){
-				code += ".0";
-			}
-			
-		}
+
 	}
 
 	//Update the type

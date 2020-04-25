@@ -3,11 +3,9 @@ var switchHUE = 60;
 
 Blockly.Blocks['switch_statement'] = {
 	init: function() {
-		this.appendValueInput("valinp1")
-		    .setCheck("Variable")
-		    .appendField("switch block");
-		this.appendStatementInput("state1")
-		    .setCheck(null);
+		this.appendDummyInput()
+			.appendField("switch block")
+			.appendField(new Blockly.FieldVariable("myVar", null, ['isVar'], 'isVar'), "myVarDec")
 		this.setInputsInline(false);
 		this.setPreviousStatement(true, null);
 		this.setNextStatement(true, null);
@@ -16,76 +14,184 @@ Blockly.Blocks['switch_statement'] = {
 		this.setHelpUrl("https://www.tutorialspoint.com/cplusplus/cpp_switch_statement.htm");
 		
 		
-		this.setMutator(new Blockly.Mutator(['switch_case']));
+		this.setMutator(new Blockly.Mutator(['switch_case_input', 'switch_case_default']));
 		
 		this.caseCount_ = 0;
+		this.defaultCount_ = 0;
 		
 	},
 
 	mutationToDom: function(){
-		if(!this.caseCount_){
+		if(!this.caseCount_ && !this.defaultCount_){
 		  return null;
 		}
+
 		var container = document.createElement('mutation');
+
 		if(this.caseCount_){
-		  container.setAttribute('caseadd', this.caseCount_);
+			container.setAttribute('caseadd', this.caseCount_);
 		}
+
+		if(this.defaultCount_){
+			container.setAttribute('default', 1);
+		}
+
 		return container;
 	},
 
 	domToMutation: function(xmlElement){
 		this.caseCount_ = parseInt(xmlElement.getAttribute('caseadd'), 10);
+		this.defaultCount_ = parseInt(xmlElement.getAttribute('default'), 10);
+
+		for(var i = 1; i <= this.caseCount_; ++i){
+			this.appendStatementInput('stateinp' + i).setCheck(null).appendField('case: ').setAlign(Blockly.ALIGN_RIGHT)
+			.appendField(new Blockly.FieldTextInput(this.caseCount_), "text" + i);
+		}
+
+		if(this.defaultCount_){
+			this.appendStatementInput('default')
+				.appendField('default: ')
+				.setAlign(Blockly.ALIGN_RIGHT)
+				.setCheck(null);
+		}
 
 	},
 
 	decompose: function(workspace){
 		var containerBlock = workspace.newBlock('switch_case_mutator');
 		containerBlock.initSvg();
+
+		var connection = containerBlock.getInput('STACK').connection;
+
+		for(var i = 1; i <= this.caseCount_; ++i){
+			var add = workspace.newBlock('switch_case_input');
+			add.initSvg();
+
+			connection.connect(add.previousConnection);
+			connection = add.nextConnection;
+		}
+
+		if(this.defaultCount_){
+			var defaultBlock = workspace.newBlock('switch_case_default');
+			defaultBlock.initSvg();
+
+			connection.connect(defaultBlock.previousConnection);
+		}
+
 		return containerBlock;
 	},
 
 	compose: function(containerBlock){
 
+		if(this.defaultCount_){
+			this.removeInput('default');
+		}
+
+		this.defaultCount_ = 0;
+
+		for(var i = this.caseCount_; i > 0; --i){
+			this.removeInput('stateinp' + i);
+		}
+
+		this.caseCount_ = 0;
+
+		var clauseBlock = containerBlock.getInputTargetBlock('STACK');
+
+		while(clauseBlock){
+			
+			switch(clauseBlock.type){
+
+				case 'switch_case_input':
+					this.caseCount_++;
+
+					var caseInput = this.appendStatementInput('stateinp' + this.caseCount_)
+						.setCheck(null).appendField('case: ').setAlign(Blockly.ALIGN_RIGHT)
+						.appendField(new Blockly.FieldTextInput(this.caseCount_), "text" + this.caseCount_);
+
+
+					if(clauseBlock.statementConnection_){
+						caseInput.connection.connect(clauseBlock.statementConnection_);
+					}
+
+				break;
+				
+				case 'switch_case_default':
+					this.defaultCount_++;
+					var defaultInput = this.appendStatementInput('default');
+					defaultInput.appendField('default: ').setAlign(Blockly.ALIGN_RIGHT).setCheck(null);
+
+					
+					if(clauseBlock.statementConnection_){
+						defaultInput.connection.connect(clauseBlock.statementConnection_);
+					}
+
+				break;
+
+				default:
+					throw 'Unknown block type.';
+			}
+
+			clauseBlock = clauseBlock.nextConnection
+			&& clauseBlock.nextConnection.targetBlock();
+
+		}
+
 	},
 
+	saveConnections: function(containerBlock){
+		var clauseBlock = containerBlock.getInputTargetBlock('STACK');
+		var i = 1;
 
-	//
-	getName: function(){
-		return ['Switch'];
-	}
+		while(clauseBlock){
+			switch(clauseBlock.type){
+				case 'switch_case_input':
+					var inputPrint = this.getInput('stateinp' + i);
+					clauseBlock.statementConnection_ = inputPrint && inputPrint.connection.targetConection;
+					clauseBlock.statementConnection = i++;
+				break;
+
+				case 'switch_case_default':
+
+					var defaultInput = this.getInput('default');
+
+					clauseBlock.statementConnection_ = defaultInput
+					&& defaultInput.connection.statementConnection_;
+
+				break;
+
+				default: 
+					throw 'Unknown block type.';
+			}
+			clauseBlock = clauseBlock.nextConnection
+			&& clauseBlock.nextConnection.targetBlock();
+		}
+
+	},
+
+	onchange: Blockly.Blocks.requireInFunction
 };
 
 Blockly.C['switch_statement'] = function(block) {
-	var value_valinp1 = Blockly.C.valueToCode(block, 'valinp1', Blockly.C.ORDER_ATOMIC);
-	var statements_state1 = Blockly.C.statementToCode(block, 'state1');
-	// TODO: Assemble C into code variable.
+
 	var code = '';
-
-	code += 'switch(' + value_valinp1 + '){\n';
-	code += statements_state1;
-	code += '}\n';
-
-
 	return code;
 };
 
-Blockly.C
-
 
 Blockly.Blocks['switch_case'] = {
-  init: function() {
-    this.appendValueInput("valinp1")
-        .setCheck(["Int", "Size_t", "Char", "Number", "Boolean"])
-        .appendField("switch case:");
-    this.appendStatementInput("state1")
-        .setCheck(null);
-    this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(switchHUE);
- this.setTooltip("The case statement; this functions similarly to an else if statement.\nInput - Int, Char, Variable");
- this.setHelpUrl("https://www.tutorialspoint.com/cplusplus/cpp_switch_statement.htm");
-  }
+	init: function() {
+    	this.appendValueInput("valinp1")
+    	    .setCheck(["Int", "Size_t", "Char", "Number", "Boolean"])
+    	    .appendField("switch case:");
+    	this.appendStatementInput("state1")
+    	    .setCheck(null);
+    	this.setInputsInline(false);
+    	this.setPreviousStatement(true, null);
+    	this.setNextStatement(true, null);
+    	this.setColour(switchHUE);
+		this.setTooltip("The case statement; this functions similarly to an else if statement.\nInput - Int, Char, Variable");
+		this.setHelpUrl("https://www.tutorialspoint.com/cplusplus/cpp_switch_statement.htm");
+	}
 };
 
 Blockly.C['switch_case'] = function(block) {
@@ -153,10 +259,9 @@ Blockly.C['switch_break'] = function(block) {
 Blockly.Blocks['switch_case_mutator'] = {
 	init: function(){
 	  	//The Variable for the switch case
-	  	this.appendDummyInput().appendField('Switch Case: ')
-	  	.appendField(new Blockly.FieldVariable("myVar"), "myVarDec");
+	  	this.appendDummyInput().appendField('Switch Case: ');
 		
-		this.appendStatementInput('state1').setCheck(['switch_case']);
+		this.appendStatementInput('STACK').setCheck(['switch_case']);
 		
 	  	this.setPreviousStatement(false);
 	  	this.setNextStatement(false);
@@ -170,8 +275,25 @@ Blockly.Blocks['switch_case_mutator'] = {
 Blockly.Blocks['switch_case_input'] = {
 	init: function(){
 		this.appendDummyInput()
-			.appendField(new Blockly.FieldTextInput("input"), "inp");
+			.appendField('add');
 		
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
+		this.setColour(switchHUE);
+		this.setTooltip('');
+		this.setHelpUrl('');
+	}
+}
+
+Blockly.Blocks['switch_case_default'] = {
+	init: function(){
+		this.appendDummyInput()
+			.appendField('default');
 		
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(false);
+		this.setColour(switchHUE);
+		this.setTooltip('');
+		this.setHelpUrl('');
 	}
 }

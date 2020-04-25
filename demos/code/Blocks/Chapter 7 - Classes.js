@@ -10,8 +10,6 @@ Blockly.Blocks['ds_struct'] = {
 		this.appendStatementInput("state1")
 			.setCheck(null);
 		
-			
-			
 		this.setPreviousStatement(true, null);
 		this.setNextStatement(true, null);
 		this.setColour(classHue);
@@ -23,7 +21,11 @@ Blockly.Blocks['ds_struct'] = {
 		//Default this to a struct
 		this.setDataStr("isStruct", true);
 		
-
+		//Array to keep track of the names (member names)
+		this.mNames_ = [];
+		
+		//Array to keep track of the types (member names)
+		this.mTypes_ = [];
 	},
 
 	mutationToDom: function(){
@@ -44,6 +46,92 @@ Blockly.Blocks['ds_struct'] = {
 
 	compose: function(containerBlock){
 		
+	},
+	
+	onchange: function(){
+		
+		//an array to log the IDs
+		//of blocks that have 
+		//already been counted
+		var log = [];
+		
+		//default to empty
+		this.mNames_ = [];
+
+		create_node_log = function(node){
+			if(!node){
+				throw 'Invalid';
+			}
+	
+			if(!validate_node_log(node)){
+				log.push(node);
+			}
+		}
+
+		//Check if a variable exists via a vector declaration
+		validate_node_log = function(node){
+			if(!node){
+				throw 'Invalid';
+			}
+	
+			return (log.includes(node));
+		}
+
+
+		//We must traverse through a tree using depth
+		var root = this;
+
+		//ptr is which ever node we're
+		//looking at
+		var ptr = root;
+
+		//right is value and statement inputs
+		var right = null;
+
+		//left is next statement
+		var left = null;
+
+		//If struct tree is populated
+		if(ptr.childBlocks_[0]){
+
+			ptr = ptr.childBlocks_[0];
+
+
+			//point at the first 
+			while(ptr != undefined){
+
+				this.mNames_.push(ptr.type);
+				create_node_log(ptr.id);
+
+
+				//right looks at the right block
+				right = ptr.childBlocks_[0];
+		
+				//left looks at the bottom block
+				left = ptr.childBlocks_[1];
+
+				//while there is a block to the right
+				while(right != undefined){
+					this.mNames_.push(right.type);
+					create_node_log(right.id);
+
+					right = right.childBlocks_[0];
+
+				}
+				ptr = ptr.childBlocks_[1];
+
+
+
+			}
+		}
+
+		//console.log(this.mNames_);
+
+		console.log(log);
+
+		//console.log(this.childBlocks_[0].childBlocks_[0].type);
+
+
 	}
 };
 
@@ -128,8 +216,16 @@ Blockly.Blocks['ds_class_inheritance'] = {
 			.appendField('class')
 			.appendField(new Blockly.FieldVariable("myClass", null, ['isClass'], 'isClass'), "myClassDec");
 		this.appendDummyInput().appendField("public");
+		
+		
+		
+		
 		this.appendStatementInput("state1")
 			.setCheck(null);
+		
+		
+		
+		
 		
 		this.appendDummyInput().appendField("protected");
 		this.appendStatementInput("state2").setCheck(null).appendField("");
@@ -287,7 +383,7 @@ Blockly.Blocks['class_mutator'] = {
 	init: function(){
 
 		this.appendDummyInput()
-			.appendField(LOC.ch7.class);
+			.appendField('mutator');
 
 		this.appendStatementInput('state1')
 			.appendField('')
@@ -308,7 +404,7 @@ Blockly.Blocks['class_mutator'] = {
 
 Blockly.Blocks['class_mutator_public'] = {
 	init: function(){
-		this.appendDummyInput().appendField(LOC.ch7.public);
+		this.appendDummyInput().appendField('public');
 
 		this.setColour(classHue);
 
@@ -324,7 +420,7 @@ Blockly.Blocks['class_mutator_public'] = {
 
 Blockly.Blocks['class_mutator_protected'] = {
 	init: function(){
-		this.appendDummyInput().appendField(LOC.ch7.protected);
+		this.appendDummyInput().appendField('protected');
 
 		this.setColour(classHue);
 
@@ -340,7 +436,7 @@ Blockly.Blocks['class_mutator_protected'] = {
 
 Blockly.Blocks['class_mutator_private'] = {
 	init: function(){
-		this.appendDummyInput().appendField(LOC.ch7.private);
+		this.appendDummyInput().appendField('private');
 
 		this.setColour(classHue);
 

@@ -33,7 +33,7 @@ Blockly.C['array'] = function(block) {
 	var code = '';
 	var std = '';
   
-	if(dropdown_myarrtype === "string" && usingSTD === false){
+	if(dropdown_myarrtype === "string" && C_Logic.namespace.using_namespace_std === false){
 		std += 'std::';
 	}
 	
@@ -126,7 +126,7 @@ Blockly.C['array_2d'] = function(block) {
 	
 	var std = '';
 	
-	if(this.getField('myArrType').getText() === "string" && usingSTD === false){
+	if(this.getField('myArrType').getText() === "string" && C_Logic.namespace.using_namespace_std === false){
 		std += 'std::';
 	}
   
@@ -170,7 +170,7 @@ Blockly.C['array2d'] = function(block) {
 	
 	var std = '';
 	
-	if(this.getField('myArrType').getText() === "string" && usingSTD === false){
+	if(this.getField('myArrType').getText() === "string" && C_Logic.namespace.using_namespace_std === false){
 		std += 'std::';
 	}
   

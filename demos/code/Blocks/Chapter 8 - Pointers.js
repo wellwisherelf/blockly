@@ -39,7 +39,7 @@ Blockly.C['variable_declare_ptr'] = function(block) {
 	//Numeric Types
 	
 	//if using namespace std; is not active, and type is string
-	if(usingSTD === false && dropdown_myvartype === 'string'){
+	if(C_Logic.namespace.using_namespace_std === false && dropdown_myvartype === 'string'){
 		code += 'std::' + dropdown_myvartype + dropdown_myptr + ' ' + variable_myvardec;
 	}
 	else {

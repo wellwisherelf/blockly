@@ -8459,8 +8459,6 @@ Blockly.Block = function(a, b, c) {
 
 	this.id = c && !a.getBlockById(c) ? c : Blockly.utils.genUid();
 
-	this.blockName = b;
-
 	this.typeName = '';
 
 	this.dataStr = {

@@ -34,7 +34,7 @@ Blockly.Blocks['output_cout'] = {
 
 	domToMutation: function(xmlElement){
 		this.coutStreamCount_ = parseInt(xmlElement.getAttribute('printadd'), 10);
-		for(var i = 1; i <= this.coutStreamCount_; i++){
+		for(var i = 1; i <= this.coutStreamCount_;  ++i){
 			this.appendValueInput('valinp' + i).setCheck(null).appendField('cout << ').setAlign(Blockly.ALIGN_RIGHT);
 		}
 	},
@@ -112,7 +112,7 @@ Blockly.C['output_cout'] = function(block) {
 	var code = '';
 	var std = '';
 
-	if(usingSTD == false){
+	if(C_Logic.namespace.using_namespace_std == false){
 		std = 'std::';
 	}
 
@@ -189,7 +189,7 @@ Blockly.C['cout_endl'] = function(block) {
 	var code = '';
 	var std = '';
 
-	if(usingSTD == false){
+	if(C_Logic.namespace.using_namespace_std == false){
 		std = 'std::';
 
 	}
@@ -292,7 +292,7 @@ Blockly.Blocks['cin_input'] = {
 		var clauseBlock = containerBlock.getInputTargetBlock('STACK');
 		while(clauseBlock){
 			
-			switch(clauseBlock.blockName){
+			switch(clauseBlock.type){
 
 				case 'cin_stream_add':
 					this.cinStreamCount_++;
@@ -319,7 +319,7 @@ Blockly.Blocks['cin_input'] = {
 		var i = 1;
 		while(clauseBlock){
 
-			switch(clauseBlock.blockName){
+			switch(clauseBlock.type){
 
 				case 'cin_stream_add':
 					var inputPrint = this.getInput('valinp' + i);
@@ -347,7 +347,7 @@ Blockly.C['cin_input'] = function(block) {
 	var WT = false;
 	//tooltip for warning text
 
-	if(usingSTD == false){
+	if(C_Logic.namespace.using_namespace_std == false){
 		std = 'std::';
 	}
 
@@ -444,7 +444,7 @@ Blockly.C['cin_getline'] = function(block) {
 	var code = '';
 	var std = '';
 
-	if(usingSTD === false){
+	if(C_Logic.namespace.using_namespace_std === false){
 		std = 'std::';
 	}
 

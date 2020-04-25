@@ -90,7 +90,7 @@ Blockly.Blocks['main_comment'] = {
 		
 		var clauseBlock = containerBlock.getInputTargetBlock('state1');
 		while(clauseBlock){
-			switch(clauseBlock.blockName){
+			switch(clauseBlock.type){
 				case 'main_comment_add':
 					this.commentCount_++;
 					var comment = this.appendValueInput('valinp' + this.commentCount_)
@@ -116,7 +116,7 @@ Blockly.Blocks['main_comment'] = {
 		var i = 1;
 		
 		while(clauseBlock){
-			switch(clauseBlock.blockName){
+			switch(clauseBlock.type){
 				case 'main_comment_add':
 					var comment = this.getInput('valinp' + i);
 					console.log(comment);

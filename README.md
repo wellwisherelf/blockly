@@ -52,21 +52,20 @@
 - Fixed type check warnings that appear on blocks, so they are no longer permanent. (Chris, Jon)
 - Started to work on custom context menus for blocks. (Chris)
 
-**4/04/20 - 4/11/20**
-- Working on mutators (Chris, Christopher)
-- Working on function mutators (Chris, Christopher)
-- Seperated classes into a seperate struct, and a seperate class with built in inheritance. (Chris)
-- Starting working on proper localization (Jon)
-
 **4/11/20 - 4/18/20**
 - Finished const variable mutator. (Chris, Christopher)
 - Changed warning texts to appear instantly. (Chris)
 - Added warning text for variable declaration and variable initialization. (Chris, Christopher)
 - Working on changing localizing from string literals into proper class localization. (Jon)
 
-
-
-
+**4/18/20 - 4/25/20**
+- Started working on the research paper. (Christopher, Jon)
+- Started working on the documentation. (Chris, Christopher)
+- Fleshed out type checking for variable declaration and initialization (Chris)
+- Finished mutators for switch case statements, need to add code generation (Chris)
+- Changed Blockly webpage to save space. (Chris)
+- Deleted blockName from the Blockly.Block library (Chris)
+- Began to develop scope checking using binary trees (Chris)
 
 # Blockly [![Build Status]( https://travis-ci.org/google/blockly.svg?branch=master)](https://travis-ci.org/google/blockly)
 
