@@ -66,6 +66,7 @@
 - Changed Blockly webpage to save space. (Chris)
 - Deleted blockName from the Blockly.Block library (Chris)
 - Began to develop scope checking using binary trees (Chris)
+- Continued work on localization (up to chapter 7) (Jon) 
 
 # Blockly [![Build Status]( https://travis-ci.org/google/blockly.svg?branch=master)](https://travis-ci.org/google/blockly)
 
@@ -91,7 +92,7 @@ Want to contribute? Great! First, read [our guidelines for contributors](https:/
 
 We release by pushing the latest code to the master branch, followed by updating our [docs](https://developers.google.com/blockly) and [demo pages](https://blockly-demo.appspot.com). We typically release a new version of Blockly once a quarter (every 3 months). If there are breaking bugs, such as a crash when performing a standard action or a rendering issue that makes Blockly unusable, we will cherry-pick fixes to master between releases to fix them. The [releases page](https://github.com/google/blockly/releases) has a list of all releases.
 
-Releases are tagged by the release date (YYYYMMDD) with a leading '2.' and a trailing '.0' in case we ever need a major or minor version (such as [2.20190722.1](https://github.com/google/blockly/tree/2.20190722.1)). If you're using npm, you can install the ``blockly`` package on npm: 
+Releases are tagged by the release date (YYYYMMDD) with a leading '2.' and a trailing '.0' in case we ever need a major or minor version (such as [2.20190722.1](https://github.com/google/blockly/tree/2.20190722.1)). If you're using npm, you can install the ``blockly`` package on npm:
 ```bash
 npm install blockly
 ```

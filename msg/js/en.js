@@ -6,13 +6,15 @@
 
 Blockly.Msg["TYPE_INT"] = "int";
 
+Blockly.Msg["var_constTT"] = "Checking this option with turn your variable into a constant declaration.";
+Blockly.Msg["var_constURL"] = "https://www.w3schools.in/cplusplus-tutorial/constants/#What_are_Constants";
+Blockly.Msg["var_decTT"] = "A standard variable declaration.\n\nConstant - Determines whether the variable is mutable (non constant), or if it cannot be changed after it has been declared (constant).";
+Blockly.Msg["var_decURL"] = "http://www.cplusplus.com/doc/tutorial/variables/";
+Blockly.Msg["var_initTT"] = "Variable initialization. Can be used to define variables, or used elsewhere where the required type input is needed e.g. switch statements.";
+Blockly.Msg["var_changeTT"] = "Increment the variable.";
+Blockly.Msg["var_reinitTT"] = "Sets the variable.";
 
-Blockly.Msg['var_const_TT'] = "Checking this option with turn your variable into a constant declaration.";
-Blockly.Msg['var_const_URL'] = "https://www.w3schools.in/cplusplus-tutorial/constants/#What_are_Constants";
 
-
-"How's he doing";
-'he said "hello!"';
 
 //
 

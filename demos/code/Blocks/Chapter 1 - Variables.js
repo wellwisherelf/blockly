@@ -26,13 +26,13 @@ Blockly.Blocks['var_const'] = {
 			  .appendField("const?")
 			  .appendField(new Blockly.FieldCheckbox("FALSE"), "check1");
 		this.setColour(variableHUE);
-		this.setTooltip(Blockly.Msg['var_const_TT']);
-		this.setHelpUrl(Blockly.Msg['var_const_URL']);
 		
 	},
 	
 	onchange: function(){
 		
+		this.setTooltip(Blockly.Msg["var_constTT"]);
+		this.setHelpUrl(Blockly.Msg["var_constURL"]);
 	}
 	
 };
@@ -40,25 +40,25 @@ Blockly.Blocks['var_const'] = {
 
 Blockly.Blocks['variable_declare'] = {
 	init: function() {
-		
+
 		this.appendValueInput("NAME")
 			.appendField("Declare: ")
 			.appendField(new Blockly.FieldDropdown([["int","myVarTypeInt"], ["size_t","myVarTypeSize_t"], ["float","myVarTypeFloat"], ["char","myVarTypeChar"], ["string","myVarTypeString"], ["bool","myVarTypeBool"], ["auto","myVarTypeAuto"], ["short","myVarTypeShort"], ["long", "myVarTypeLong"], ["long long", "myVarTypeLongLong"]]), "myVarType")
 			.appendField(new Blockly.FieldVariable("myVar", null, ['isVar'], 'isVar'), "myVarDec")
 			.setCheck(["Int", "Size_t", "Double", "Float", "Char", "String", "Bool", "Auto", "Variable"]);
-			
+
 			this.setInputsInline(false);
 			this.setPreviousStatement(true, null);
 		this.setNextStatement(true, null);
 		this.setColour(variableHUE);
-		this.setTooltip("A standard variable declaration.\n\nConstant - Determines whether the variable is mutable (non constant), or if it cannot be changed after it has been declared (constant).");
-		this.setHelpUrl("http://www.cplusplus.com/doc/tutorial/variables/");
-		
+		this.setTooltip(Blockly.Msg["var_decTT"]);
+		this.setHelpUrl(Blockly.Msg["var_decURL"]);
+
 		//Sets the block type (default)
 		this.typeName = (typeConv(this.getField('myVarType').getText()));
 		
 		this.con = false;
-		
+
 		//Activates the mutation box
 		this.setMutator(new Blockly.Mutator(['']));
 		this.setDataStr("isVar", true);
@@ -183,14 +183,14 @@ Blockly.Blocks['variable_declare'] = {
 
 Blockly.C['variable_declare'] = function(block) {
 	var dropdown_myvartype = this.getField('myVarType').getText();
-	
+
 	var variable_myvardec = Blockly.C.variableDB_.getName(block.getFieldValue('myVarDec'), Blockly.Variables.NAME_TYPE);
-	
+
 	var value_name = Blockly.C.valueToCode(block, 'NAME', Blockly.C.ORDER_ATOMIC);
-	
+
 	var code = '';
 
-	
+
 	if(this.con){
 		code += 'const ';
 	}
@@ -213,7 +213,7 @@ Blockly.C['variable_declare'] = function(block) {
 	
 	
 	code += ';\n'
-	
+
 	//Update typeName
 	this.typeName = (typeConv(this.getField('myVarType').getText()));
 	return code;
@@ -229,16 +229,16 @@ Blockly.Blocks['var_initialization'] = {
 			.appendField("input:")
 			.appendField(new Blockly.FieldTextInput(""), "text1");
 		this.setOutput(true, null);
-		
+
 		this.setInputsInline(true);
 		this.setColour(variableHUE);
-		this.setTooltip("Variable initialization. Can be used to define variables, or used elsewhere where the required type input is needed e.g. switch statements.");
+		this.setTooltip(Blockly.Msg["var_initTT"]);
 		this.setHelpUrl("");
-		
+
 		//Set the type of the block (default)
 		this.typeName = typeConv(this.getField('myVarType').getText());
 	},
-	
+
 	onchange: function(){
 		//Set the output type of the block
 		this.setOutput(this.typeName);
@@ -402,7 +402,7 @@ Blockly.Blocks['var_change'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(variableHUE);
- this.setTooltip("Increment the variable.");
+ this.setTooltip(Blockly.Msg["var_changeTT"]);
  this.setHelpUrl("");
   }
 };
@@ -412,11 +412,11 @@ Blockly.C['var_change'] = function(block) {
 	var value_name = Blockly.C.valueToCode(block, 'valinp1', Blockly.C.ORDER_ATOMIC);
 	// TODO: Assemble C into code variable.
 	var code = '';
-	
+
 	//Increments variable  my value_name
 	code += variable_myvardef + " = " + variable_myvardef + " + " + value_name + ';\n';
-	
-	
+
+
 	return code;
 };
 
@@ -430,7 +430,7 @@ Blockly.Blocks['var_reinit'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(variableHUE);
- this.setTooltip("Sets the variable.");
+ this.setTooltip(Blockly.Msg["var_reinitTT"]);
  this.setHelpUrl("");
   }
 };
@@ -440,20 +440,9 @@ Blockly.C['var_reinit'] = function(block) {
 	var value_name = Blockly.C.valueToCode(block, 'valinp1', Blockly.C.ORDER_ATOMIC);
 	// TODO: Assemble C into code variable.
 	var code = '';
-	
+
 	//output myVar and initialization.
 	code += variable_myvardef + " = " + value_name + ';\n';
-	
+
 	return code;
 };
-
-
-
-
-
-
-
-
-
-
-
