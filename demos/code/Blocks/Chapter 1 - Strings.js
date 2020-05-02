@@ -121,7 +121,7 @@ Blockly.C['to_string'] = function(block) {
 Blockly.Blocks['string_size'] = {
 	init: function() {
 		this.appendValueInput("valinp1")
-			.setCheck("Variable");
+			.setCheck(["Variable", "String"]);
 		this.appendDummyInput()
 			.appendField(".size()");
 		this.setOutput(true, ["Number", "Int", "Size_t"]);
@@ -147,7 +147,7 @@ Blockly.C['string_size'] = function(block) {
 Blockly.Blocks['string_concatenate'] = {
   init: function() {
     this.appendValueInput("valinp1")
-        .setCheck(null)
+        .setCheck(["String"])
         .appendField("concatenate \"")
         .appendField(new Blockly.FieldTextInput("str"), "inp")
         .appendField("\"");
@@ -200,7 +200,7 @@ Blockly.Blocks['var_concatenate'] = {
 	init: function() {
 		this.appendValueInput("valinp1")
 			.appendField("concatenate")
-			.setCheck(null)
+			.setCheck(["Variable"])
 			.appendField(new Blockly.FieldVariable("myStrVar"), "varDef");
 		this.setOutput(true, null);
 		this.setColour(stringHUE);

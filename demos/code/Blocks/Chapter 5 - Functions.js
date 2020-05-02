@@ -13,7 +13,7 @@ Blockly.Blocks['user_function'] = {
 		this.setNextStatement(true, null);
 		this.setColour(funcHUE);
 		this.setTooltip("Creates a new function.");
-		this.setHelpUrl("");
+		this.setHelpUrl("http://www.cplusplus.com/doc/tutorial/functions/");
 		
 		this.setMutator(new Blockly.Mutator(['func_parameters']));
 
@@ -378,8 +378,8 @@ Blockly.Blocks['func_return'] = {
 			.appendField("");
 		this.setPreviousStatement(true, null);
 		this.setColour(funcHUE);
-		this.setTooltip("");
-		this.setHelpUrl("");
+		this.setTooltip("A return statement terminates the execution of the current function and returns control back to calling function (or main program)");
+		this.setHelpUrl("https://docs.microsoft.com/en-us/cpp/cpp/return-statement-cpp");
 	}
 };
 

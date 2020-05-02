@@ -423,7 +423,7 @@ Blockly.C['var_change'] = function(block) {
 Blockly.Blocks['var_reinit'] = {
   init: function() {
     this.appendValueInput("valinp1")
-        .setCheck()
+        .setCheck(["int", "size_t", "double", "float", "Number", "short", "long long", "variable", "char", "string", "bool"])
         .appendField("Set ")
         .appendField(new Blockly.FieldVariable("myVar", null, ['isVar','isPtr'], 'isPtr'), "myVarDef")
 		.appendField("to");

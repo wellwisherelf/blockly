@@ -13,8 +13,8 @@ Blockly.Blocks['math_arith'] = {
     this.setInputsInline(true);
     this.setOutput(true, ["Number", "Int", "Size_t", "Double", "Float"]);
     this.setColour(mathHUE);
- this.setTooltip("");
- this.setHelpUrl("");
+ this.setTooltip("Basic Arithmetic operators (add, subtract, multiply, divide)");
+ this.setHelpUrl("http://www.cplusplus.com/doc/tutorial/operators/");
   }
 };
 

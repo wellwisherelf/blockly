@@ -174,7 +174,7 @@ Blockly.C['loop_range'] = function(block) {
 Blockly.Blocks['loop_dowhile'] = {
   init: function() {
     this.appendStatementInput("stateinp1")
-        .setCheck(null)
+        .setCheck(["Conditional", "Logic", "Boolean"])
         .appendField("do");
     this.appendValueInput("valinp1")
         .setCheck("Boolean")
