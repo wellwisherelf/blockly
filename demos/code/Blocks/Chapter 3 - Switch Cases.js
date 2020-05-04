@@ -5,7 +5,7 @@ Blockly.Blocks['switch_statement'] = {
 	init: function() {
 		this.appendDummyInput()
 			.appendField("switch block")
-			.appendField(new Blockly.FieldVariable("myVar", null, ['isVar'], 'isVar'), "myVarDec")
+			.appendField(new Blockly.FieldVariable("myVar", null, ['isVar'], 'isVar'), "myVar")
 		this.setInputsInline(false);
 		this.setPreviousStatement(true, null);
 		this.setNextStatement(true, null);
@@ -168,12 +168,57 @@ Blockly.Blocks['switch_statement'] = {
 
 	},
 
-	onchange: Blockly.Blocks.requireInFunction
+	onchange: Blockly.Blocks.requireInFunction,
+
+	onchange: function(){
+
+		var TT = '';
+
+		if(this.caseCount_ < 1 && this.defaultCount_ < 1){
+			TT += 'Warning, a switch case should contain at least one switch case or one default case.\n'
+		}
+		
+		for(var i = 1; i <= this.caseCount_; ++i){
+
+			var text = this.getFieldValue('text' + i);
+	
+			//if text is a number
+			if(isNaN(text) == false){
+				
+			}
+		}
+
+		if(TT.length > 0){
+			this.setWarningText(TT);
+		}
+		else {
+			this.setWarningText(null);
+		}
+
+	}
 };
 
 Blockly.C['switch_statement'] = function(block) {
+	var switchVar = Blockly.C.variableDB_.getName(block.getFieldValue('myVar'), Blockly.Variables.NAME_TYPE);
 
 	var code = '';
+
+	code += 'switch(' + switchVar + '){';
+
+	for(var i = 1; i <= this.caseCount_; ++i){
+
+		var text = block.getFieldValue('text' + i);
+
+		//if text is a number or a char
+		//use regex to see if char is between a to z
+		if(isNaN(text) === false || (text.length === 1 && text.match(/[a-z]/i))){
+			
+		}
+
+	}
+
+	code += '}';
+
 	return code;
 };
 

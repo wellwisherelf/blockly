@@ -5426,9 +5426,10 @@ Blockly.Workspace = function(a) {
 
 	this.themeManager_ = this.options.parentWorkspace ? this.options.parentWorkspace.getThemeManager() : new Blockly.ThemeManager(this.options.theme || Blockly.Themes.Classic);
 
-	this.themeManager_.subscribeWorkspace(this)
+	this.themeManager_.subscribeWorkspace(this);
 
 };
+
 
 Blockly.Workspace.prototype.rendered = !1;
 
@@ -5551,6 +5552,10 @@ Blockly.Workspace.prototype.getTopBlocks = function(a) {
 	return b
 
 };
+
+Blockly.Workspace.getTopBlock = function(){
+	return this.topBlocks_;
+}
 
 Blockly.Workspace.prototype.addTypedBlock = function(a) {
 
@@ -8530,6 +8535,33 @@ Blockly.Block = function(a, b, c) {
 		}
 	};
    
+	this.getDataStr = function(){
+		
+		if(this.dataStr.isVar == true){
+			return 'isVar';
+		}
+		
+		if(this.dataStr.isArr == true){
+			return 'isArr';
+		}
+		
+		if(this.dataStr.isVec == true){
+			return 'isVec';
+		}
+		
+		if(this.dataStr.isFunc == true){
+			return 'isFunc';
+		}
+		
+		if(this.dataStr.isStruct == true){
+			return 'isStruct';
+		}
+		
+		if(this.dataStr.isClass == true){
+			return 'isClass';
+		}
+		
+	};
 
 	a.blockDB_[this.id] = this;
 

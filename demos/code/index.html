@@ -9,16 +9,12 @@
   <link rel="stylesheet" href="style.css">
   <script src="../../blockly_compressed.js"></script>
   <script src="../../blocks_compressed.js"></script>
-  <script src="../../javascript_compressed.js"></script>
-  <script src="../../python_compressed.js"></script>
-  <script src="../../php_compressed.js"></script>
-  <script src="../../lua_compressed.js"></script>
-  <script src="../../dart_compressed.js"></script>
   <script src="../../c_compressed.js"></script>
   
   <script src="code.js"></script>
   
   <script src="js/Logic.js"></script>
+  <script src="js/Scopes.js"></script>
   
   <script src="Blocks/FileSaver.js" ></script>
   <script src="Blocks/filereader.js" ></script>
@@ -26,6 +22,7 @@
   <script src="Blocks/Include.js" ></script>
   <script src="Blocks/Testing.js" ></script>
   <script src="Blocks/Main Function.js" ></script>
+  <script src="Blocks/General.js" ></script>
   <script src="Blocks/Chapter 1 - Cout, Cin.js" ></script>
   <script src="Blocks/Chapter 1 - Strings.js" ></script>
   <script src="Blocks/Chapter 1 - Variables.js" ></script>
@@ -38,9 +35,9 @@
   <script src="Blocks/Chapter 6 - Vectors.js" ></script>
   <script src="Blocks/Chapter 7 - Classes.js" ></script>
   <script src="Blocks/Chapter 8 - Pointers.js" ></script>
+  <script src="Blocks/Chapter 10 - Inheritance.js" ></script>
   <!-- Include block type inputs -->
   <script src="Blocks/Blocks - Type.js" ></script>
-  <script src="Error Types/Warnings.js"></script>
   
   
   
@@ -51,13 +48,12 @@
       <td>
         <h1>
           <span id="title"></span>
-		  <span id = "version">Beta 1.6</span>
+		  <span id = "version">Beta 1.7</span>
         </h1>
 		
 		<p align="left">	
-			<button onclick="updateLog()">Version Update Log</button>
 			<button onclick="downloadCode()">Download C++ Code</button>
-			<button onclick = "alert(C_Logic.vector.vecVar)" title = "Save your work.">vector</button>
+			<button onclick="workspaceScope()">Current Workspace</button>
 		</p>
 		
 		<p align="left">	
@@ -308,7 +304,6 @@
 	</category>
     <category name="Functions" colour="%{BKY_PROCEDURES_HUE}">
 	
-	
 	<label text="Function Declaration" web-class="labelFunction"></label>
 	
 	<block type="user_function"></block>
@@ -337,7 +332,13 @@
 	
 	</category>
 	
-	
+	<category name = "type blocks" colour = "#134796">
+		<block type="get_num"></block>
+		<block type="get_var"></block>
+		<block type="get_func_var"></block>
+		
+	</category>
+
     <sep></sep>
     <sep></sep>		
 
@@ -368,6 +369,7 @@
 	
 		<block type = "main" ></block>
 		<block type = "main_comment" ></block>
+		<block type = "operators" ></block>
 
 	</category>
 	
@@ -405,7 +407,7 @@
 
 			<label text="Variable" web-class="labelVariable"></label>
 			
-			<block type = "get_var"></block>
+			<block type="get_var"></block>
 		
 		</category>
 		
@@ -605,6 +607,10 @@
 	
 	<block type="func_return"></block>
 	
+	<block type="var_reinit_func"></block>
+	<block type="get_func_var"></block>
+	<block type="set_func_var"></block>
+	
 	
     </category>
 	
@@ -736,6 +742,7 @@
 		<block type="ds_copy_constructor"></block>
 		<block type="ds_declare"></block>
 		<block type="ds_object_call"></block>
+		<block type="ds_object_call_input"></block>
 		
 	</category>
 
@@ -747,10 +754,24 @@
 		<block type="pointer_nullptr"></block>
 	</category>
 	
+	<category name="Chapter 10" colour="#134796">
+		<block type="ds_class_inheritance"></block>
+		<block type="ds_class_inheritance_extend"></block>
+
+
+		<block type="test_class"></block>
+		<block type="class_public"></block>
+		<block type="class_protected"></block>
+		<block type="class_private"></block>
+
+	</category>
+
+
     <category name="Testing" colour="#134796">
 	
 		<block type="check_childparent"></block>
 		<block type="check_updown"></block>
+		<block type="workspace_check"></block>
 	
 	</category>
 

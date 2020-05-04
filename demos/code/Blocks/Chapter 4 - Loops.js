@@ -77,9 +77,15 @@ Blockly.Blocks['loop_for'] = {
 		this.setColour(135);
 		this.setTooltip("A for loop is a loop that allows you to loop through a code a specific number of times.");
 		this.setHelpUrl("https://www.tutorialspoint.com/cplusplus/cpp_for_loop.htm");
+	
+		this.getVar;
 	},
 
 	onchange: function(){
+
+		//variable to keep track of loop var declaration
+		this.getVar = this.getField('myLoopVar1').getText();
+
 		var value_valinp1 = Blockly.C.valueToCode(this, 'valinp1', Blockly.C.ORDER_ATOMIC);
 		var value_valinp2 = Blockly.C.valueToCode(this, 'valinp2', Blockly.C.ORDER_ATOMIC);
 		var dropdown_myloopch = this.getField('myLoopCh').getText();
@@ -95,8 +101,6 @@ Blockly.Blocks['loop_for'] = {
 		}
 
 		TT += '\n';
-
-		this.setTooltip(TT);
 
 	}
 
@@ -174,7 +178,7 @@ Blockly.C['loop_range'] = function(block) {
 Blockly.Blocks['loop_dowhile'] = {
   init: function() {
     this.appendStatementInput("stateinp1")
-        .setCheck(["Conditional", "Logic", "Boolean"])
+        .setCheck(null)
         .appendField("do");
     this.appendValueInput("valinp1")
         .setCheck("Boolean")

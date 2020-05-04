@@ -209,10 +209,38 @@ Blockly.Block = function(workspace, prototypeName, opt_id) {
 		  break;
 		}
 	};
-
+	
+	this.getDataStr = function(){
+		
+		if(this.dataStr.isVar == true){
+			return 'isVar';
+		}
+		
+		if(this.dataStr.isArr == true){
+			return 'isArr';
+		}
+		
+		if(this.dataStr.isVec == true){
+			return 'isVec';
+		}
+		
+		if(this.dataStr.isFunc == true){
+			return 'isFunc';
+		}
+		
+		if(this.dataStr.isStruct == true){
+			return 'isStruct';
+		}
+		
+		if(this.dataStr.isClass == true){
+			return 'isClass';
+		}
+		
+	};
+	
   /**
    * The type of the block
-   * @type {boolean|Blockly.typeName}
+   * @type {string|Blockly.typeName}
    * @current March 2020
    */
    this.typeName = '';

@@ -1,6 +1,47 @@
 
 let C_Logic = {};
 
+
+//List of helper functions
+C_Logic.help = {
+    
+    /**
+     * Checks if an array has an element that occurs 
+     * more than once.
+     * If uni is undefined, the function checks
+     * the given array to see if there are any
+     * repeating elements. If uni is defined,
+     * 
+     * @param {*} arr - The array that we're checking.
+     * @param {*} uni - An element that we're specifically
+     * looking for.
+     */
+	is_element_unique: function(arr, uni){
+		
+		if((!arr && !uni) || !arr){
+			throw 'Invalid';
+		}
+		
+		if(arr && !uni){
+			for(var i = 0; i < arr.length; ++i){
+				for(var j = 0; j < arr.length; ++j){
+					if((i != j) && (arr[i] == arr[j])){
+						return true;
+					}
+				}
+			}
+			
+			return false;
+		}
+		
+		else {
+			return (arr.includes(uni));
+		}
+		
+	}
+}
+
+
 C_Logic.include = {
 
     iostream: false,
@@ -72,6 +113,12 @@ C_Logic.vector = {
     }
 
 };
+
+let Global_C_Logic = C_Logic;
+
+
+
+
 /*
 C_Logic.vector.create_var('1');
 C_Logic.vector.create_var('2');

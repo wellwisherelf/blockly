@@ -6,25 +6,25 @@ Blockly.Blocks['printf'] = {
 	init: function() {
 		this.appendDummyInput()
 			.appendField("printf(")
-			.appendField(new Blockly.FieldDropdown(
-			[["","printf_"], 
-			["i","printf_i"], //signed decimal integer
-			["u","printf_u"], //unsigned decimal integer
-			["x","printf_x"], //unsigned hexadecimal integer
-			["X","printf_X"], //unsigned hexadecimal integer (uppercase)
-			["f","printf_f"], //decimal floating point, lowercase
-			["F","printf_F"], //decimal floating point, uppercase
-			["e","printf_e"], //scientific notation (mantissa/exponent), lowercase
-			["E","printf_E"], //scientific notation (mantissa/exponent), uppercase
-			["g","printf_g"], //use the shortest representation: %e or %f
-			["G","printf_G"], //use the shortest representation: %E or %F
-			["a","printf_a"], //hexadecimal floating point, lowercase
-			["A","printf_A"], //hexadecimal floating point, uppercase
-			["c","printf_c"], //character
-			["s","printf_s"], //string of characters
-			["p","printf_p"]]), //pointer address
-			"printf_type")
-			.appendField(', ')
+			//.appendField(new Blockly.FieldDropdown(
+			//[["","printf_"], 
+			//["i","printf_i"], //signed decimal integer
+			//["u","printf_u"], //unsigned decimal integer
+			//["x","printf_x"], //unsigned hexadecimal integer
+			//["X","printf_X"], //unsigned hexadecimal integer (uppercase)
+			//["f","printf_f"], //decimal floating point, lowercase
+			//["F","printf_F"], //decimal floating point, uppercase
+			//["e","printf_e"], //scientific notation (mantissa/exponent), lowercase
+			//["E","printf_E"], //scientific notation (mantissa/exponent), uppercase
+			//["g","printf_g"], //use the shortest representation: %e or %f
+			//["G","printf_G"], //use the shortest representation: %E or %F
+			//["a","printf_a"], //hexadecimal floating point, lowercase
+			//["A","printf_A"], //hexadecimal floating point, uppercase
+			//["c","printf_c"], //character
+			//["s","printf_s"], //string of characters
+			//["p","printf_p"]]), //pointer address
+			//"printf_type")
+			//.appendField(', ')
 			.appendField(new Blockly.FieldTextInput(''), 'textinp1')
 			.appendField(")");
 			
@@ -120,25 +120,29 @@ Blockly.C['to_string'] = function(block) {
 
 Blockly.Blocks['string_size'] = {
 	init: function() {
-		this.appendValueInput("valinp1")
-			.setCheck(["Variable", "String"]);
 		this.appendDummyInput()
+			.appendField(new Blockly.FieldVariable("myVar", null, ['isVar'], 'isVar'), "myVar")
 			.appendField(".size()");
-		this.setOutput(true, ["Number", "Int", "Size_t"]);
+		this.setOutput(true, ["Int", "Size_t"]);
 		this.setColour(stringHUE);
 		this.setTooltip("Returns the amount of characters in a string.\nReturns - Int or Size_t\nRequires - <string>\nInput - String");
 		this.setHelpUrl("http://www.cplusplus.com/reference/string/string/size/");
+	
+		this.getVar;
+	},
+
+	onchange: function(){
+		this.getVar = this.getField('myVar').getText();
 	}
 };
 
 Blockly.C['string_size'] = function(block) {
-	var value_valinp1 = Blockly.C.valueToCode(block, 'valinp1', Blockly.C.ORDER_ATOMIC);
-	// TODO: Assemble C into code variable.
 	var code = '';
 
-	if(value_valinp1.length > 0){
-		code += value_valinp1 + '.size()';
+	if(this.getVar.length > 0){
+		code += this.getVar + '.size()';
 	}
+
 
 	return [code, Blockly.C.ORDER_NONE];
 };
@@ -147,7 +151,7 @@ Blockly.C['string_size'] = function(block) {
 Blockly.Blocks['string_concatenate'] = {
   init: function() {
     this.appendValueInput("valinp1")
-        .setCheck(["String"])
+        .setCheck(null)
         .appendField("concatenate \"")
         .appendField(new Blockly.FieldTextInput("str"), "inp")
         .appendField("\"");
@@ -200,7 +204,7 @@ Blockly.Blocks['var_concatenate'] = {
 	init: function() {
 		this.appendValueInput("valinp1")
 			.appendField("concatenate")
-			.setCheck(["Variable"])
+			.setCheck(null)
 			.appendField(new Blockly.FieldVariable("myStrVar"), "varDef");
 		this.setOutput(true, null);
 		this.setColour(stringHUE);

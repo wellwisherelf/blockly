@@ -12,8 +12,8 @@ Blockly.Blocks['variable_declare_ptr'] = {
 			this.setPreviousStatement(true, null);
 		this.setNextStatement(true, null);
 		this.setColour(0);
-		this.setTooltip("Declare a new pointer variable");
-		this.setHelpUrl("http://www.cplusplus.com/doc/tutorial/pointers/");
+		this.setTooltip("");
+		this.setHelpUrl("");
 		
 		//Sets the block type (default)
 		this.typeName = (typeConv(this.getField('myVarType').getText()));

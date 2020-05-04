@@ -2,16 +2,81 @@
 
 Blockly.Blocks['main'] = {
 	init: function() {
-		this.appendStatementInput("NAME").setCheck(null).appendField("int main()");
+		this.appendDummyInput().appendField('int main()');
+		this.appendStatementInput("NAME").setCheck(null);
 		this.setPreviousStatement(true, null);
 		this.setNextStatement(true, null);
 		this.setColour(0);
 		this.setTooltip("");
 		this.setHelpUrl("https://en.cppreference.com/w/cpp/language/main_function");
 		
+		//Array to keep track of the names (member names)
+		this.mNames_ = [];
+		//Array to keep track of the types (member names)
+		this.mTypes_ = [];
+
+		this.dTypes_ = [];
+				
+	},
+
+	onchange: function(){
+
+		let Scope = C_Scope;
+
+		this.mNames_ = [];
+		this.mTypes_ = [];
+		this.dTypes_ = [];
+
+		var ptr = null;
 		
-		
-		
+		if(this.inputList[1].connection.targetConnection){
+			
+			ptr = this.inputList[1].connection.sourceBlock_;
+			
+			Scope.recursion_log(ptr, true);
+	
+			this.mNames_ = Scope.getBlockName();
+			this.mTypes_ = Scope.getVarName();
+			this.dTypes_ = Scope.getDataStr();
+
+		}
+
+		this.allocateWarnings();
+	},
+	
+	allocateWarnings: function(){
+		var TT = '';
+
+		if(this.dTypes_ != null){
+
+			for(var i = 0; i < this.dTypes_.length; ++i){
+
+				switch(this.dTypes_[i]){
+
+					case 'isFunc':
+						TT += 'Error, you cannot declare a function inside of a main.\n';
+					break;
+
+					case 'isStruct':
+						TT += 'Error, you cannot declare a struct inside of a main.\n';
+					break;
+
+					case 'isClass':
+						TT += 'Error, you cannot declare a class inside of a main.\n';
+					break;
+
+				}
+
+			}
+
+		}
+
+		if(TT.length > 0){
+			this.setWarningText(TT);
+		}
+		else {
+			this.setWarningText(null);
+		}
 	}
 };
 

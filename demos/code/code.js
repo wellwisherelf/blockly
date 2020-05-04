@@ -427,7 +427,7 @@ Code.init = function() {
 
   // Add to reserved word list: Local variables in execution environment (runJS)
   // and the infinite loop detection function.
-  Blockly.JavaScript.addReservedWords('code,timeouts,checkTimeout');
+  Blockly.C.addReservedWords('code,timeouts,checkTimeout');
 
   Code.loadBlocks('');
 
@@ -516,15 +516,15 @@ Code.initLanguage = function() {
  * Just a quick and dirty eval.  Catch infinite loops.
  */
 Code.runJS = function() {
-  Blockly.JavaScript.INFINITE_LOOP_TRAP = 'checkTimeout();\n';
+  Blockly.C.INFINITE_LOOP_TRAP = 'checkTimeout();\n';
   var timeouts = 0;
   var checkTimeout = function() {
     if (timeouts++ > 1000000) {
       throw MSG['timeout'];
     }
   };
-  var code = Blockly.JavaScript.workspaceToCode(Code.workspace);
-  Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+  var code = Blockly.C.workspaceToCode(Code.workspace);
+  Blockly.C.INFINITE_LOOP_TRAP = null;
   try {
     eval(code);
   } catch (e) {

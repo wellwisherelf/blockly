@@ -1,11 +1,5 @@
 
-
-
 var variableHUE = 330;
-
-function popupFunction(){
-	console.log('create function clicked');
-}
 
 //type check conversion, 
 function typeConv(type){
@@ -26,13 +20,13 @@ Blockly.Blocks['var_const'] = {
 			  .appendField("const?")
 			  .appendField(new Blockly.FieldCheckbox("FALSE"), "check1");
 		this.setColour(variableHUE);
+		this.setTooltip(Blockly.Msg['var_const_TT']);
+		this.setHelpUrl(Blockly.Msg['var_const_URL']);
 		
 	},
 	
 	onchange: function(){
 		
-		this.setTooltip(Blockly.Msg["var_constTT"]);
-		this.setHelpUrl(Blockly.Msg["var_constURL"]);
 	}
 	
 };
@@ -40,52 +34,32 @@ Blockly.Blocks['var_const'] = {
 
 Blockly.Blocks['variable_declare'] = {
 	init: function() {
-
+		
 		this.appendValueInput("NAME")
 			.appendField("Declare: ")
 			.appendField(new Blockly.FieldDropdown([["int","myVarTypeInt"], ["size_t","myVarTypeSize_t"], ["float","myVarTypeFloat"], ["char","myVarTypeChar"], ["string","myVarTypeString"], ["bool","myVarTypeBool"], ["auto","myVarTypeAuto"], ["short","myVarTypeShort"], ["long", "myVarTypeLong"], ["long long", "myVarTypeLongLong"]]), "myVarType")
 			.appendField(new Blockly.FieldVariable("myVar", null, ['isVar'], 'isVar'), "myVarDec")
 			.setCheck(["Int", "Size_t", "Double", "Float", "Char", "String", "Bool", "Auto", "Variable"]);
-
+			
 			this.setInputsInline(false);
 			this.setPreviousStatement(true, null);
 		this.setNextStatement(true, null);
 		this.setColour(variableHUE);
-		this.setTooltip(Blockly.Msg["var_decTT"]);
-		this.setHelpUrl(Blockly.Msg["var_decURL"]);
-
+		this.setTooltip("A standard variable declaration.\n\nConstant - Determines whether the variable is mutable (non constant), or if it cannot be changed after it has been declared (constant).");
+		this.setHelpUrl("http://www.cplusplus.com/doc/tutorial/variables/");
+		
 		//Sets the block type (default)
 		this.typeName = (typeConv(this.getField('myVarType').getText()));
+		this.getVar_ = this.getField('myVarDec').getText();
 		
 		this.con = false;
-
+		
 		//Activates the mutation box
 		this.setMutator(new Blockly.Mutator(['']));
 		this.setDataStr("isVar", true);
 		
-
 	},
-
-	//TODO: make custom menu to create a
-	//new get_var block
-	/*
-	customContextMenu: function(options){
-		var option = this;
-
-		option.enabled = {enabled : true};
-
-		option.text = 'create var block';
-		
-		option.callback();
-		
-		var name = this.getFieldValue('myVarDec');
-
-		console.log(name);
-
-		options.push(option);
-	},
-	*/
-
+	
 	//Save Mutation Data
 	mutationToDom: function(){
 		var container = document.createElement('mutation');
@@ -128,20 +102,23 @@ Blockly.Blocks['variable_declare'] = {
 	},
 
 	onchange: function(){
+
 		//Value Input
 		var value_name = Blockly.C.valueToCode(this, 'NAME', Blockly.C.ORDER_ATOMIC);
-
+		
+		this.getVar_ = this.getField('myVarDec').getText();
+		
 		//Data types
 		var dropdown_myvartype = this.getField('myVarType').getText();
 		
 		dropdown_myvartype = typeConv(dropdown_myvartype);
 
-		//Declare a string that will aggregate all warnings
+		//Declare a string that will aggregate all warnings and errors
 		var TT = "";
 		
 		
 		if(!value_name && this.con){
-			TT += 'Warning, const variable requires an initializer.\n';
+			TT += 'Error, const variable requires an initializer.\n';
 		}
 		
 		if(dropdown_myvartype == 'Auto' && value_name.length < 1){
@@ -149,7 +126,7 @@ Blockly.Blocks['variable_declare'] = {
 				TT += '\n';
 			}
 
-			TT += 'Warning, auto variable requires an initializer.\n';
+			TT += 'Error, auto variable requires an initializer.\n';
 
 		}
 		
@@ -161,7 +138,7 @@ Blockly.Blocks['variable_declare'] = {
 			if(dropdown_myvartype != 'Auto' && dropdown_myvartype != this.childBlocks_[0].typeName){
 
 
-				TT += 'Warning, var declaration is "' + dropdown_myvartype + '", var initialization is "' + this.childBlocks_[0].typeName + '".\n';
+				TT += 'Error, var declaration is "' + dropdown_myvartype + '", var initialization is "' + this.childBlocks_[0].typeName + '".\n';
 
 			}
 			
@@ -183,14 +160,14 @@ Blockly.Blocks['variable_declare'] = {
 
 Blockly.C['variable_declare'] = function(block) {
 	var dropdown_myvartype = this.getField('myVarType').getText();
-
+	
 	var variable_myvardec = Blockly.C.variableDB_.getName(block.getFieldValue('myVarDec'), Blockly.Variables.NAME_TYPE);
-
+	
 	var value_name = Blockly.C.valueToCode(block, 'NAME', Blockly.C.ORDER_ATOMIC);
-
+	
 	var code = '';
 
-
+	
 	if(this.con){
 		code += 'const ';
 	}
@@ -213,7 +190,7 @@ Blockly.C['variable_declare'] = function(block) {
 	
 	
 	code += ';\n'
-
+	
 	//Update typeName
 	this.typeName = (typeConv(this.getField('myVarType').getText()));
 	return code;
@@ -229,16 +206,16 @@ Blockly.Blocks['var_initialization'] = {
 			.appendField("input:")
 			.appendField(new Blockly.FieldTextInput(""), "text1");
 		this.setOutput(true, null);
-
+		
 		this.setInputsInline(true);
 		this.setColour(variableHUE);
-		this.setTooltip(Blockly.Msg["var_initTT"]);
+		this.setTooltip("Variable initialization. Can be used to define variables, or used elsewhere where the required type input is needed e.g. switch statements.");
 		this.setHelpUrl("");
-
+		
 		//Set the type of the block (default)
 		this.typeName = typeConv(this.getField('myVarType').getText());
 	},
-
+	
 	onchange: function(){
 		//Set the output type of the block
 		this.setOutput(this.typeName);
@@ -251,20 +228,20 @@ Blockly.Blocks['var_initialization'] = {
 
 		
 		if(isNaN(inp) == true && inp.length > 0 && (this.typeName == 'Int' || this.typeName == 'Size_t' || this.typeName == 'Short' || this.typeName == 'Long' || this.typeName == 'Long long')){
-			TT += 'Warning, "' + inp + '" is not a number.\n';
+			TT += 'Error, "' + inp + '" is not a number.\n';
 		}
 		else {
 			var x = +inp;
 
 			if(this.typeName == 'Int' || this.typeName == 'Size_t'){
 				if(inp.indexOf('.') > -1){
-					TT += 'Warning, "' + this.typeName + '" cannot have decimal places.\n';
+					TT += 'Error, "' + this.typeName + '" cannot have decimal places.\n';
 				}
 	
 			}
 			if(this.typeName == 'Size_t'){
 				if(inp.indexOf('-') > -1){
-					TT += 'Warning, "' + this.typeName + '" is unsigned and cannot be negative.\n';
+					TT += 'Error, "' + this.typeName + '" is unsigned and cannot be negative.\n';
 				}
 			}
 			
@@ -304,10 +281,10 @@ Blockly.Blocks['var_initialization'] = {
 					TT += 'Warning, type "' + this.typeName + '" cannot have more than one character.\n';
 				}
 				else if(inp.includes('\\') && inp.length === 1){
-					TT += 'Warning, "\\" cannot be used alone in a char, try "\\\\".';
+					TT += 'Error, "\\" cannot be used alone in a char, try "\\\\".';
 				}
 				else if(inp.length === 0){
-					TT += 'Warning, type "' + this.typeName + '" must require at least one character in initialization.\n';
+					TT += 'Error, type "' + this.typeName + '" must require at least one character in initialization.\n';
 				}
 
 			break;
@@ -321,6 +298,10 @@ Blockly.Blocks['var_initialization'] = {
 					proper_quote = false;
 				}
 				
+				if(!inp.includes('"') && inp.includes('\\')){
+					TT += 'Warning, a backslash cannot be used typically in a string.\n'
+				}
+
 				//TODO \" is regulated, but "\ isn't
 				for(var i = 0; i < inp.length; ++i){
 					//If a backslash precedes a quote
@@ -335,7 +316,7 @@ Blockly.Blocks['var_initialization'] = {
 				}
 
 				if(!proper_quote){
-					TT += 'Warning, a string literal cannot have a quote.\n';
+					TT += 'Error, a string literal cannot have a quote.\n';
 				}
 
 
@@ -344,7 +325,7 @@ Blockly.Blocks['var_initialization'] = {
 
 			case 'Bool':
 				if(inp != 'true' && inp != 'false' && inp != '0' && inp != '1'){
-					TT += 'Warning, "' + inp + '" is not of type ' + this.typeName + '.\n';
+					TT += 'Error, "' + inp + '" is not of type ' + this.typeName + '.\n';
 				}
 			break;
 		}
@@ -402,7 +383,7 @@ Blockly.Blocks['var_change'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(variableHUE);
- this.setTooltip(Blockly.Msg["var_changeTT"]);
+ this.setTooltip("Increment the variable.");
  this.setHelpUrl("");
   }
 };
@@ -412,27 +393,37 @@ Blockly.C['var_change'] = function(block) {
 	var value_name = Blockly.C.valueToCode(block, 'valinp1', Blockly.C.ORDER_ATOMIC);
 	// TODO: Assemble C into code variable.
 	var code = '';
-
+	
 	//Increments variable  my value_name
 	code += variable_myvardef + " = " + variable_myvardef + " + " + value_name + ';\n';
-
-
+	
+	
 	return code;
 };
 
 Blockly.Blocks['var_reinit'] = {
-  init: function() {
-    this.appendValueInput("valinp1")
-        .setCheck(["int", "size_t", "double", "float", "Number", "short", "long long", "variable", "char", "string", "bool"])
-        .appendField("Set ")
-        .appendField(new Blockly.FieldVariable("myVar", null, ['isVar','isPtr'], 'isPtr'), "myVarDef")
+	init: function() {
+	this.appendValueInput("valinp1")
+		.setCheck()
+		.appendField("Set ")
+		.appendField(new Blockly.FieldVariable("myVar", null, ['isVar','isPtr'], 'isPtr'), "myVarDef")
 		.appendField("to");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(variableHUE);
- this.setTooltip(Blockly.Msg["var_reinitTT"]);
- this.setHelpUrl("");
-  }
+	this.setPreviousStatement(true, null);
+	this.setNextStatement(true, null);
+	this.setColour(variableHUE);
+	this.setTooltip("Sets the variable.");
+	this.setHelpUrl("");
+	
+	
+	},
+	
+	onchange: function(){
+		
+	},
+
+	allocateOptions: function(){
+		
+	}
 };
 
 Blockly.C['var_reinit'] = function(block) {
@@ -440,9 +431,20 @@ Blockly.C['var_reinit'] = function(block) {
 	var value_name = Blockly.C.valueToCode(block, 'valinp1', Blockly.C.ORDER_ATOMIC);
 	// TODO: Assemble C into code variable.
 	var code = '';
-
+	
 	//output myVar and initialization.
 	code += variable_myvardef + " = " + value_name + ';\n';
-
+	
 	return code;
 };
+
+
+
+
+
+
+
+
+
+
+

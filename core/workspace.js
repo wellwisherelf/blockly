@@ -51,7 +51,8 @@ Blockly.Workspace = function(opt_options) {
   this.horizontalLayout = !!this.options.horizontalLayout;
   /** @type {number} */
   this.toolboxPosition = this.options.toolboxPosition;
-
+	
+	
   /**
    * @type {!Array.<!Blockly.Block>}
    * @private
@@ -337,6 +338,10 @@ Blockly.Workspace.prototype.getTopBlocks = function(ordered) {
   }
   return blocks;
 };
+
+Blockly.Workspace.getTopBlock = function(){
+	return this.topBlocks_;
+}
 
 /**
  * Add a block to the list of blocks keyed by type.

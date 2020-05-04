@@ -52,6 +52,11 @@
 - Fixed type check warnings that appear on blocks, so they are no longer permanent. (Chris, Jon)
 - Started to work on custom context menus for blocks. (Chris)
 
+**4/04/20 - 4/11/20 **
+- Began work on switch cases mutators (Chris, Christopher)
+- Work on variable blocks (Chris, Jon)
+
+
 **4/11/20 - 4/18/20**
 - Finished const variable mutator. (Chris, Christopher)
 - Changed warning texts to appear instantly. (Chris)
@@ -67,6 +72,24 @@
 - Deleted blockName from the Blockly.Block library (Chris)
 - Began to develop scope checking using binary trees (Chris)
 - Continued work on localization (up to chapter 7) (Jon) 
+
+**4/25/20 - 5/02/20**
+- Began development of the powerpoint (Jon)
+- Began development of the research paper (Christopher)
+- Began development on the documentation (Chris)
+- Began work on N-ary Tree traversal for Scope checking (Chris)
+- Began Inheritance checking (Chris)
+- Began general scope checking for functions, classes and structs. (Chris)
+- Finished Localization for Blocks (Jon)
+- Added tooltips and URLs for several blocks (Christopher)
+- Fixed type checking for variable blocks (Christopher)
+
+
+**5/02/20 - 5/09/20**
+- Stopped work on Blockly C++.
+- Focusing on the paper, powerpoint, and documentation.
+
+
 
 # Blockly [![Build Status]( https://travis-ci.org/google/blockly.svg?branch=master)](https://travis-ci.org/google/blockly)
 
@@ -92,7 +115,7 @@ Want to contribute? Great! First, read [our guidelines for contributors](https:/
 
 We release by pushing the latest code to the master branch, followed by updating our [docs](https://developers.google.com/blockly) and [demo pages](https://blockly-demo.appspot.com). We typically release a new version of Blockly once a quarter (every 3 months). If there are breaking bugs, such as a crash when performing a standard action or a rendering issue that makes Blockly unusable, we will cherry-pick fixes to master between releases to fix them. The [releases page](https://github.com/google/blockly/releases) has a list of all releases.
 
-Releases are tagged by the release date (YYYYMMDD) with a leading '2.' and a trailing '.0' in case we ever need a major or minor version (such as [2.20190722.1](https://github.com/google/blockly/tree/2.20190722.1)). If you're using npm, you can install the ``blockly`` package on npm:
+Releases are tagged by the release date (YYYYMMDD) with a leading '2.' and a trailing '.0' in case we ever need a major or minor version (such as [2.20190722.1](https://github.com/google/blockly/tree/2.20190722.1)). If you're using npm, you can install the ``blockly`` package on npm: 
 ```bash
 npm install blockly
 ```
