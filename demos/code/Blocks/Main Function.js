@@ -14,7 +14,7 @@ Blockly.Blocks['main'] = {
 		this.mNames_ = [];
 		//Array to keep track of the types (member names)
 		this.mTypes_ = [];
-
+		//data structure types
 		this.dTypes_ = [];
 				
 	},
@@ -107,10 +107,10 @@ Blockly.Blocks['main_comment'] = {
 		this.setTooltip("");
 		this.setHelpUrl("");
 
-		this.setMutator(new Blockly.Mutator(['main_comment_add']));
+		//this.setMutator(new Blockly.Mutator(['main_comment_add']));
 		this.commentCount_ = 0;
 	},
-
+	/*
 	mutationToDom: function(){
 		if(!this.commentCount_){
 		  return null;
@@ -197,7 +197,7 @@ Blockly.Blocks['main_comment'] = {
 	},
 
 	onchange: Blockly.Blocks.requireInFunction
-
+	*/
 
 };
 

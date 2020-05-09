@@ -53,7 +53,7 @@
 		
 		<p align="left">	
 			<button onclick="downloadCode()">Download C++ Code</button>
-			<button onclick="workspaceScope()">Current Workspace</button>
+			<button onclick="updateLog()">Read Me!</button>
 		</p>
 		
 		<p align="left">	
@@ -308,10 +308,6 @@
 	
 	<block type="user_function"></block>
 	
-	<label text="Function Declaration Parameter (Initializer)" web-class="labelFunction"></label>
-	
-	<block type="func_parameters"></block>
-	
 	<label text="Function Call" web-class="labelFunction"></label>
 	
 	<block type="func_call"></block>
@@ -320,35 +316,26 @@
 	
 	<block type="func_call_return"></block>
 	
-	<label text="Function Call Parameter (Initializer)" web-class="labelFunction"></label>
-
-	<block type="func_var_init_literal"></block>
-	
-	<label text="Function Call Parameter (Variables)" web-class="labelFunction"></label>
-	
-	<block type="func_parameters_call"></block>
-	
 	<block type="func_return"></block>
 	
 	</category>
 	
+	<!--
 	<category name = "type blocks" colour = "#134796">
 		<block type="get_num"></block>
 		<block type="get_var"></block>
+		<block type="set_func_var"></block>
 		<block type="get_func_var"></block>
+		<block type="var_reinit_func"></block>
 		
 	</category>
-
+	-->
+	
     <sep></sep>
     <sep></sep>		
 
 	<category name = "Formatting" colour="#134796">
 		<block type = "format_newLine" ></block>
-	</category>
-
-	<category name = "Pointers" colour="#134796">
-		<block type = "pointer_null" ></block>
-		<block type = "pointer_ref" ></block>
 	</category>
 	
 	<category name="Include Directories" colour="#134796">
@@ -583,11 +570,7 @@
 	<label text="Function Declaration" web-class="labelFunction"></label>
 	
 	<block type="user_function"></block>
-	<block type="user_function_class"></block>
-	
-	<label text="Function Declaration Parameter (Initializer)" web-class="labelFunction"></label>
-	
-	<block type="func_parameters"></block>
+	<!--<block type="user_function_class"></block>-->
 	
 	<label text="Function Call" web-class="labelFunction"></label>
 	
@@ -597,19 +580,8 @@
 	
 	<block type="func_call_return"></block>
 	
-	<label text="Function Call Parameter (Initializer)" web-class="labelFunction"></label>
-
-	<block type="func_var_init_literal"></block>
-	
-	<label text="Function Call Parameter (Variables)" web-class="labelFunction"></label>
-	
-	<block type="func_parameters_call"></block>
-	
 	<block type="func_return"></block>
 	
-	<block type="var_reinit_func"></block>
-	<block type="get_func_var"></block>
-	<block type="set_func_var"></block>
 	
 	
     </category>
@@ -758,16 +730,17 @@
 		<block type="ds_class_inheritance"></block>
 		<block type="ds_class_inheritance_extend"></block>
 
-
+	<!--
 		<block type="test_class"></block>
 		<block type="class_public"></block>
 		<block type="class_protected"></block>
 		<block type="class_private"></block>
-
+	-->
+	
 	</category>
 
 
-    <category name="Testing" colour="#134796">
+    <category name="Tree test cases" colour="#134796">
 	
 		<block type="check_childparent"></block>
 		<block type="check_updown"></block>
@@ -775,6 +748,152 @@
 	
 	</category>
 
+
+    <category name="Examples / test Cases" colour="#134796">
+	
+		<label text="Hello, World!" web-class="labelExamples"></label>
+	
+		<block type="include_iostream" id="_g+L@F2Zw%pcO@:Vc_$." x="188" y="163">
+		<next>
+			<block type="using_namespace_std" id=")twmI7gecWFHOjHq2)`_">
+			<next>
+				<block type="main" id="~YqU.wdfNW1*B^=?D@d{">
+				<statement name="NAME">
+					<block type="output_cout" id="ntg]jez7EI@O9;Mf^Bxt">
+					<mutation xmlns="http://www.w3.org/1999/xhtml" printadd="1"></mutation>
+					<value name="valinp0">
+						<block type="cout_output" id="Ht+T7P|OwdWE,mn1cR#a">
+						<field name="inp">Hello, World!</field>
+						</block>
+					</value>
+					<value name="valinp1">
+						<block type="cout_endl" id="rjUQS8D[1H=zY2+G/FYq"/>
+					</value>
+					</block>
+				</statement>
+				</block>
+			</next>
+			</block>
+		</next>
+		</block>
+	
+		
+		
+		<label text="Hello, World! using a loop and function" web-class="labelExamples"></label>
+		  <block type="main_comment" id="*?^mjPX-.#@zsn!abK1=" x="438" y="263">
+			<field name="input">This program outputs "Hello, World!" 10 times.</field>
+			<next>
+				<block type="include_iostream" id="yPCT.jFNB]ryEvN[(7FA">
+				<next>
+					<block type="include_string" id="t]#0mYqHv,f[.30g!;I9">
+					<next>
+						<block type="using_namespace_std" id="VIyc9gRM^d)3b/ddaBlm">
+						<next>
+							<block type="main_comment" id="^/Bn6m+f^ogyUmT0~hxu">
+							<field name="input">Declare function</field>
+							<next>
+								<block type="user_function" id="t0?O.J%0pawi?82@|iV(">
+								<field name="myFuncReturn">myFuncVoid</field>
+								<field name="myFuncVar" id="*aDJR^Y7x{IJBy(p0S9M" variabletype="isFunc">helloworld</field>
+								<statement name="statement_inp1">
+									<block type="main_comment" id="].v3Ge:ZIagbZqe?+{WA">
+									<field name="input">Declare string, storing "Hello, World!"</field>
+									<next>
+										<block type="variable_declare" id="szE:kSxZ[F:HWv38B2+,">
+										<mutation xmlns="http://www.w3.org/1999/xhtml" isconst="false"></mutation>
+										<field name="myVarType">myVarTypeString</field>
+										<field name="myVarDec" id="kwel/)O[jMEQvV)]p2nR" variabletype="isVar">hello</field>
+										<value name="NAME">
+											<block type="var_initialization" id="{0mPKlfJtC6v.l;cKdQL">
+											<field name="myVarType">myVarTypeString</field>
+											<field name="text1">Hello, World!</field>
+											</block>
+										</value>
+										<next>
+											<block type="main_comment" id="-kZ@Fl]~#Y@.~ejiu+Zy">
+											<field name="input">Output hello variable, and end line. Cleaner than using a strin</field>
+											<next>
+												<block type="output_cout" id="P~{/7b^1G~grM-[7!^n]">
+												<mutation xmlns="http://www.w3.org/1999/xhtml" printadd="1"></mutation>
+												<value name="valinp0">
+													<block type="get_var" id="4b6:c^CnbNIZ}{G]Fya4">
+													<field name="VAR" id="kwel/)O[jMEQvV)]p2nR" variabletype="isVar">hello</field>
+													</block>
+												</value>
+												<value name="valinp1">
+													<block type="cout_endl" id="=r6RUS;[uf;f$}K,diNo"/>
+												</value>
+												</block>
+											</next>
+											</block>
+										</next>
+										</block>
+									</next>
+									</block>
+								</statement>
+								<next>
+									<block type="main" id="|3hX[V{#+w=+5CJ[2A@.">
+									<statement name="NAME">
+										<block type="main_comment" id=":kb#)c;+N/x8z_R}^f:S">
+										<field name="input">Declare a standard for-loop</field>
+										<next>
+											<block type="loop_for" id="%%;2+?Qb~pLqLzcW8.;^">
+											<field name="myLoopVarType">myLoopVarInt</field>
+											<field name="myLoopVar1" id="H]~7wh+)ZeF1NBfg{D7$">i</field>
+											<field name="myLoopVar2" id="H]~7wh+)ZeF1NBfg{D7$">i</field>
+											<field name="myLoopVarComp">LESSER</field>
+											<field name="myLoopVar3" id="H]~7wh+)ZeF1NBfg{D7$">i</field>
+											<field name="myLoopCh">myLoopInc</field>
+											<value name="valinp1">
+												<shadow type="math_number" id="-x1P.mo}rB)`]HpeMj2|">
+												<field name="NUM">0</field>
+												</shadow>
+											</value>
+											<value name="valinp2">
+												<shadow type="math_number" id="?gF-(!c3f=K!2GIvVGi2">
+												<field name="NUM">10</field>
+												</shadow>
+											</value>
+											<statement name="stateinp1">
+												<block type="main_comment" id="q@kw0!}Gw8wzJ89(3#nc">
+												<field name="input">Call function that we declared above</field>
+												<next>
+													<block type="func_call" id="Zc7[*H3l~!,UZIY+;pIq">
+													<field name="myFunc" id="*aDJR^Y7x{IJBy(p0S9M" variabletype="isFunc">helloworld</field>
+													</block>
+												</next>
+												</block>
+											</statement>
+											</block>
+										</next>
+										</block>
+									</statement>
+									</block>
+								</next>
+								</block>
+							</next>
+							</block>
+						</next>
+						</block>
+					</next>
+					</block>
+				</next>
+				</block>
+			</next>
+			</block>
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	</category>
+	
+	
 	
 	
   </xml> <!-- toolbox -->
@@ -791,6 +910,10 @@
 
 <!-- Label Color Categories -->
 <style>
+.labelExamples>.blocklyFlyoutLabelText {
+	font-style: bold;
+	fill: #4DAF63;
+}
 .labelVariable>.blocklyFlyoutLabelText {
 	font-style: bold;
 	fill: #A55B80;
